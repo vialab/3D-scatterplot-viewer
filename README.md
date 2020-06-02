@@ -4,8 +4,6 @@ All of these components can be installed through npm with the command
 
 ``` npm install -g [package] ```
 
-- typescript
-- browserify
 - gulp-cli
 
 Don't forget to run npm install after pulling to install the other dependencies.
