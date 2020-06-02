@@ -1,6 +1,6 @@
-import { TestDisplay, UserInterface } from ".";
+import { TaskDisplay, UserInterface } from ".";
 
-export class ImageDisplay extends TestDisplay
+export class ImageDisplay extends TaskDisplay
 {
 	private originalSrc : string;
 	private compareSrc : string;

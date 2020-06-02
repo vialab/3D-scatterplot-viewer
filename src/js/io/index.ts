@@ -1,11 +1,11 @@
 import {UserInterface} from "./UserInterface";
-import {TestDisplay} from "./TestDisplay";
+import {TaskDisplay} from "./TaskDisplay";
 
 import {ImageDisplay} from "./ImageDisplay";
 
 export {
 	UserInterface,
-	TestDisplay,
+	TaskDisplay,
 	
 	ImageDisplay
 }

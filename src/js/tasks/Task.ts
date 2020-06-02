@@ -1,6 +1,6 @@
 import {Option} from "./Option";
 import {TaskResult} from "./TaskResult";
-import {TestDisplay} from "../io";
+import {TaskDisplay} from "../io";
 
 export abstract class Task
 {
@@ -37,5 +37,5 @@ export abstract class Task
 	abstract GetTitle() : string;
 	abstract GetOptions() : Option[];
 	abstract GetDuration() : number;
-	abstract GetDisplay() : TestDisplay;
+	abstract GetDisplay() : TaskDisplay;
 }

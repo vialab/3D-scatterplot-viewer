@@ -1,5 +1,5 @@
 import {Task, Option, TaskResult} from "../../tasks";
-import {ImageDisplay, TestDisplay} from "../../io";
+import {ImageDisplay, TaskDisplay} from "../../io";
 
 export class SampleTest extends Task
 {
@@ -39,7 +39,7 @@ export class SampleTest extends Task
 		return 0;
 	}
 
-	GetDisplay(): TestDisplay
+	GetDisplay(): TaskDisplay
 	{
 		return this.display;
 	}
