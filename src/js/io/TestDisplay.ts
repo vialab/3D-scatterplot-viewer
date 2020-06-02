@@ -1,4 +1,6 @@
+import {GlobalDisplay} from "./GlobalDisplay";
+
 export abstract class TestDisplay
 {
-	abstract Display(originalContainer: JQuery<HTMLElement>, comparisonContainer: JQuery<HTMLElement>) : void;
+	abstract Display(screen : GlobalDisplay) : void;
 }

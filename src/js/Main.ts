@@ -28,9 +28,9 @@ async function NextTest() : Promise<void>
 
 	let test : Test = testList.Next();
 
-	display.SetTimerProgress(50);
+	display.SetTimerProgress(25);
 	display.SetTitle(test.GetTitle());
-	test.Display(display.OriginalViewContainer(), display.ComparisonViewContainer());
+	test.GetDisplay().Display(display);
 	display.ShowOptions(test.GetOptions());
 	
 	let result : TestResult = await test.WaitForCompletion();

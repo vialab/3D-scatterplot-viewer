@@ -1,5 +1,6 @@
 import {Option} from "./Option";
 import {TestResult} from "./TestResult";
+import {TestDisplay} from "../io";
 
 export abstract class Test
 {
@@ -11,8 +12,6 @@ export abstract class Test
 		this.resolve = (result : TestResult) => null;
 		this.reject = (reason : any) => null;
 	}
-
-	abstract Display(originalContainer:JQuery<HTMLElement>, comparisonContainer:JQuery<HTMLElement>) : void;
 
 	async WaitForCompletion() : Promise<TestResult>
 	{
@@ -38,4 +37,5 @@ export abstract class Test
 	abstract GetTitle() : string;
 	abstract GetOptions() : Option[];
 	abstract GetDuration() : number;
+	abstract GetDisplay() : TestDisplay;
 }

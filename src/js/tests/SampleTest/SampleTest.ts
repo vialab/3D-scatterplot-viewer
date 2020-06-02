@@ -1,5 +1,5 @@
 import {Test, Option, TestResult} from "../../testing";
-import {ImageDisplay} from "../../io";
+import {ImageDisplay, TestDisplay} from "../../io";
 
 export class SampleTest extends Test
 {
@@ -20,11 +20,6 @@ export class SampleTest extends Test
 		);
 	}
 
-	Display(originalContainer: JQuery<HTMLElement>, comparisonContainer: JQuery<HTMLElement>): void
-	{
-		this.display.Display(originalContainer, comparisonContainer);
-	}
-
 	SubmitOptions(selectedOptions: import("../../testing/Option").Option[]): void
 	{
 		this.Complete(new TestResult());
@@ -41,5 +36,10 @@ export class SampleTest extends Test
 	GetDuration(): number
 	{
 		return 0;
+	}
+
+	GetDisplay(): TestDisplay
+	{
+		return this.display;
 	}
 }

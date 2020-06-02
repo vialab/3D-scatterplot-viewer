@@ -1,4 +1,4 @@
-import { TestDisplay } from ".";
+import { TestDisplay, GlobalDisplay } from ".";
 
 export class ImageDisplay extends TestDisplay
 {
@@ -13,9 +13,14 @@ export class ImageDisplay extends TestDisplay
 		this.compareSrc = compareSrc;
 	}
 
-	Display(originalContainer: JQuery<HTMLElement>, comparisonContainer: JQuery<HTMLElement>): void
+	Display(screen : GlobalDisplay): void
 	{
-		originalContainer.html(`<img src="${this.originalSrc}" alt="Failed to load image" />`);
-		comparisonContainer.html(`<img src="${this.compareSrc}" alt="Failed to load image" />`);
+		screen
+			.OriginalViewContainer()
+			.html(`<img src="${this.originalSrc}" alt="Failed to load image" />`);
+		
+		screen
+			.ComparisonViewContainer()
+			.html(`<img src="${this.compareSrc}" alt="Failed to load image" />`);
 	}
 }
