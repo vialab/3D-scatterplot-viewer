@@ -35,7 +35,7 @@ gulp.task("build-js", function()
 	return browserify({
 			basedir: ".",
 			debug: true,
-			entries: ["src/js/main.ts"],
+			entries: ["src/js/Main.ts"],
 			cache: {},
 			packageCache: {}
 		})
