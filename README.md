@@ -8,6 +8,8 @@ All of these components can be installed through npm with the command
 - browserify
 - gulp-cli
 
+Don't forget to run npm install after pulling to install the other dependencies.
+
 # Building
 
 The default gulp task will create a folder called build which will contain a distributable of the application
