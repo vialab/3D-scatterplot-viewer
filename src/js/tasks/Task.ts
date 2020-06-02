@@ -1,28 +1,28 @@
 import {Option} from "./Option";
-import {TestResult} from "./TestResult";
+import {TaskResult} from "./TaskResult";
 import {TestDisplay} from "../io";
 
-export abstract class Test
+export abstract class Task
 {
-	private resolve : (result : TestResult) => any;
+	private resolve : (result : TaskResult) => any;
 	private reject : (reason : any) => any;
 
 	constructor()
 	{
-		this.resolve = (result : TestResult) => null;
+		this.resolve = (result : TaskResult) => null;
 		this.reject = (reason : any) => null;
 	}
 
-	async WaitForCompletion() : Promise<TestResult>
+	async WaitForCompletion() : Promise<TaskResult>
 	{
-		return new Promise<TestResult>((resolve, reject) =>
+		return new Promise<TaskResult>((resolve, reject) =>
 		{
 			this.resolve = resolve;
 			this.reject = reject;
 		});
 	}
 
-	Complete(result : TestResult) : void
+	Complete(result : TaskResult) : void
 	{
 		this.resolve(result);
 	}

@@ -1,7 +1,7 @@
-import {Test, Option, TestResult} from "../../testing";
+import {Task, Option, TaskResult} from "../../tasks";
 import {ImageDisplay, TestDisplay} from "../../io";
 
-export class SampleTest extends Test
+export class SampleTest extends Task
 {
 	private display : ImageDisplay;
 	private options : Option[];
@@ -21,16 +21,16 @@ export class SampleTest extends Test
 		);
 	}
 
-	SubmitOptions(selectedOptions: import("../../testing/Option").Option[]): void
+	SubmitOptions(selectedOptions: import("../../tasks/Option").Option[]): void
 	{
-		this.Complete(new TestResult());
+		this.Complete(new TaskResult());
 	}
 
 	GetTitle(): string
 	{
 		return "Sample Test 1: Select any option"
 	}
-	GetOptions(): import("../../testing/Option").Option[]
+	GetOptions(): import("../../tasks/Option").Option[]
 	{
 		return this.options;
 	}

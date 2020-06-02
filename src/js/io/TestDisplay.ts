@@ -1,4 +1,4 @@
-import {UserInterface} from "./GlobalDisplay";
+import {UserInterface} from "./UserInterface";
 
 export abstract class TestDisplay
 {

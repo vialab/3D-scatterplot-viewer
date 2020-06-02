@@ -1,17 +1,17 @@
-import {TestResult} from "./testing/TestResult";
-import {Test} from "./testing/Test";
-import {TestPlan} from "./testing/TestPlan";
-import {UserInterface} from "./io/GlobalDisplay";
+import {TaskResult} from "./tasks/TaskResult";
+import {Task} from "./tasks/Task";
+import {TaskList} from "./tasks/TaskList";
+import {UserInterface} from "./io/UserInterface";
 
 import { SampleTest } from "./tests/SampleTest/SampleTest";
 
 let display : UserInterface;
-let testList : TestPlan;
+let testList : TaskList;
 
 $(() =>
 {
 	display = new UserInterface();
-	testList  = new TestPlan([
+	testList  = new TaskList([
 		new SampleTest()
 	]);
 	
@@ -26,14 +26,14 @@ async function NextTest() : Promise<void>
 		return;
 	}
 
-	let test : Test = testList.Next();
+	let test : Task = testList.Next();
 
 	display.SetTimerProgress(25);
 	display.SetTitle(test.GetTitle());
 	test.GetDisplay().Display(display);
 	display.ShowOptions(test.GetOptions());
 	
-	let result : TestResult = await test.WaitForCompletion();
+	let result : TaskResult = await test.WaitForCompletion();
 	//TODO submit results somewhere
 
 	NextTest();

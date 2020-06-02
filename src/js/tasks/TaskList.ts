@@ -1,17 +1,17 @@
-import {Test} from "./Test";
+import {Task} from "./Task";
 
-export class TestPlan
+export class TaskList
 {
 	currentIndex : number;
-	tests : Test[];
+	tests : Task[];
 
-	constructor(tests : Test[])
+	constructor(tests : Task[])
 	{
 		this.currentIndex = 0;
 		this.tests = tests;
 	}
 
-	Next() : Test
+	Next() : Task
 	{
 		return this.tests[this.currentIndex++];
 	}

@@ -1,4 +1,4 @@
-import {Option} from "../testing/Option";
+import {Option} from "../tasks";
 
 export class UserInterface
 {
