@@ -1,6 +1,6 @@
-import {GlobalDisplay} from "./GlobalDisplay";
+import {UserInterface} from "./GlobalDisplay";
 
 export abstract class TestDisplay
 {
-	abstract Display(screen : GlobalDisplay) : void;
+	abstract Display(screen : UserInterface) : void;
 }

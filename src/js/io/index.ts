@@ -1,10 +1,10 @@
-import {GlobalDisplay} from "./GlobalDisplay";
+import {UserInterface} from "./GlobalDisplay";
 import {TestDisplay} from "./TestDisplay";
 
 import {ImageDisplay} from "./ImageDisplay";
 
 export {
-	GlobalDisplay,
+	UserInterface,
 	TestDisplay,
 	
 	ImageDisplay

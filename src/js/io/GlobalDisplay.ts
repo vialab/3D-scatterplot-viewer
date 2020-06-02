@@ -1,6 +1,6 @@
 import {Option} from "../testing/Option";
 
-export class GlobalDisplay
+export class UserInterface
 {
 	protected titleContainer : JQuery<HTMLElement>;
 	protected timerBar : JQuery<HTMLElement>;

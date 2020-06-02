@@ -1,16 +1,16 @@
 import {TestResult} from "./testing/TestResult";
 import {Test} from "./testing/Test";
 import {TestPlan} from "./testing/TestPlan";
-import {GlobalDisplay} from "./io/GlobalDisplay";
+import {UserInterface} from "./io/GlobalDisplay";
 
 import { SampleTest } from "./tests/SampleTest/SampleTest";
 
-let display : GlobalDisplay;
+let display : UserInterface;
 let testList : TestPlan;
 
 $(() =>
 {
-	display = new GlobalDisplay();
+	display = new UserInterface();
 	testList  = new TestPlan([
 		new SampleTest()
 	]);

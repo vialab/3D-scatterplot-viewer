@@ -11,7 +11,8 @@ export class SampleTest extends Test
 		super();
 		this.options = [
 			new Option(0, "Yes"),
-			new Option(1, "No")
+			new Option(1, "No"),
+			new Option(2, "Maybe so")
 		];
 
 		this.display = new ImageDisplay(

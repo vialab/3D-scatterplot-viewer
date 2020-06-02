@@ -1,4 +1,4 @@
-import { TestDisplay, GlobalDisplay } from ".";
+import { TestDisplay, UserInterface } from ".";
 
 export class ImageDisplay extends TestDisplay
 {
@@ -13,14 +13,12 @@ export class ImageDisplay extends TestDisplay
 		this.compareSrc = compareSrc;
 	}
 
-	Display(screen : GlobalDisplay): void
+	Display(screen : UserInterface): void
 	{
-		screen
-			.OriginalViewContainer()
+		screen.OriginalViewContainer()
 			.html(`<img src="${this.originalSrc}" alt="Failed to load image" />`);
 		
-		screen
-			.ComparisonViewContainer()
+		screen.ComparisonViewContainer()
 			.html(`<img src="${this.compareSrc}" alt="Failed to load image" />`);
 	}
 }
