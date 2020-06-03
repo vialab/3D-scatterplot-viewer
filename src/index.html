@@ -16,31 +16,30 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 	<body>
-		<div id="header">
-			<h1 id="title"></h1>
-		</div>
-		<div id="content">
-			<div class="flex-container">
-				<div id="test-original" class="test-container">
-
-				</div>
-				<div></div>
-				<div id="test-compare" class="test-container">
-
+		<div style="display: flex; flex-direction: column; height: 100%;">
+			<div id="header">
+				<h1 id="title"></h1>
+			</div>
+	
+			<div id="content">
+				<div id="comparison-area" class="flex-container">
+					<div id="test-original" class="test-container"></div>
+					<div id="test-compare" class="test-container"></div>
 				</div>
 			</div>
-			<div id="options">
-			</div>
-		</div>
-		<div id="footer">
-			<div class="progress">
-				<div id="test-timer"
-					class="progress-bar"
-					role="progressbar"
-					aria-valuenow="0"
-					aria-valuemin="0"
-					aria-valuemax="100"
-				>
+	
+			<div id="footer">
+				<div id="options"></div>
+	
+				<div class="progress">
+					<div id="test-timer"
+						class="progress-bar"
+						role="progressbar"
+						aria-valuenow="0"
+						aria-valuemin="0"
+						aria-valuemax="100"
+					>
+					</div>
 				</div>
 			</div>
 		</div>

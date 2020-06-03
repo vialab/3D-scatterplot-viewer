@@ -1,6 +1,7 @@
 import {Option} from "./Option";
 import {TaskResult} from "./TaskResult";
 import {TaskDisplay} from "../io";
+import {Timer} from "../metrics";
 
 export abstract class Task
 {
@@ -38,4 +39,5 @@ export abstract class Task
 	abstract GetOptions() : Option[];
 	abstract GetDuration() : number;
 	abstract GetDisplay() : TaskDisplay;
+	abstract GetTimer() : Timer;
 }

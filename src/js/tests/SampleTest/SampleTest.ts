@@ -1,10 +1,13 @@
 import {Task, Option, TaskResult} from "../../tasks";
 import {ImageDisplay, TaskDisplay} from "../../io";
+import {Timer, UnlimitedTimer} from "../../metrics";
 
 export class SampleTest extends Task
 {
-	private display : ImageDisplay;
 	private options : Option[];
+
+	private display : ImageDisplay;
+	private timer : UnlimitedTimer;
 
 	constructor()
 	{
@@ -19,9 +22,11 @@ export class SampleTest extends Task
 			"https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
 			"https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
 		);
+
+		this.timer = new UnlimitedTimer();
 	}
 
-	SubmitOptions(selectedOptions: import("../../tasks/Option").Option[]): void
+	SubmitOptions(selectedOptions: Option[]): void
 	{
 		this.Complete(new TaskResult());
 	}
@@ -30,7 +35,7 @@ export class SampleTest extends Task
 	{
 		return "Sample Test 1: Select any option"
 	}
-	GetOptions(): import("../../tasks/Option").Option[]
+	GetOptions(): Option[]
 	{
 		return this.options;
 	}
@@ -42,5 +47,10 @@ export class SampleTest extends Task
 	GetDisplay(): TaskDisplay
 	{
 		return this.display;
+	}
+
+	GetTimer() : Timer
+	{
+		return this.timer;
 	}
 }
