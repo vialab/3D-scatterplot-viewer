@@ -5,27 +5,34 @@ import {Timer} from "../metrics";
 
 export abstract class Task
 {
-	private resolve : (result : TaskResult) => any;
-	private reject : (reason : any) => any;
+	protected result : TaskResult;
+
+	private promise : Promise<TaskResult>;
+	protected resolve : (result : TaskResult) => any;
+	protected reject : (reason : any) => any;
 
 	constructor()
 	{
 		this.resolve = (result : TaskResult) => null;
 		this.reject = (reason : any) => null;
-	}
 
-	async WaitForCompletion() : Promise<TaskResult>
-	{
-		return new Promise<TaskResult>((resolve, reject) =>
+		this.promise = new Promise<TaskResult>((resolve, reject) =>
 		{
 			this.resolve = resolve;
 			this.reject = reject;
 		});
+		
+		this.result = new TaskResult();
 	}
 
-	Complete(result : TaskResult) : void
+	async WaitForCompletion() : Promise<TaskResult>
 	{
-		this.resolve(result);
+		return this.promise;
+	}
+
+	Complete() : void
+	{
+		this.resolve(this.result);
 	}
 
 	Error(reason : any)
@@ -33,11 +40,11 @@ export abstract class Task
 		this.reject(reason);
 	}
 
-	abstract SubmitOptions(selectedOptions : Option[]) : void;
+	abstract OptionSelected(selectedOptions : Option) : void;
 
 	abstract GetTitle() : string;
+	abstract GetPrompt() : string;
 	abstract GetOptions() : Option[];
-	abstract GetDuration() : number;
 	abstract GetDisplay() : TaskDisplay;
 	abstract GetTimer() : Timer;
 }

@@ -1,39 +1,44 @@
 import {Task, Option, TaskResult} from "../../tasks";
-import {ImageDisplay, TaskDisplay} from "../../io";
-import {Timer, UnlimitedTimer} from "../../metrics";
+import {ImageComparison, TaskDisplay} from "../../io";
+import {Timer, LimitedTimer} from "../../metrics";
 
-export class SampleTest extends Task
+export class SampleTimedTest extends Task
 {
+	private duration : number = 5000;
+
 	private options : Option[];
 
-	private display : ImageDisplay;
-	private timer : UnlimitedTimer;
+	private display : ImageComparison;
+	private timer : LimitedTimer;
 
 	constructor()
 	{
 		super();
 		this.options = [
-			new Option(0, "Yes"),
-			new Option(1, "No"),
-			new Option(2, "Maybe so")
+			new Option(0, "pick fast"),
+			new Option(1, "or let time run out")
 		];
 
-		this.display = new ImageDisplay(
+		this.display = new ImageComparison(
 			"https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
 			"https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
 		);
 
-		this.timer = new UnlimitedTimer();
+		this.timer = new LimitedTimer(this, this.duration);
 	}
 
-	SubmitOptions(selectedOptions: Option[]): void
+	OptionSelected(selectedOptions: Option): void
 	{
-		this.Complete(new TaskResult());
+		this.Complete();
 	}
 
 	GetTitle(): string
 	{
-		return "Sample Test 1: Select any option"
+		return "Timed test sample"
+	}
+	GetPrompt() : string
+	{
+		return "";
 	}
 	GetOptions(): Option[]
 	{

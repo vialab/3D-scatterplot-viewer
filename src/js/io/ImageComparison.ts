@@ -1,6 +1,6 @@
 import { TaskDisplay, UserInterface } from ".";
 
-export class ImageDisplay extends TaskDisplay
+export class ImageComparison extends TaskDisplay
 {
 	private originalSrc : string;
 	private compareSrc : string;
@@ -15,6 +15,8 @@ export class ImageDisplay extends TaskDisplay
 
 	Display(screen : UserInterface): void
 	{
+		screen.ViewModeComparison();
+
 		screen.OriginalViewContainer()
 			.html(`<img src="${this.originalSrc}" alt="Failed to load image" />`);
 		

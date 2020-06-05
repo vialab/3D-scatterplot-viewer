@@ -13,6 +13,7 @@ html, body
 #content
 {
 	flex: 8;
+	position:relative;
 }
 
 #footer
@@ -29,12 +30,32 @@ html, body
 	text-align: center;
 }
 
+#content-single
+{
+	height: 100%;
+	width: 100%;
+
+	justify-content: center;
+	align-items: center;
+}
+
 #comparison-area
 {
 	height: 100%;
 	
 	justify-content: center;
 	align-items: center;
+}
+
+#completion-window
+{
+	height: 100%;
+	width: 100%;
+
+	justify-content: center;
+	align-items: center;
+
+	flex-direction: column;
 }
 
 .flex-container
@@ -63,6 +84,11 @@ html, body
 	background: blue;
 }
 
+#prompt
+{
+	text-align: center;
+}
+
 #options
 {
 	display: flex;
@@ -76,3 +102,32 @@ html, body
 	min-width: 100px;
 }
 
+#options>button:hover
+{
+	background-color: #ddd;
+}
+
+.next
+{
+	cursor: pointer;
+	text-align: center;
+	width: 100%;
+	background-color: #4CAF50;
+	color: white;
+}
+
+.next:hover
+{
+	background-color: #ddd;
+	color: black;
+}
+
+.overlay
+{
+	background-color: black;
+	opacity: 0.15;
+	width:100%;
+	height:100%;
+	
+	position: absolute;
+}

@@ -3,9 +3,12 @@ import {Task} from "./tasks/Task";
 import {TaskList} from "./tasks/TaskList";
 import {UserInterface} from "./io/UserInterface";
 
-import { SampleTest } from "./tests/SampleTest/SampleTest";
 import { Timer } from "./metrics";
-import { SampleTestTimed } from "./tests/SampleTestTimed.ts/SampleTestTimed";
+import {SampleComparison} from "./tests/SampleComparison/SampleComparison";
+import { SampleTimedTest } from "./tests/SampleTimedTest/SampleTimedTest";
+import { Consent } from "./forms/Consent";
+import { GraphInstruction } from "./forms/GraphInstruction";
+import { TestingComplete } from "./forms/TestingComplete";
 
 let display : UserInterface;
 let testList : TaskList;
@@ -17,30 +20,47 @@ $(() =>
 {
 	display = new UserInterface();
 	testList  = new TaskList([
-		new SampleTestTimed(),
-		new SampleTest()
+		new Consent(),
+		new GraphInstruction(),
+		new SampleComparison(
+			"images/sample_graph_1.png",
+			"images/sample_graph_2.png"
+		),
+		new SampleTimedTest(),
+		new SampleComparison(
+			"images/sample-piechart.png",
+			"images/sample-piechart.png"	
+		)
 	]);
+
+	ApplyPageEventHandlers();
 	
 	NextTask();
 });
 
+function ApplyPageEventHandlers()
+{
+	$(".next").click(() =>
+	{
+		NextTask();
+	});
+}
+
 async function NextTask() : Promise<void>
 {
+	clearInterval(uiUpdateTimer);
+
 	if (testList.IsComplete())
 	{
-		//TODO show "test over" notification overlay
+		AllTestsCompleted();
 		return;
 	}
-
-	clearInterval(uiUpdateTimer);
 
 	task = testList.Next();
 	let timer : Timer = task.GetTimer();
 
-	display.SetTitle(task.GetTitle());
-	task.GetDisplay().Display(display);
-	display.ShowOptions(task.GetOptions());
-
+	DisplayTask(task);
+	
 	timer.Begin();
 	uiUpdateTimer = setInterval(() =>
 		{
@@ -59,4 +79,17 @@ async function NextTask() : Promise<void>
 	//TODO submit results somewhere
 
 	NextTask();
+}
+
+function AllTestsCompleted()
+{
+	DisplayTask(new TestingComplete());
+}
+
+function DisplayTask(task : Task)
+{
+	display.SetTitle(task.GetTitle());
+	display.SetOptionsPrompt(task.GetPrompt());
+	display.ShowOptions(task);
+	task.GetDisplay().Display(display);
 }

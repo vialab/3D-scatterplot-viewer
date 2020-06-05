@@ -22,25 +22,67 @@
 			</div>
 	
 			<div id="content">
-				<div id="comparison-area" class="flex-container">
+				<div class="overlay" style="display: none;"></div>
+
+				<div id="content-single" class="flex-container" style="display: none;">
+				</div>
+				
+				<div id="comparison-area" class="flex-container" style="display:none;">
 					<div id="test-original" class="test-container"></div>
 					<div id="test-compare" class="test-container"></div>
+				</div>		
+				
+				<div id="completion-window" class="flex-container" style="display:none;">
+					<div style="width: 80%">
+						<h1 style="text-align: center;">All tests complete</h1>
+						<hr />
+						<p>
+							Leverage agile frameworks to provide a robust synopsis for high level overviews.
+							Iterative approaches to corporate strategy foster collaborative thinking to
+							further the overall value proposition. Organically grow the holistic world view
+							of disruptive innovation via workplace diversity and empowerment.
+						</p>
+						<p>
+							Bring to the table win-win survival strategies to ensure proactive domination.
+							At the end of the day, going forward, a new normal that has evolved from generation X 
+							is on the runway heading towards a streamlined cloud solution. User generated content 
+							in real-time will have multiple touchpoints for offshoring.
+						</p>
+						<p>
+							Capitalize on low hanging fruit to identify a ballpark value added activity to beta test.
+							Override the digital divide with additional clickthroughs from DevOps. Nanotechnology 
+							immersion along the information highway will close the loop on focusing solely on the 
+							bottom line.
+						</p>
+					</div>
 				</div>
 			</div>
 	
 			<div id="footer">
+				<div id="prompt"></div>
 				<div id="options"></div>
+
+				<div style="position: relative;">
+					<div class="overlay" style="display: none;"></div>
+
+					<div style="display: flex;">
+						<div class="progress" style="flex: 8">
+							<div id="test-timer"
+								class="progress-bar"
+								role="progressbar"
+								aria-valuenow="0"
+								aria-valuemin="0"
+								aria-valuemax="100"
+							>
+							</div>
+						</div>
 	
-				<div class="progress">
-					<div id="test-timer"
-						class="progress-bar"
-						role="progressbar"
-						aria-valuenow="0"
-						aria-valuemin="0"
-						aria-valuemax="100"
-					>
+						<!-- <div style="flex: 1">
+							<div class="next">Next &raquo;</button>
+						</div> -->
 					</div>
 				</div>
+				
 			</div>
 		</div>
 	</body>
