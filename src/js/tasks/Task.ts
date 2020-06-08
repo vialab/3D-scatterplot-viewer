@@ -47,4 +47,7 @@ export abstract class Task
 	abstract GetOptions() : Option[];
 	abstract GetDisplay() : TaskDisplay;
 	abstract GetTimer() : Timer;
+
+	abstract IsConfidenceTracked() : boolean;
+	abstract IsResultsTracked() : boolean;
 }

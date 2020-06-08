@@ -15,6 +15,8 @@ export class UserInterface
 
 	protected completionContainer : JQuery<HTMLElement>;
 
+	protected confidenceArea : JQuery<HTMLElement>;
+
 	constructor()
 	{
 		this.titleContainer = $("#title");
@@ -29,6 +31,8 @@ export class UserInterface
 		this.comparisonView = $("#test-compare");
 
 		this.completionContainer = $("#completion-window");
+
+		this.confidenceArea = $("#feedback");
 	}
 
 	SetTitle(title : string) : void
@@ -105,5 +109,15 @@ export class UserInterface
 		this.contentContainer.hide();
 		
 		this.completionContainer.show();
+	}
+
+	ShowConfidenceSlider()
+	{
+		this.confidenceArea.show();
+	}
+
+	HideConfidenceSlider()
+	{
+		this.confidenceArea.hide();
 	}
 }

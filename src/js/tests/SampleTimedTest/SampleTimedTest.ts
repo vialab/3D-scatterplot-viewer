@@ -58,4 +58,13 @@ export class SampleTimedTest extends Task
 	{
 		return this.timer;
 	}
+
+	IsConfidenceTracked(): boolean
+	{
+		return true;
+	}
+	IsResultsTracked(): boolean
+	{
+		return false;
+	}
 }

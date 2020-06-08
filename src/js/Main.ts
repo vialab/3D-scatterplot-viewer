@@ -76,7 +76,11 @@ async function NextTask() : Promise<void>
 	);
 	
 	let result : TaskResult = await task.WaitForCompletion();
-	//TODO submit results somewhere
+
+	if (task.IsResultsTracked())
+	{
+		//TODO submit results somewhere
+	}
 
 	NextTask();
 }
@@ -92,4 +96,9 @@ function DisplayTask(task : Task)
 	display.SetOptionsPrompt(task.GetPrompt());
 	display.ShowOptions(task);
 	task.GetDisplay().Display(display);
+
+	if (task.IsConfidenceTracked())
+		display.ShowConfidenceSlider();
+	else
+		display.HideConfidenceSlider();
 }

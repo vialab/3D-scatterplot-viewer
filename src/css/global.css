@@ -22,6 +22,11 @@ html, body
 	min-height: 60px;
 }
 
+#feedback
+{
+	flex: 1;
+}
+
 #title
 {
 	color: #0f0f1c;
@@ -34,7 +39,7 @@ html, body
 {
 	height: 100%;
 	width: 100%;
-
+	
 	justify-content: center;
 	align-items: center;
 }

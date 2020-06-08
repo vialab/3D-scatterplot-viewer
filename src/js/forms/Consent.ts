@@ -31,6 +31,15 @@ export class Consent extends Task
 	{
 		return new UnlimitedTimer();
 	}
+
+	IsConfidenceTracked(): boolean
+	{
+		return false;
+	}
+	IsResultsTracked(): boolean
+	{
+		return false;
+	}
 }
 
 class ConsentForm extends TaskDisplay

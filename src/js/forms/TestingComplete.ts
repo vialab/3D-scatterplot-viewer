@@ -28,6 +28,15 @@ export class TestingComplete extends Task
 	{
 		return new UnlimitedTimer();
 	}
+
+	IsConfidenceTracked(): boolean
+	{
+		return false;
+	}
+	IsResultsTracked(): boolean
+	{
+		return false;
+	}
 }
 
 class TestingCompleteDisplay extends TaskDisplay
