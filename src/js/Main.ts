@@ -5,10 +5,16 @@ import {UserInterface} from "./io/UserInterface";
 
 import { Timer } from "./metrics";
 import {SampleComparison} from "./tests/SampleComparison/SampleComparison";
+import {SampleComparisonInstruction} from "./tests/SampleComparison/SampleComparisonInstruction";
 import { SampleTimedTest } from "./tests/SampleTimedTest/SampleTimedTest";
 import { Consent } from "./forms/Consent";
-import { GraphInstruction } from "./forms/GraphInstruction";
 import { TestingComplete } from "./forms/TestingComplete";
+import { Sample3DInstruction } from "./tests/Sample3DRotation/Sample3DInstructions";
+import { Sample3DRotation } from "./tests/Sample3DRotation/Sample3DRotation";
+import { SampleFold } from "./tests/SampleFold/SampleFold";
+import { SampleFoldInstruction } from "./tests/SampleFold/SampleFoldInstruction";
+import { SampleCard } from "./tests/SampleCard/SampleCard";
+import { SampleImageMockup } from "./tests/SampleImageMockup/SampleImageMockup";
 
 let display : UserInterface;
 let testList : TaskList;
@@ -18,19 +24,71 @@ let uiUpdateTimer : any;
 
 $(() =>
 {
+	let graph3dinst = new SampleComparisonInstruction(
+		"images/3dgraph1.png",
+		"images/3dgraph2.png"
+	)
+	let graph3d = new SampleComparison(
+		"images/3dgraph1.png",
+		"images/3dgraph2.png"
+	);
+
+	let contour = new SampleComparison(
+		"images/Contour_Plot.jpg",
+		"images/3D_Surface.jpg"
+	);
+	contour.SetPrompt("Does the graph match the contour?");
+
+	let scatterplot = new SampleImageMockup("images/scatterplotmain.png");
+	scatterplot.SetCofidenceTracked(true);
+	let scatterplothover = new SampleImageMockup("images/scatterplothover.png");
+	scatterplothover.SetCofidenceTracked(true);
+
 	display = new UserInterface();
 	testList  = new TaskList([
 		new Consent(),
-		new GraphInstruction(),
+
+		//Graph
+		new SampleComparisonInstruction(
+			"images/sample_graph_1.png",
+			"images/sample_graph_2.png"
+		),
 		new SampleComparison(
 			"images/sample_graph_1.png",
 			"images/sample_graph_2.png"
 		),
-		new SampleTimedTest(),
+
+		//3D Graph
+		graph3dinst,
+		graph3d,
+
+		//Piechart
+		new SampleComparisonInstruction(
+			"images/sample-piechart.png",
+			"images/sample-piechart-rotated.png"	
+		),
 		new SampleComparison(
 			"images/sample-piechart.png",
-			"images/sample-piechart.png"	
-		)
+			"images/sample-piechart-rotated.png"	
+		),
+
+		//3d Rotation
+		new Sample3DInstruction(),
+		new Sample3DRotation(),
+
+		// Paper Folding
+		new SampleFoldInstruction(),
+		new SampleFold(),
+
+		// Card rotation
+		new SampleCard(),
+
+		// Contour
+		contour,
+
+		//Scatter Plot
+		scatterplot,
+		scatterplothover,
 	]);
 
 	ApplyPageEventHandlers();

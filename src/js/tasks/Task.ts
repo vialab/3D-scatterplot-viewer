@@ -1,7 +1,7 @@
 import {Option} from "./Option";
 import {TaskResult} from "./TaskResult";
 import {TaskDisplay} from "../io";
-import {Timer} from "../metrics";
+import {Timer, UnlimitedTimer} from "../metrics";
 
 export abstract class Task
 {
@@ -10,6 +10,12 @@ export abstract class Task
 	private promise : Promise<TaskResult>;
 	protected resolve : (result : TaskResult) => any;
 	protected reject : (reason : any) => any;
+
+	private title : string;
+	private prompt : string;
+	private timer : Timer;
+	private trackConfidence : boolean;
+	private trackResults : boolean;
 
 	constructor()
 	{
@@ -23,6 +29,12 @@ export abstract class Task
 		});
 		
 		this.result = new TaskResult();
+
+		this.title = "";
+		this.prompt = "";
+		this.timer = new UnlimitedTimer();
+		this.trackConfidence = false;
+		this.trackResults = false;
 	}
 
 	async WaitForCompletion() : Promise<TaskResult>
@@ -42,12 +54,52 @@ export abstract class Task
 
 	abstract OptionSelected(selectedOptions : Option) : void;
 
-	abstract GetTitle() : string;
-	abstract GetPrompt() : string;
 	abstract GetOptions() : Option[];
 	abstract GetDisplay() : TaskDisplay;
-	abstract GetTimer() : Timer;
 
-	abstract IsConfidenceTracked() : boolean;
-	abstract IsResultsTracked() : boolean;
+	SetTitle(title : string) : void
+	{
+		this.title = title;
+	}
+
+	GetTitle() : string
+	{
+		return this.title;
+	}
+
+	SetPrompt(prompt : string) : void
+	{
+		this.prompt = prompt;	
+	}
+	GetPrompt() : string
+	{
+		return this.prompt;
+	}
+
+	SetTimer(timer : Timer) : void
+	{
+		this.timer = timer;
+	}
+	GetTimer() : Timer
+	{
+		return this.timer;
+	}
+
+	SetCofidenceTracked(track : boolean) : void
+	{
+		this.trackConfidence = track;	
+	}
+	IsConfidenceTracked() : boolean
+	{
+		return this.trackConfidence;
+	}
+
+	SetResultsTracked(track : boolean) : void
+	{
+		this.trackResults = track;	
+	}
+	IsResultsTracked() : boolean
+	{
+		return this.trackResults;
+	}
 }

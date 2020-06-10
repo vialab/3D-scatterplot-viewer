@@ -4,38 +4,29 @@ import { Timer, UnlimitedTimer } from "../metrics";
 
 export class TestingComplete extends Task
 {
+	constructor()
+	{
+		super();
+
+	}
+
 	OptionSelected(selectedOptions: Option): void
 	{
 		throw new Error("Method not implemented.");
-	}
-	GetTitle(): string
-	{
-		return "";
-	}
-	GetPrompt(): string
-	{
-		return "";
 	}
 	GetOptions(): Option[]
 	{
 		return [];
 	}
+
 	GetDisplay(): TaskDisplay
 	{
 		return new TestingCompleteDisplay();
 	}
+
 	GetTimer(): Timer
 	{
 		return new UnlimitedTimer();
-	}
-
-	IsConfidenceTracked(): boolean
-	{
-		return false;
-	}
-	IsResultsTracked(): boolean
-	{
-		return false;
 	}
 }
 

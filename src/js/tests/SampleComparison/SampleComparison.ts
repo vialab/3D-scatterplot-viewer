@@ -7,7 +7,6 @@ export class SampleComparison extends Task
 	private options : Option[];
 
 	private display : ImageComparison;
-	private timer : UnlimitedTimer;
 
 	constructor(image1 : string, image2 : string)
 	{
@@ -22,7 +21,9 @@ export class SampleComparison extends Task
 			image2
 		);
 
-		this.timer = new UnlimitedTimer();
+		this.SetPrompt("Are they the same?");
+		this.SetCofidenceTracked(true);
+		this.SetResultsTracked(false);
 	}
 
 	OptionSelected(selectedOptions: Option): void
@@ -30,39 +31,13 @@ export class SampleComparison extends Task
 		this.Complete();
 	}
 
-	GetTitle(): string
-	{
-		return ""
-	}
-	GetPrompt() : string
-	{
-		return "Are they the same?";
-	}
 	GetOptions(): Option[]
 	{
 		return this.options;
-	}
-	GetDuration(): number
-	{
-		return 0;
 	}
 
 	GetDisplay(): TaskDisplay
 	{
 		return this.display;
-	}
-
-	GetTimer() : Timer
-	{
-		return this.timer;
-	}
-
-	IsConfidenceTracked(): boolean
-	{
-		return true;
-	}
-	IsResultsTracked(): boolean
-	{
-		return false;
 	}
 }

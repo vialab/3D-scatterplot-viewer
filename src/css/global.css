@@ -14,6 +14,8 @@ html, body
 {
 	flex: 8;
 	position:relative;
+	display: flex;
+	flex-direction: column;
 }
 
 #footer
@@ -37,8 +39,8 @@ html, body
 
 #content-single
 {
-	height: 100%;
 	width: 100%;
+	flex: 9;
 	
 	justify-content: center;
 	align-items: center;
@@ -46,7 +48,7 @@ html, body
 
 #comparison-area
 {
-	height: 100%;
+	flex:9;
 	
 	justify-content: center;
 	align-items: center;
@@ -66,9 +68,9 @@ html, body
 .flex-container
 {
 	display: flex;
-	overflow: scroll;
+	/* overflow: scroll;
 	overflow-x: auto;
-	overflow-y: auto;
+	overflow-y: auto; */
 }
 
 .test-container
@@ -81,12 +83,6 @@ html, body
 
 	justify-content: center;
 	align-items: center;
-}
-
-.divider {
-	width: 2px;
-	margin: 2px 0;
-	background: blue;
 }
 
 #prompt

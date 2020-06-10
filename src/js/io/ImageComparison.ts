@@ -18,9 +18,14 @@ export class ImageComparison extends TaskDisplay
 		screen.ViewModeComparison();
 
 		screen.OriginalViewContainer()
-			.html(`<img src="${this.originalSrc}" alt="Failed to load image" />`);
+			.html(this.ImageHtml(this.originalSrc));
 		
 		screen.ComparisonViewContainer()
-			.html(`<img src="${this.compareSrc}" alt="Failed to load image" />`);
+			.html(this.ImageHtml(this.compareSrc));
+	}
+
+	private ImageHtml(src : string)
+	{
+		return `<img src="${src}" alt="Failed to load image" style="height: 100%; max-height: 500px;"/>`;
 	}
 }

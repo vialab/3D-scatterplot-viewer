@@ -7,9 +7,7 @@ export class SampleTimedTest extends Task
 	private duration : number = 5000;
 
 	private options : Option[];
-
 	private display : ImageComparison;
-	private timer : LimitedTimer;
 
 	constructor()
 	{
@@ -23,48 +21,24 @@ export class SampleTimedTest extends Task
 			"https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
 			"https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
 		);
-
-		this.timer = new LimitedTimer(this, this.duration);
+		
+		this.SetTitle("Timed test sample");
+		this.SetTimer(new LimitedTimer(this, this.duration));
+		this.SetCofidenceTracked(true);
+		this.SetResultsTracked(false);
 	}
 
 	OptionSelected(selectedOptions: Option): void
 	{
 		this.Complete();
 	}
-
-	GetTitle(): string
-	{
-		return "Timed test sample"
-	}
-	GetPrompt() : string
-	{
-		return "";
-	}
 	GetOptions(): Option[]
 	{
 		return this.options;
-	}
-	GetDuration(): number
-	{
-		return 0;
 	}
 
 	GetDisplay(): TaskDisplay
 	{
 		return this.display;
-	}
-
-	GetTimer() : Timer
-	{
-		return this.timer;
-	}
-
-	IsConfidenceTracked(): boolean
-	{
-		return true;
-	}
-	IsResultsTracked(): boolean
-	{
-		return false;
 	}
 }

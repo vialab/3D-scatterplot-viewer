@@ -6,39 +6,30 @@ export class Consent extends Task
 {
 	display : ConsentForm = new ConsentForm(this);
 
-	OptionSelected(selectedOptions: Option): void
+	constructor()
 	{
-		throw new Error("Method not implemented.");
+		super();
+		this.SetTitle("Consent Form");
 	}
 
-	GetTitle(): string
+	OptionSelected(selectedOptions: Option): void
 	{
-		return "Consent Form";
+		this.Complete();
 	}
-	GetPrompt() : string
-	{
-		return "";
-	}
+
 	GetOptions(): Option[]
 	{
 		return [];
 	}
+	
 	GetDisplay(): TaskDisplay
 	{
 		return this.display;
 	}
+
 	GetTimer(): Timer
 	{
 		return new UnlimitedTimer();
-	}
-
-	IsConfidenceTracked(): boolean
-	{
-		return false;
-	}
-	IsResultsTracked(): boolean
-	{
-		return false;
 	}
 }
 
@@ -61,7 +52,7 @@ class ConsentForm extends TaskDisplay
 			<hr />
 			<div>
 				<input id="chk-consent" type="checkbox" class="form-check-input" />
-				<label class="form-check-label" for="exampleCheck1">I consent to the terms above and agree to do the test blah blah</label>
+				<label class="form-check-label" for="exampleCheck1">I consent to the terms above and agree to do the test</label>
 				<div><button id="btn-consent" class="btn btn-primary" disabled>Next</button></div>
 			</div>
 		</div>`;

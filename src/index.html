@@ -24,7 +24,7 @@
 			<div id="content">
 				<div class="overlay" style="display: none;"></div>
 
-				<div id="content-single" class="flex-container" style="display: none;">
+				<div id="content-single" class="flex-container" style="flex-direction: column; display: none;">
 				</div>
 				
 				<div id="comparison-area" class="flex-container" style="display:none;">
@@ -56,12 +56,14 @@
 						</p>
 					</div>
 				</div>
+
+				<div style="flex: 1;">
+					<div id="prompt"></div>
+					<div id="options"></div>
+				</div>
 			</div>
 	
 			<div id="footer">
-				<div id="prompt"></div>
-				<div id="options"></div>
-
 				<div class="progress">
 					<div id="test-timer"
 						class="progress-bar"
@@ -72,27 +74,27 @@
 					>
 					</div>
 				</div>
-			</div>
 
-			<div id="feedback" style="display: none;">
-				<div style="position: relative; display:flex; justify-content: center;">
-					<div style="display: flex; justify-content: flex-end; flex: 1;">
-						<span style="position: absolute; bottom: 0;">Low</span>
+				<div id="feedback" style="display: none;">
+					<div style="position: relative; display:flex; justify-content: center;">
+						<div style="display: flex; justify-content: flex-end; flex: 1;">
+							<span style="position: absolute; bottom: 0;">Low</span>
+						</div>
+						<div style="flex: 8">
+							<label for="confidence">Please Rate your confidence in this task</label>
+							<input type="range" class="custom-range" id="confidence" style="width: 100%;" />
+						</div>
+						<div style="flex: 1">
+							<span style="position: absolute; bottom: 0;">High</span>
+						</div>
 					</div>
-					<div style="flex: 8">
-						<label for="confidence">Please Rate your confidence in this task</label>
-						<input type="range" class="custom-range" id="confidence" style="width: 100%;" />
-					</div>
-					<div style="flex: 1">
-						<span style="position: absolute; bottom: 0;">High</span>
+					
+					<div>
+						<div class="next">Next &raquo;</div>
 					</div>
 				</div>
-				
-				<div>
-					<div class="next">Next &raquo;</div>
-				</div>
 			</div>
-
+			
 		</div>
 	</body>
 </html>
