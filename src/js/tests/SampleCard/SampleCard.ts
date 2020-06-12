@@ -82,18 +82,24 @@ class CardOption extends ImageOption
 
 class CardDisplay extends TaskDisplay
 {
-	imageSrc = "";
+	imageSrc : string;
+	template : string;
 	
 	constructor(imageSrc : string)
 	{
 		super();
 		this.imageSrc = imageSrc;
+		this.template = `
+		<div style="display: flex; height: 100%; align-items: end; padding-bottom:100px;">
+			<img src="${this.imageSrc}" style="width: 100px; height: 100px;" alt="failed to load image"/>
+		</div>
+		`
 	}
 
 	Display(screen: UserInterface): void
 	{
 		screen.ViewModeContent();
-		screen.ContentContainer().html(`<img src="${this.imageSrc}" alt="failed to load image"/>`);
+		screen.ContentContainer().html(this.template);
 	}
 
 }

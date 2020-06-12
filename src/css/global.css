@@ -6,8 +6,6 @@ html, body
 #header
 {
 	flex: 1;
-	min-height: 60px;
-	max-height: 60px;
 }
 
 #content
@@ -16,12 +14,12 @@ html, body
 	position:relative;
 	display: flex;
 	flex-direction: column;
+	min-height: 0px;
 }
 
 #footer
 {
 	flex: 1;
-	min-height: 60px;
 }
 
 #feedback
@@ -40,7 +38,9 @@ html, body
 #content-single
 {
 	width: 100%;
-	flex: 9;
+	min-height: 0px;
+	max-height: 100%;
+	flex: 9 2 auto;
 	
 	justify-content: center;
 	align-items: center;
@@ -68,9 +68,6 @@ html, body
 .flex-container
 {
 	display: flex;
-	/* overflow: scroll;
-	overflow-x: auto;
-	overflow-y: auto; */
 }
 
 .test-container
@@ -131,4 +128,10 @@ html, body
 	height:100%;
 	
 	position: absolute;
+}
+
+.fit
+{
+	object-fit: contain;
+	max-width: 100%;
 }

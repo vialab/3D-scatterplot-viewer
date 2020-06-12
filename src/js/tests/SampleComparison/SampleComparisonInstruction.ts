@@ -1,15 +1,36 @@
 import { SampleComparison } from "./SampleComparison";
+import { Task, Option } from "../../tasks";
+import { TaskDisplay, ImageComparison } from "../../io";
 
-export class SampleComparisonInstruction extends SampleComparison
+export class SampleComparisonInstruction extends Task
 {
-	GetTitle(): string
+	display : ImageComparison;
+
+	constructor(image1 : string, image2 : string)
 	{
-		return "Instructions"
+		super();
+
+		this.SetTitle("Instructions");
+		this.SetPrompt("You will be show two images like above, and will be asked whether they are equivalent.");
+
+		this.display = new ImageComparison(
+			image1,
+			image2
+		);
 	}
-	GetPrompt() : string
+
+	OptionSelected(selectedOptions: Option): void
 	{
-		return "You will be show two images like above, and will be asked whether they are equivalent.<br />"
-		+ "This is a sample of the test, the results will not be tracked. Choose an option to continue.";
+		this.Complete();
+	}
+
+	GetOptions(): Option[] {
+		return [new Option(0, "Try it out")];
+	}
+
+	GetDisplay(): TaskDisplay
+	{
+		return this.display;
 	}
 
 	IsConfidenceTracked(): boolean

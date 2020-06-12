@@ -12,6 +12,6 @@ export class Option
 	Template() : string
 	{
 		//TODO add onclick that can actually end the test
-		return `<button type="button" class="btn secondary">${this.Name}</button>`;
+		return `<button type="button" class="btn btn-primary">${this.Name}</button>`;
 	}
 }

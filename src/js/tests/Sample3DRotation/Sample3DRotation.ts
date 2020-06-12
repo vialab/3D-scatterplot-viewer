@@ -36,8 +36,10 @@ class SampleRotationDisplay extends TaskDisplay
 	{
 		super();
 		this.template =
-			`<img src="images/rotation1.png" />`
-			+ `<img src="images/rotation2.png" />`
+			`<div style="display: flex; flex-direction: column; justify-content: end; height: 100%;">
+				<img src="images/rotation1.png" />
+				<img src="images/rotation2.png" />
+			</div>`
 			;
 	}
 

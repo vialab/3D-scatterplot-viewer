@@ -33,7 +33,7 @@ class ImageDisplay extends TaskDisplay
 	constructor(imagesrc : string)
 	{
 		super();
-		this.template = `<img src="${imagesrc}" alt="Failed to load image" />`;
+		this.template = `<img src="${imagesrc}" alt="Failed to load image" class="fit"/>`;
 	}
 
 	Display(screen: UserInterface): void
