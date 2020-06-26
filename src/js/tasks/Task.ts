@@ -16,6 +16,7 @@ export abstract class Task
 	private timer : Timer;
 	private trackConfidence : boolean;
 	private trackResults : boolean;
+	private explicitSubmissionRequired : boolean;
 
 	constructor()
 	{
@@ -35,6 +36,7 @@ export abstract class Task
 		this.timer = new UnlimitedTimer();
 		this.trackConfidence = false;
 		this.trackResults = false;
+		this.explicitSubmissionRequired = false;
 	}
 
 	async WaitForCompletion() : Promise<TaskResult>
@@ -92,6 +94,15 @@ export abstract class Task
 	IsConfidenceTracked() : boolean
 	{
 		return this.trackConfidence;
+	}
+
+	SetExplicitSubmissionRequired(submit : boolean) : void
+	{
+		this.explicitSubmissionRequired = submit;
+	}
+	IsExplicitSubmissionRequired() : boolean
+	{
+		return this.explicitSubmissionRequired;
 	}
 
 	SetResultsTracked(track : boolean) : void

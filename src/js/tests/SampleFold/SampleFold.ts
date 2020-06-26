@@ -7,6 +7,7 @@ export class SampleFold extends Task
 	{
 		super();
 		this.SetCofidenceTracked(true);
+		this.SetPrompt("Select an option:");
 	}
 
 	OptionSelected(selectedOptions: Option): void

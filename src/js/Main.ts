@@ -118,12 +118,14 @@ $(() =>
 		+ "Hovering a square of the net will highlight the corresponding plane on the viewing cube. Click that plane to select it."
 	)
 	let scatterplotTrial = new SampleImageMockup("images/scatterplotmain.png");
-	scatterplotTrial.SetCofidenceTracked(true);
+	scatterplotTrial.SetExplicitSubmissionRequired(true);
 	ApplyPracticeProperties(scatterplotTrial);
 	let scatterplot = new SampleImageMockup("images/scatterplotmain.png");
 	scatterplot.SetCofidenceTracked(true);
+	scatterplot.SetExplicitSubmissionRequired(true);
 	let scatterplothover = new SampleImageMockup("images/scatterplothover.png");
 	scatterplothover.SetCofidenceTracked(true);
+	scatterplothover.SetExplicitSubmissionRequired(true);
 
 	display = new UserInterface();
 	testList  = new TaskList([
@@ -186,13 +188,13 @@ function ApplyPracticeProperties(task : Task)
 			task.GetPrompt() + "<br />" + promptAppend
 			: promptAppend
 	);
-	task.SetCofidenceTracked(true);
+	task.SetCofidenceTracked(false);
 	task.SetResultsTracked(false);
 }
 
 function ApplyPageEventHandlers()
 {
-	$(".next").click(() =>
+	$("#submit-test").click(() =>
 	{
 		NextTask();
 	});
@@ -200,7 +202,7 @@ function ApplyPageEventHandlers()
 
 async function NextTask() : Promise<void>
 {
-	clearInterval(uiUpdateTimer);
+	// clearInterval(uiUpdateTimer);
 
 	if (testList.IsComplete())
 	{
@@ -213,19 +215,25 @@ async function NextTask() : Promise<void>
 
 	DisplayTask(task);
 	
-	timer.Begin();
-	uiUpdateTimer = setInterval(() =>
-		{
-			//TODO js setinterval is inconsistent, timer is jumpy at points
-			//  Possible solutions:
-			//     - Really low time interval (timers internally use accurate time so they'll be fine)
-			//     so function runs more
-			//     - Look for more consistent timer implementation
-			timer.Tick();
-			display.SetTimerProgress(Math.ceil(timer.Progress()));
-		},
-		10
-	);
+	// timer.Begin();
+	// uiUpdateTimer = setInterval(() =>
+	// 	{
+	// 		//TODO js setinterval is inconsistent, timer is jumpy at points
+	// 		//  Possible solutions:
+	// 		//     - Really low time interval (timers internally use accurate time so they'll be fine)
+	// 		//     so function runs more
+	// 		//     - Look for more consistent timer implementation
+	// 		timer.Tick();
+	// 		display.SetTimerProgress(Math.ceil(timer.Progress()));
+	// 	},
+	// 	10
+	// );
+	
+	//TODO temp code for mockups to show timer functionality
+	if (task.IsConfidenceTracked())
+	{
+		display.SetTimerProgress(Math.random() * 75);
+	}
 	
 	let result : TaskResult = await task.WaitForCompletion();
 
@@ -244,13 +252,15 @@ function AllTestsCompleted()
 
 function DisplayTask(task : Task)
 {
+	display.SetTimerProgress(0);
+
 	display.SetTitle(task.GetTitle());
 	display.SetOptionsPrompt(task.GetPrompt());
 	display.ShowOptions(task);
 	task.GetDisplay().Display(display);
 
-	if (task.IsConfidenceTracked())
-		display.ShowConfidenceSlider();
+	if (task.IsExplicitSubmissionRequired())
+		display.ShowSubmitButton();
 	else
-		display.HideConfidenceSlider();
+		display.HideSubmitButton();
 }

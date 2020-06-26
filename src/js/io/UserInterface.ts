@@ -17,6 +17,8 @@ export class UserInterface
 
 	protected confidenceArea : JQuery<HTMLElement>;
 
+	protected submitButton : JQuery<HTMLElement>;
+
 	constructor()
 	{
 		this.titleContainer = $("#title");
@@ -33,6 +35,8 @@ export class UserInterface
 		this.completionContainer = $("#completion-window");
 
 		this.confidenceArea = $("#feedback");
+
+		this.submitButton = $("#submit-test");
 	}
 
 	SetTitle(title : string) : void
@@ -111,13 +115,13 @@ export class UserInterface
 		this.completionContainer.show();
 	}
 
-	ShowConfidenceSlider()
+	ShowSubmitButton()
 	{
-		this.confidenceArea.show();
+		this.submitButton.show();
 	}
 
-	HideConfidenceSlider()
+	HideSubmitButton()
 	{
-		this.confidenceArea.hide();
+		this.submitButton.hide();
 	}
 }

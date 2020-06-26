@@ -18,6 +18,7 @@ export class SampleCard extends Task
 		];
 
 		this.SetCofidenceTracked(true);
+		this.SetExplicitSubmissionRequired(true);
 	}
 
 	OptionSelected(selectedOptions: Option): void
@@ -93,7 +94,7 @@ class CardDisplay extends TaskDisplay
 		<div style="display: flex; height: 100%; align-items: end; padding-bottom:100px;">
 			<img src="${this.imageSrc}" style="width: 100px; height: 100px;" alt="failed to load image"/>
 		</div>
-		`
+		`;
 	}
 
 	Display(screen: UserInterface): void

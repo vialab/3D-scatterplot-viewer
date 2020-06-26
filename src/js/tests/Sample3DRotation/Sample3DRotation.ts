@@ -10,6 +10,7 @@ export class Sample3DRotation extends Task
 
 		this.SetCofidenceTracked(true);
 		this.SetResultsTracked(false);
+		this.SetPrompt("Select an option:")
 	}
 	
 	OptionSelected(selectedOptions: Option): void
