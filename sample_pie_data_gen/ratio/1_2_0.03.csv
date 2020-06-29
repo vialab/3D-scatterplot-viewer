@@ -1,0 +1,6 @@
+category,amount,image,color
+Intellectual Disability,0.15,../image/humanfill1.png,#a50026
+Severe and Persistent Mental Illness,0.06,../image/humanfill2.png,#f46d43
+Brain Injury,0.63,../image/humanfill3.png,#fee090
+Stroke,0.07,../image/humanfill4.png,#74add1
+Alzheimers,0.09,../image/humanfill5.png,#313695
