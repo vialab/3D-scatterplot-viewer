@@ -6,7 +6,8 @@
 		],
 		"removeComments": true,
 		"sourceMap": true,
-		"strict": true
+		"strict": true,
+		"allowJs": true
 	},
 	"include": [
 		"src/js"

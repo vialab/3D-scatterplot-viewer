@@ -10,7 +10,7 @@ export class TestingComplete extends Task
 
 	}
 
-	OptionSelected(selectedOptions: Option): void
+	Submit(selectedOptions: Option): void
 	{
 		throw new Error("Method not implemented.");
 	}

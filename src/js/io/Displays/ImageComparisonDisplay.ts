@@ -1,9 +1,9 @@
-import { TaskDisplay, UserInterface } from ".";
+import { TaskDisplay, UserInterface } from "..";
 
-export class ImageComparison extends TaskDisplay
+export class ImageComparisonDisplay extends TaskDisplay
 {
-	private originalSrc : string;
-	private compareSrc : string;
+	protected originalSrc : string;
+	protected compareSrc : string;
 
 	constructor(originalSrc : string, compareSrc : string)
 	{
@@ -24,7 +24,7 @@ export class ImageComparison extends TaskDisplay
 			.html(this.ImageHtml(this.compareSrc));
 	}
 
-	private ImageHtml(src : string)
+	protected ImageHtml(src : string) : string
 	{
 		return `<img src="${src}" alt="Failed to load image" style="height: 100%; max-height: 500px;"/>`;
 	}

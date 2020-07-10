@@ -4,18 +4,16 @@ import {TaskList} from "./tasks/TaskList";
 import {UserInterface} from "./io/UserInterface";
 
 import { Timer } from "./metrics";
-import {SampleComparison} from "./tests/SampleComparison/SampleComparison";
-import {SampleComparisonInstruction} from "./tests/SampleComparison/SampleComparisonInstruction";
-import { SampleTimedTest } from "./tests/SampleTimedTest/SampleTimedTest";
 import { Consent } from "./forms/Consent";
 import { TestingComplete } from "./forms/TestingComplete";
-import { Sample3DInstruction } from "./tests/Sample3DRotation/Sample3DInstructions";
-import { Sample3DRotation } from "./tests/Sample3DRotation/Sample3DRotation";
-import { SampleFold } from "./tests/SampleFold/SampleFold";
-import { SampleFoldInstruction } from "./tests/SampleFold/SampleFoldInstruction";
-import { SampleCard } from "./tests/SampleCard/SampleCard";
-import { SampleImageMockup } from "./tests/SampleImageMockup/SampleImageMockup";
-import { SampleCardInstruction } from "./tests/SampleCard/SampleCardInstruction";
+
+import * as Bowser from "bowser";
+import { PieChart } from "./tests/PieChart/PieChart";
+import { PieChartData } from "./tests/PieChart/PieChartData";
+import { Colour } from "./io/Colour";
+import { ScatterPlot } from "./tests/ScatterPlot/ScatterPlot";
+import { PlotPoint } from "./tests/ScatterPlot/PlotPoint";
+console.log(Bowser.parse(window.navigator.userAgent));
 
 let display : UserInterface;
 let testList : TaskList;
@@ -25,158 +23,60 @@ let uiUpdateTimer : any;
 
 $(() =>
 {
-	let graphInst = new SampleComparisonInstruction(
-		"images/sample_graph_1.png",
-		"images/sample_graph_2.png"
-	);
-	graphInst.SetPrompt("You will be shown two graphs. Select whether the graphs are equivalent.");
-	let graphPractice = new SampleComparison(
-		"images/sample_graph_1.png",
-		"images/sample_graph_2.png"
-	);
-	ApplyPracticeProperties(graphPractice);
-	let graphTest = new SampleComparison(
-		"images/sample_graph_1.png",
-		"images/sample_graph_2.png"
-	);
-
-	let graph3dinst = new SampleComparisonInstruction(
-		"images/3dgraph1.png",
-		"images/3dgraph2.png"
-	);
-	graph3dinst.SetPrompt("You will be shown two graphs. Select whether the graphs are equivalent.");
-	let graph3dTrial = new SampleComparison(
-		"images/3dgraph1.png",
-		"images/3dgraph2.png"
-	);
-	ApplyPracticeProperties(graph3dTrial);
-	let graph3d = new SampleComparison(
-		"images/3dgraph1.png",
-		"images/3dgraph2.png"
-	);
-
-	let piechartInst = new SampleComparisonInstruction(
-		"images/sample-piechart.png",
-		"images/sample-piechart-rotated.png"	
-	);
-	piechartInst.SetPrompt(
-		"You will be shown two pie charts.<br />"
-		+ "Choose whether the two pie charts represent the same data."
-	);
-	let piechartTrial = new SampleComparison(
-		"images/sample-piechart.png",
-		"images/sample-piechart-rotated.png"	
-	);
-	ApplyPracticeProperties(piechartTrial);
-	let piechart = new SampleComparison(
-		"images/sample-piechart.png",
-		"images/sample-piechart-rotated.png"	
-	);
-
-	let rotationInst = new Sample3DInstruction();
-	let rotationTrial = new Sample3DRotation();
-	ApplyPracticeProperties(rotationTrial);
-	let rotation = new Sample3DRotation();
-
-	let foldInst = new SampleFoldInstruction();
-	let foldTrial = new SampleFold();
-	ApplyPracticeProperties(foldTrial);
-	let fold = new SampleFold();
-	
-	let cardInst = new SampleCardInstruction();
-	let cardTrial = new SampleCard();
-	ApplyPracticeProperties(cardTrial);
-	let card = new SampleCard();
-	
-	let CONTOUR_PROMPT = "Does the 3d plot represent the isocontour?";
-	let contourInst = new SampleComparisonInstruction(
-		"images/Contour_Plot.jpg",
-		"images/3D_Surface.jpg"
-	);
-	contourInst.SetPrompt(
-		"You will be shown a 2D Isocontour of a graph, and a 3D graph.<br />"
-		+ "Specify whether the 3D graph shown is representitave of the isocontour provided."
-	);
-	let contourTrial = new SampleComparison(
-		"images/Contour_Plot.jpg",
-		"images/3D_Surface.jpg"
-	);
-	contourTrial.SetPrompt(CONTOUR_PROMPT);
-	ApplyPracticeProperties(contourTrial);
-	let contour = new SampleComparison(
-		"images/Contour_Plot.jpg",
-		"images/3D_Surface.jpg"
-	);
-	contour.SetPrompt(CONTOUR_PROMPT);
-
-	let scatterplotInst = new SampleComparisonInstruction(
-		"images/scatterplotmain.png",
-		"images/scatterplothover.png"
-	);
-	scatterplotInst.SetPrompt(
-		"You will be shown the orthographic view of a scatter plot and the 3d scatter plot corresponding to it. Choose the plane from which the orthographic view is from.<br />"
-		+ "Hovering a square of the net will highlight the corresponding plane on the viewing cube. Click that plane to select it."
-	)
-	let scatterplotTrial = new SampleImageMockup("images/scatterplotmain.png");
-	scatterplotTrial.SetExplicitSubmissionRequired(true);
-	ApplyPracticeProperties(scatterplotTrial);
-	let scatterplot = new SampleImageMockup("images/scatterplotmain.png");
-	scatterplot.SetCofidenceTracked(true);
-	scatterplot.SetExplicitSubmissionRequired(true);
-	let scatterplothover = new SampleImageMockup("images/scatterplothover.png");
-	scatterplothover.SetCofidenceTracked(true);
-	scatterplothover.SetExplicitSubmissionRequired(true);
-
 	display = new UserInterface();
+
+	let scatterplot = new ScatterPlot(RandomPoints(100, -290, 290));
+
 	testList  = new TaskList([
-		// new Consent(),
-
-		//Graph
-		graphInst,
-		graphPractice,
-		graphTest,
-
-		//3D Graph
-		graph3dinst,
-		graph3dTrial,
-		graph3d,
-
-		//Piechart
-		piechartInst,
-		piechartTrial,
-		piechart,
-
-		//3d Rotation
-		rotationInst,
-		rotationTrial,
-		rotation,
-
-		// Paper Folding
-		foldInst,
-		foldTrial,
-		fold,
-
-		// Card rotation
-		cardInst,
-		cardTrial,
-		card,
-
-		// Contour
-		contourInst,
-		contourTrial,
-		contour,
-
-		//Scatter Plot
-		scatterplotInst,
-		scatterplotTrial,
 		scatterplot,
-		scatterplothover,
+		piechart,
 	]);
+
+	let piechart = new PieChart(
+		RandomPiechart(6),
+		RandomPiechart(6)
+	);
+	piechart.SetPrompt("Do these charts represent the same data?");
 
 	ApplyPageEventHandlers();
 	
 	NextTask();
 });
+
+function RandomPiechart(numberOfSlices : number) : PieChartData[]
+{
+	const MAX_VALUE = 6;
+	const MIN_VALUE = 0;
+
+	let result : PieChartData[] = [];
+
+	for (let i = 0; i < 6; i++)
+	{
+		let value : number = Math.random() * (MAX_VALUE - MIN_VALUE) + MIN_VALUE;
+		let colour = new Colour(Math.random() * 255, Math.random() * 255, Math.random() * 255, Math.random() * 0.5 + 0.5);
+
+		result[i] = new PieChartData("" + i, value, colour);
+	}
+
+	return result;
+}
+
+function RandomPoints(numberOfPoints : number, min : number, max : number) : PlotPoint[]
+{
+	let points : PlotPoint[] = [];
+
+	for (let i = 0; i < numberOfPoints; i++)
+	{
+		points[i] = new PlotPoint(randomValue(), randomValue(), randomValue());
+	}
+
+	return points;
+
+	function randomValue()
+	{
+		return Math.random() * (max - min) + min;
+	}
+}
 
 function ApplyPracticeProperties(task : Task)
 {
@@ -252,15 +152,17 @@ function AllTestsCompleted()
 
 function DisplayTask(task : Task)
 {
+	display.ClearView();
+	
 	display.SetTimerProgress(0);
 
 	display.SetTitle(task.GetTitle());
-	display.SetOptionsPrompt(task.GetPrompt());
+	display.SetPrompt(task.GetPrompt());
 	display.ShowOptions(task);
-	task.GetDisplay().Display(display);
-
 	if (task.IsExplicitSubmissionRequired())
 		display.ShowSubmitButton();
 	else
 		display.HideSubmitButton();
+	
+	task.GetDisplay().Display(display);
 }

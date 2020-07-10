@@ -35,7 +35,7 @@
 
 				<div>
 					The next test is ready.
-					<div>
+					<div class="center-content">
 						<div id="begin-test" class="submit">Begin &raquo;</div>
 					</div>
 				</div>
@@ -44,64 +44,107 @@
 
 		<div style="display: flex; flex-direction: column; height: 100%;">
 			<div id="header">
-				<h1 id="title">Screening</h1>
-			</div>
-
-			<div style="text-align: center;">
-				<h3>Input the numbers you see in each circle in the textbox below the circle, then click submit</h3>
-				<p>This screening task is to check that you can properly view the colors used in this study based on your viewing conditions, monitor, and vision, among other factors.</p>
+				<h1 id="title"></h1>
 			</div>
 	
 			<div id="content">
 				<div id="content-single" class="flex-container" style="flex-direction: column;">
-					<div class="center-content">
-						<div class="center-content" style="display: flex; width: 800px; flex-wrap: wrap">
-							<div>
-								<img style="width: 300px; height: 300px;" src="images/ishihara1.png" alt="Failed to load image" />
-								<p style="text-align: center;"><input type="text" /></p>
-							</div>
-
-							<div style="margin-right: 50px;"></div>
-
-							<div>
-								<img style="width: 300px; height: 300px;" src="images/ishihara2.jpg" alt="Failed to load image" />
-								<p style="text-align: center;"><input type="text" /></p>
-							</div>
+					<div class="center-content" style="flex-direction: column; max-height: 100%; width: 90%; overflow: scroll; overflow-x: auto;">
+						<div style="max-height: 100%;">
+							<style>
+								.thisdiv
+								{
+									display: flex;
+									flex-direction: column;
+									margin-bottom: 15px;
+								}
+							</style>
 							
-							<div>
-								<img style="width: 300px; height: 300px;" src="images/ishihara3.gif" alt="Failed to load image" />
-								<p style="text-align: center;"><input type="text" /></p>
+							<p style="margin-top: 100px;">
+								Please describe any strategies that you used to solve each type of test or task.
+							</p>
+							
+							<hr />
+	
+							<div class="thisdiv">
+								<img style="width: 200px; height: 75px; margin-right: 10px;"
+									src="images/fold1.png"
+								/>
+								<p>Paper folding / punching</p>
+								<textarea style="width: 500px;"></textarea>
 							</div>
 
-							<div style="margin-right: 50px;"></div>
+							<hr />
 
-							<div>
-								<img style="width: 300px; height: 300px;" src="images/ishihara4.jpg" alt="Failed to load image" />
-								<p style="text-align: center;"><input type="text" /></p>
+							<div class="thisdiv">
+								<img style="width: 200px; height: 75px; margin-right: 10px;"
+									src="images/rotationpreview.png"
+								/>
+								<p>3D rotation</p>
+								<textarea style="width: 500px;"></textarea>
 							</div>
-						</div>
-					</div>
-				</div>
-				
-				<div id="comparison-area" class="flex-container" style="display:none;">
-					<div id="test-original" class="test-container"></div>
-					<div id="test-compare" class="test-container"></div>
-				</div>		
-				
-				<div id="completion-window" class="flex-container center-content" style="display:none;">
-					<div style="width: 80%; text-align: center;">
-						<h1>All tests complete</h1>
-						<hr />
-						<p>
-							Thank you for participating in this study. To submit your test and demographic information to be a part of this study, press the submit button below.
-						</p>
-						<p>
-							Please note that due to the anonymous nature of the data, your results cannot be withdrawn once submitted.
-						</p>
-						<div class="center-content">
-							<div style="width: 15%;">
-								<button class="submit">Submit</button>
+
+							<hr />
+
+							<div class="thisdiv">
+								<div style="display: flex; flex-direction: row;">
+									<img style="width: 75px; height: 75px; margin-right: 10px;"
+										src="images/card.png"
+									/>
+									<!-- <img style="width: 75px; height: 75px; margin-right: 10px;"
+										src="images/cardOpt2.png"
+									/> -->
+								</div>
+								<p>Card rotation</p>
+								
+								<textarea style="width: 500px;"></textarea>
 							</div>
+
+							<hr />
+
+							<div class="thisdiv">
+								<img style="width: 75px; height: 75px; margin-right: 10px;"
+									src="images/sample-piechart.png"
+								/>
+								<p>Pie chart comparison</p>
+								<textarea style="width: 500px;"></textarea>
+							</div>
+
+							<hr />
+
+							<div class="thisdiv">
+								<img style="width: 75px; height: 75px; margin-right: 10px;"
+									src="images/sample_graph_1.png"
+								/>
+								<p>Graph comparison</p>
+								<textarea style="width: 500px;"></textarea>
+							</div>
+
+							<hr />
+
+							<div class="thisdiv">
+								<img style="width: 250px; height: 100px; margin-right: 10px;"
+									src="images/scatterplotpreview.png"
+								/>
+								<p>Scatter Plot</p>
+								<textarea style="width: 500px;"></textarea>
+							</div>
+
+							<hr />
+
+							<div class="thisdiv">
+								<div style="display: flex; flex-direction: row;">
+									<img style="width: 75px; height: 75px;"
+										src="images/Contour_Plot.jpg"
+									/>
+									<img style="width: 75px; height: 75px; margin-right: 10px;"
+										src="images/3D_Surface.jpg"
+									/>
+								</div>
+								<p>Isocontour</p>
+								<textarea style="width: 500px;"></textarea>
+							</div>
+
 						</div>
 					</div>
 				</div>

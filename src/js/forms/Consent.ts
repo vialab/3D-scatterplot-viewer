@@ -12,7 +12,7 @@ export class Consent extends Task
 		this.SetTitle("Consent Form");
 	}
 
-	OptionSelected(selectedOptions: Option): void
+	Submit(selectedOptions: Option): void
 	{
 		this.Complete();
 	}

@@ -54,7 +54,7 @@ export abstract class Task
 		this.reject(reason);
 	}
 
-	abstract OptionSelected(selectedOptions : Option) : void;
+	abstract Submit(selectedOptions : Option | Option[]) : void;
 
 	abstract GetOptions() : Option[];
 	abstract GetDisplay() : TaskDisplay;

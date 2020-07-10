@@ -47,7 +47,7 @@
 
 		<div style="display: flex; flex-direction: column; height: 100%;">
 			<div id="header">
-				<h1 id="title">Demographic Survey</h1>
+				<h1 id="title">Screening</h1>
 			</div>
 	
 			<div id="content">
@@ -63,7 +63,7 @@
 							<hr />
 	
 							<div>
-								<p>Select your field of study:</p>
+								<p>Select your primary field of study:</p>
 								<select>
 									<option>Computer Science</option>
 									<option>Chemistry</option>
@@ -94,7 +94,7 @@
 									<tr>
 										<td>PhD</td>
 										<td>Computer Science</td>
-										<td>In Progress</td>
+										<td>In Progress<br />(2 years)</td>
 										<td><button class="w3-button w3-deep-purple">- Remove</button></td>
 									</tr>
 									<tr>
@@ -114,6 +114,10 @@
 								</p>
 								<table class="w3-table" style="width: 100%;">
 									<tr>
+										<td>
+											<input type="radio" name="rad1" id="rad1-0"/>
+											<label for="rad1-0">Not Important</label>
+										</td>
 										<td>
 											<input type="radio" name="rad1" id="rad1-1"/>
 											<label for="rad1-1">Less Important</label>
@@ -138,8 +142,7 @@
 	
 							<div>
 								<p>Please describe what graphical representations of information you use for your work.</p>
-								<textarea rows="4" cols="50">
-								</textarea>
+								<textarea rows="4" cols="50"></textarea>
 							</div>
 	
 							<hr />
@@ -159,6 +162,10 @@
 								<p>If so, how important are these drawings and sketches to your work?</p>
 								<table class="w3-table" style="width: 100%;">
 									<tr>
+										<td>
+											<input type="radio" name="rad3" id="rad3-0"/>
+											<label for="rad3-0">Not Important</label>
+										</td>
 										<td>
 											<input type="radio" name="rad3" id="rad3-1"/>
 											<label for="rad3-1">Less Important</label>
@@ -201,6 +208,14 @@
 								<label for="rad4-5">&gt;5 h/week</label>
 							</div>
 
+							<div style="padding-top: 20px;">
+								<p>
+									What type of visual art do you make?<br />
+									If you selected 0 h/week in the previous question, leave this question blank.
+								</p>
+								<textarea rows="4" cols="50"></textarea>
+							</div>
+
 							<hr />
 
 							<div>
@@ -223,6 +238,14 @@
 								<label for="rad5-5">&gt;5 h/week</label>
 							</div>
 
+							<div style="padding-top: 20px;">
+								<p>
+									What types of video games do you play?<br />
+									If you selected 0 h/week in the previous question, leave this question blank.
+								</p>
+								<textarea rows="4" cols="50"></textarea>
+							</div>
+
 							<hr />
 
 							<div>
@@ -233,7 +256,7 @@
 							<hr />
 
 							<div>
-								<p>What is your sex?</p> 
+								<p>What is your gender?</p> 
 
 								<input type="radio" name="rad6" id="rad6-1">
 								<label for="rad6-1">Male</label>
@@ -249,7 +272,7 @@
 								<input type="text" name="gender-sd" />
 								<br />
 								<input type="radio" name="rad6" id="rad6-5">
-								<label for="rad6-5">Prefer not to say</label>
+								<label for="rad6-5">Prefer not to diclose</label>
 							</div>
 
 							<hr />

@@ -1,11 +1,13 @@
 import {UserInterface} from "./UserInterface";
 import {TaskDisplay} from "./TaskDisplay";
 
-import {ImageComparison} from "./ImageComparison";
+import {ImageComparisonDisplay} from "./Displays/ImageComparisonDisplay";
+import {ImageComparisonInstructionDisplay} from "./Displays/ImageComparisonInstructionDisplay";
 
 export {
 	UserInterface,
 	TaskDisplay,
 	
-	ImageComparison
-}
+	ImageComparisonDisplay,
+	ImageComparisonInstructionDisplay,
+};

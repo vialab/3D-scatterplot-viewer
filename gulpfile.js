@@ -13,7 +13,7 @@ var sources = {
   images: ["src/images/**/*.*"]
 };
 
-gulp.task("copy-html", function()
+gulp.task("copy-html", function CopyHtml()
 {
 	return gulp
 		.src(sources.pages)
@@ -22,7 +22,7 @@ gulp.task("copy-html", function()
 		;
 });
 
-gulp.task("copy-css", function()
+gulp.task("copy-css", function CopyCss()
 {
 	return gulp
 		.src(sources.css)
@@ -31,12 +31,12 @@ gulp.task("copy-css", function()
 		;
 });
 
-gulp.task("build-js", function()
-{
-	return BuildJs("build");
-});
+gulp.task(
+	"build-js",
+	BuildJsToDist
+);
 
-gulp.task("copy-images", function()
+gulp.task("copy-images", function CopyImages()
 {
 	return gulp
 	.src(sources.images)
@@ -50,14 +50,14 @@ gulp.task(
 	gulp.parallel(["copy-html", "copy-css", "copy-images", "build-js"])
 );
 
-gulp.task("sync-html", function()
+gulp.task("sync-html", function SyncHtml()
 {
 	return gulp
 		.src(sources.pages)
 		.pipe(browserSync.stream());
 });
 
-gulp.task("sync-css", function()
+gulp.task("sync-css", function SyncCss()
 {
 	return gulp
 		.src(sources.css)
@@ -68,12 +68,9 @@ gulp.task("watch", gulp.series(
 	gulp.parallel(
 		"sync-html",
 		"sync-css",
-		function()
-		{
-			return BuildJs("./src")
-		}
+		BuildJsToDebug
 	),
-	function()
+	function Watch()
 	{
 		browserSync.init({
 			server: "./src"
@@ -84,7 +81,7 @@ gulp.task("watch", gulp.series(
 		gulp.watch("src/images/**/*.*", browserSync.reload);
 		gulp.watch("src/js/**/*.ts").on("change",
 			gulp.series(
-				function() {return BuildJs("./src")},
+				BuildJsToDebug,
 				browserSync.reload
 			)
 		);
@@ -105,8 +102,18 @@ function BuildJs(destination)
 	.pipe(source("bundle.js"))
 	.pipe(buffer())
 	.pipe(sourcemaps.init({ loadMaps: true }))
-	.pipe(uglify())
+	// .pipe(uglify())
 	.pipe(sourcemaps.write("./"))
 	.pipe(gulp.dest(destination))
 	;
+}
+
+function BuildJsToDist()
+{
+	return BuildJs("build");
+}
+
+function BuildJsToDebug()
+{
+	return BuildJs("./src")
 }

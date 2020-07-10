@@ -44,7 +44,7 @@ export class UserInterface
 		this.titleContainer.html(title);
 	}
 
-	SetOptionsPrompt(prompt : string) : void
+	SetPrompt(prompt : string) : void
 	{
 		this.promptContainer.html(prompt);
 	}
@@ -69,7 +69,7 @@ export class UserInterface
 			element.prop("data-option-id", option.Id);
 			element.click(() =>
 			{
-				task.OptionSelected(option);
+				task.Submit(option);
 			});
 
 			this.optionsContainer.append(element);
@@ -89,6 +89,11 @@ export class UserInterface
 	ComparisonViewContainer() : JQuery<HTMLElement>
 	{
 		return this.comparisonView;
+	}
+
+	PromptContainer() : JQuery<HTMLElement>
+	{
+		return this.promptContainer;
 	}
 
 	ViewModeComparison()
@@ -113,6 +118,14 @@ export class UserInterface
 		this.contentContainer.hide();
 		
 		this.completionContainer.show();
+	}
+
+	ClearView()
+	{
+		this.originalView.html("");
+		this.comparisonView.html("");
+		this.contentContainer.html("");
+		this.promptContainer.html("");
 	}
 
 	ShowSubmitButton()
