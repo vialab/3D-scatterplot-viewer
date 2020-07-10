@@ -27,17 +27,17 @@ $(() =>
 
 	let scatterplot = new ScatterPlot(RandomPoints(100, -290, 290));
 
-	testList  = new TaskList([
-		scatterplot,
-		piechart,
-	]);
-
 	let piechart = new PieChart(
 		RandomPiechart(6),
 		RandomPiechart(6)
 	);
 	piechart.SetPrompt("Do these charts represent the same data?");
 
+	testList  = new TaskList([
+		scatterplot,
+		piechart,
+	]);
+	
 	ApplyPageEventHandlers();
 	
 	NextTask();
