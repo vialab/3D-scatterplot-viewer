@@ -16,14 +16,38 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 	<body>
+		<div id="transition" class="center-content transition" style="text-align: center; display: none;">
+			<div>
+				<div style="position: relative; display:flex; justify-content: center;">
+					<div style="display: flex; justify-content: flex-end; flex: 1;">
+						<span style="position: absolute; bottom: 0;">Low</span>
+					</div>
+					<div style="flex: 8">
+						<p style="text-align: center;">Please Rate your level of confidence in your performance of the previous test</p>
+						<input type="range" class="custom-range" id="confidence" style="width: 100%;" />
+					</div>
+					<div style="flex: 1">
+						<span style="position: absolute; bottom: 0;">High</span>
+					</div>
+				</div>
+				
+				<hr />
+
+				<div>
+					The next test is ready.
+					<div class="center-content">
+						<div id="begin-test" class="submit">Begin &raquo;</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<div style="display: flex; flex-direction: column; height: 100%;">
 			<div id="header">
 				<h1 id="title"></h1>
 			</div>
 	
 			<div id="content">
-				<div class="overlay" style="display: none;"></div>
-
 				<div id="content-single" class="flex-container" style="flex-direction: column; display: none;">
 				</div>
 				
@@ -32,38 +56,59 @@
 					<div id="test-compare" class="test-container"></div>
 				</div>		
 				
-				<div id="completion-window" class="flex-container" style="display:none;">
-					<div style="width: 80%">
-						<h1 style="text-align: center;">All tests complete</h1>
+				<div id="completion-window" class="flex-container center-content" style="display: none;">
+					<div style="width: 80%; text-align: center;">
+						<h1>All tests complete</h1>
 						<hr />
 						<p>
-							Leverage agile frameworks to provide a robust synopsis for high level overviews.
-							Iterative approaches to corporate strategy foster collaborative thinking to
-							further the overall value proposition. Organically grow the holistic world view
-							of disruptive innovation via workplace diversity and empowerment.
+							Thank you for participating in this study. To submit your information to be a part of this study, press the submit button below.
 						</p>
+						<div>
+							<p>
+								To recieve a $20 CAD Amazon gift card for your participation, fill out the form below:
+							</p>
+							<div class="center-content">
+								<table class="w3-table">
+									<tr>
+										<td>Name: </td>
+										<td><input id="draw-email" type="text" name="draw-email"/></td>
+									</tr>
+									<tr>
+										<td>Email Address: </td>
+										<td><input id="draw-email" type="text" name="draw-email"/></td>
+									</tr>
+									<tr>
+										<td>Confirm Email: </td>
+										<td><input id="draw-email-confirm" type="text" name="draw-email-confirm"/></td>
+									</tr>
+									<tr>
+										<td>Country: </td>
+										<td><input id="draw-email" type="text" name="draw-email"/></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<hr />
 						<p>
-							Bring to the table win-win survival strategies to ensure proactive domination.
-							At the end of the day, going forward, a new normal that has evolved from generation X 
-							is on the runway heading towards a streamlined cloud solution. User generated content 
-							in real-time will have multiple touchpoints for offshoring.
+							Remember that due to the anonymous nature of the data, your results cannot be withdrawn once submitted.
 						</p>
-						<p>
-							Capitalize on low hanging fruit to identify a ballpark value added activity to beta test.
-							Override the digital divide with additional clickthroughs from DevOps. Nanotechnology 
-							immersion along the information highway will close the loop on focusing solely on the 
-							bottom line.
-						</p>
+						<div class="center-content">
+							<div style="width: 15%;">
+								<button class="submit">Submit</button>
+							</div>
+						</div>
 					</div>
 				</div>
 
-				<div style="flex: 1;">
+				<div style="margin-top: 15px; margin-bottom: 25px;">
 					<div id="prompt"></div>
 					<div id="options"></div>
 				</div>
 			</div>
 	
-			<div id="footer">
+			<div id="footer" class="center-content">
+				<div id="submit-test" class="submit">Submit &raquo;</div>
+
 				<div class="progress">
 					<div id="test-timer"
 						class="progress-bar"
@@ -72,25 +117,6 @@
 						aria-valuemin="0"
 						aria-valuemax="100"
 					>
-					</div>
-				</div>
-
-				<div id="feedback" style="display: none;">
-					<div style="position: relative; display:flex; justify-content: center;">
-						<div style="display: flex; justify-content: flex-end; flex: 1;">
-							<span style="position: absolute; bottom: 0;">Low</span>
-						</div>
-						<div style="flex: 8">
-							<p style="text-align: center;">Please Rate your confidence in completing this task</p>
-							<input type="range" class="custom-range" id="confidence" style="width: 100%;" />
-						</div>
-						<div style="flex: 1">
-							<span style="position: absolute; bottom: 0;">High</span>
-						</div>
-					</div>
-					
-					<div>
-						<div class="next">Next &raquo;</div>
 					</div>
 				</div>
 			</div>
