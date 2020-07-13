@@ -20,7 +20,6 @@ let testList : TaskList;
 let task : Task;
 
 let uiUpdateTimer : any;
-
 $(() =>
 {
 	display = new UserInterface();
