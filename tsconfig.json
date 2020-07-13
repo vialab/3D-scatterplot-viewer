@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		"lib": [
 			"DOM",
-			"ES2015"
+			"ES6"
 		],
 		"removeComments": true,
 		"sourceMap": true,

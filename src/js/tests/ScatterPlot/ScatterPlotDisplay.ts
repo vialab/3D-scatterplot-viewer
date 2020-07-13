@@ -3,18 +3,20 @@ import * as Three from "three";
 import { TaskDisplay, UserInterface } from "../../io";
 import { PlotPoint } from "./PlotPoint";
 import { IdGenerator } from "../../util/IdGenerator";
-import { axisBottom, select } from "d3";
+import { OrbitControls } from 'three-orbitcontrols-ts';
 
 export class ScatterPlotDisplay extends TaskDisplay
 {
+	private MAX_ROTATION = 15;
+
 	private points : PlotPoint[];
 
 	private width : number;
 	private height : number;
 	private depth : number;
 
-	private camera : Three.PerspectiveCamera;
-	private orthoCamera : Three.OrthographicCamera;
+	private camera : Three.Camera;
+	private orthoCamera : Three.Camera;
 
 	private renderer3D : Three.WebGLRenderer;
 	private rendererOrtho : Three.WebGLRenderer;
@@ -37,6 +39,8 @@ export class ScatterPlotDisplay extends TaskDisplay
 
 	private highlightColour = 0xffff00;
 
+	private orbit : OrbitControls;
+
 	private onPlaneSelected : (x : number, y : number, z : number) => void;
 
 	constructor(points : PlotPoint[], onPlaneSelected : (x : number, y : number, z : number) => any)
@@ -54,9 +58,17 @@ export class ScatterPlotDisplay extends TaskDisplay
 		this.height = 600;
 		this.depth = 600;
 
-		let camera = new Three.PerspectiveCamera(75, this.width/this.height, 0.1, this.depth*5);
-		camera.position.z = this.depth + (this.depth * 0.2);
-		camera.lookAt(0,0,0);
+		let scale = 0.8;
+		let camera = new Three.OrthographicCamera(
+			-this.width * scale,
+			this.width * scale,
+			this.height * scale,
+			-this.height * scale,
+			0.1,
+			this.depth*10
+		);
+		//new Three.PerspectiveCamera(75, this.width/this.height, 0.1, this.depth*5);
+		camera.position.z = this.depth*5;
 		this.camera = camera;
 
 		let orthoScale = 0.6;
@@ -119,6 +131,17 @@ export class ScatterPlotDisplay extends TaskDisplay
 		orthoRenderer.setSize(this.width, this.height);
 		orthoRenderer.setClearColor(0xffffff);
 		this.rendererOrtho = orthoRenderer;
+
+		this.orbit = new OrbitControls(this.camera, this.renderer3D.domElement);
+		
+		let initialX = Math.PI / 4;
+		let initialY = Math.PI / 3;
+		let maxDistance = this.toRadians(this.MAX_ROTATION);
+
+		this.orbit.maxAzimuthAngle = initialX + maxDistance;
+		this.orbit.minAzimuthAngle = initialX - maxDistance;
+		this.orbit.maxPolarAngle = initialY + maxDistance;
+		this.orbit.minPolarAngle = initialY - maxDistance;
 	}
 
 	private setupScene() : void
@@ -155,6 +178,7 @@ export class ScatterPlotDisplay extends TaskDisplay
 		this.AppendPlots(screen);
 		this.AppendInput(screen);
 
+		this.render3D = this.render3D.bind(this);
 		this.render3D();
 		this.renderOrtho();
 	}
@@ -253,14 +277,14 @@ export class ScatterPlotDisplay extends TaskDisplay
 	{
 		cell.css("background-color", "#" + this.highlightColour.toString(16));
 		this.scene.add(plane);
-		this.render3D();
+		// this.render3D();
 	}
 
 	private disableHighlight(cell : JQuery<HTMLElement>, plane : Three.Mesh)
 	{
 		cell.css("background-color", "rgba(0,0,0,0)");
 		this.scene.remove(plane);
-		this.render3D();
+		// this.render3D();
 	}
 
 	private gridCoordinateToPlane(x : number, y : number) : Three.Vector3
@@ -277,11 +301,30 @@ export class ScatterPlotDisplay extends TaskDisplay
 
 	private render3D() : void
 	{
+		requestAnimationFrame(this.render3D);
+		this.orbit.update();
+
+		// let rotation = new Three.Quaternion()
+		// .setFromEuler(new Three.Euler(
+		// 	this.orbit.getAzimuthalAngle(),
+		// 	this.orbit.getPolarAngle(),
+		// 	0,
+		// 	'XYZ'
+		// ));
+
+		// this.camera.quaternion.multiplyQuaternions(rotation, this.camera.quaternion);
+		// this.camera.lookAt(0,0,0);
+
 		this.renderer3D.render(this.scene, this.camera);
 	}
 
 	private renderOrtho() : void
 	{
 		this.rendererOrtho.render(this.scene, this.orthoCamera);
+	}
+
+	private toRadians(deg : number) : number
+	{
+		return deg * Math.PI / 180;
 	}
 }
