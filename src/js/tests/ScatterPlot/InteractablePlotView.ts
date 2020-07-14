@@ -12,26 +12,23 @@ import { ToggleOrthographicButton } from "./ViewElements/ToggleOrthographicButto
 
 export class InteractablePlotView extends TaskDisplay
 {
-	private onPlaneSelected : (x : number, y : number, z : number) => void;
 	private planeView : ScatterPlotElement;
 	private fullView : ScatterPlotElement;
 	private inputGrid : PlotInputElement;
 	
 	private toggleOrthoButton : ToggleOrthographicButton;
 
-	constructor(points : PlotPoint[], onPlaneSelected : (x : number, y : number, z : number) => any)
+	constructor(points : PlotPoint[], edgeLength : number)
 	{
 		super();
-		this.onPlaneSelected = onPlaneSelected;
 
 		//TODO only currently displays view down -z axis
-		//TODO customize width/height of plot
-		this.planeView = new ScatterPlotElement(points, 600, 5);
+		this.planeView = new ScatterPlotElement(points, edgeLength, 5);
 		this.planeView.UseOrthographicCamera();
 
-		let initialRotation = new Three.Vector2(45, 75);
+		let initialRotation = new Three.Vector2(Math.random() * 360, Math.random() * 180);
 		let maxRotation = 15;
-		this.fullView = new InteractableScatterPlotElement(points, 600, 5, initialRotation, maxRotation);
+		this.fullView = new InteractableScatterPlotElement(points, edgeLength, 5, initialRotation, maxRotation);
 		this.fullView.UsePerspectiveCamera();
 
 		this.toggleOrthoButton = new ToggleOrthographicButton(this.fullView, false);
@@ -47,7 +44,6 @@ export class InteractablePlotView extends TaskDisplay
 		{
 			this.toggleHighlight(planeNormal);
 		}
-
 	}
 
 	protected toggleHighlight(planeNormal : Three.Vector3)

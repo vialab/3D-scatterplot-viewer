@@ -12,6 +12,8 @@ import { PieChartData } from "./tests/PieChart/PieChartData";
 import { Colour } from "./io/Colour";
 import { ScatterPlot } from "./tests/ScatterPlot/ScatterPlot";
 import { PlotPoint } from "./tests/ScatterPlot/PlotPoint";
+import { InteractablePlotView } from "./tests/ScatterPlot/InteractablePlotView";
+import { MultiPlotView } from "./tests/ScatterPlot/MultiPlotView";
 console.log(Bowser.parse(window.navigator.userAgent));
 
 let display : UserInterface;
@@ -23,7 +25,13 @@ $(() =>
 {
 	display = new UserInterface();
 
-	let scatterplot = new ScatterPlot(RandomPoints(100, -290, 290));
+	let interactablePlotView = new InteractablePlotView(RandomPoints(100, -290, 290), 600);
+	let interactablePlot = new ScatterPlot();
+	interactablePlot.SetDisplay(interactablePlotView);
+	
+	let multiPlotView = new MultiPlotView(RandomPoints(100, -190, 190), 400);
+	let multiPlot = new ScatterPlot();
+	multiPlot.SetDisplay(multiPlotView);
 
 	let piechart = new PieChart(
 		RandomPiechart(6),
@@ -32,7 +40,8 @@ $(() =>
 	piechart.SetPrompt("Do these charts represent the same data?");
 
 	testList  = new TaskList([
-		scatterplot,
+		// multiPlot,
+		interactablePlot,
 		piechart,
 	]);
 	

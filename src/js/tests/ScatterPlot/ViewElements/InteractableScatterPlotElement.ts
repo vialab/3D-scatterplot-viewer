@@ -36,7 +36,7 @@ export class InteractableScatterPlotElement extends ScatterPlotElement
 
 	protected applyAngleViewRange(initialRotation : Three.Vector2, maxRotation : number)
 	{
-		let initialX = this.toRadians(initialRotation.x)
+		let initialX = this.toRadians(initialRotation.x);
 		let initialY = this.toRadians(initialRotation.y);
 		let maxDistance = this.toRadians(maxRotation);
 
@@ -46,10 +46,35 @@ export class InteractableScatterPlotElement extends ScatterPlotElement
 
 	protected setViewRange(orbit : OrbitControls, initialX : number, initialY : number, maxDistance : number)
 	{
-		orbit.maxAzimuthAngle = initialX + maxDistance;
-		orbit.minAzimuthAngle = initialX - maxDistance;
-		orbit.maxPolarAngle = initialY + maxDistance;
-		orbit.minPolarAngle = initialY - maxDistance;
+		//Wrap minX and minY within the OrbitControl's bounds of each axis
+		let minX = (initialX - maxDistance) % (-Math.PI);
+		let maxX = (initialX + maxDistance) % (Math.PI);
+		let minY = (initialY - maxDistance) % Math.PI;
+		let maxY = (initialY + maxDistance) % Math.PI;
+
+		if (minX > maxX)
+		{
+			let tmp = minX;
+			minX = maxX;
+			maxX = tmp; 
+		}
+
+		if (minY > maxY)
+		{
+			let tmp = minY;
+			minY = maxY;
+			maxY = tmp;
+		}
+
+		orbit.minAzimuthAngle = minX;
+		orbit.maxAzimuthAngle = maxX;
+		orbit.minPolarAngle = minY;
+		orbit.maxPolarAngle = maxY;
+	}
+
+	private isOutOfRange(value : number, min : number, max : number) : boolean
+	{
+		return value < min || value > max;
 	}
 
 	public Element() : JQuery<HTMLElement>

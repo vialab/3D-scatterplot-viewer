@@ -5,12 +5,10 @@ import { PlotPoint } from "./PlotPoint";
 
 export class ScatterPlot extends Task
 {
-	constructor(points : PlotPoint[])
+	constructor()
 	{
 		super();
-
 		this.SetExplicitSubmissionRequired(true);
-		this.SetDisplay(new InteractablePlotView(points, this.SelectPlane));
 	}
 
 	public Submit(selectedOptions: Option): void
