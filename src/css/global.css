@@ -161,3 +161,9 @@ html, body
 	background-color: #e3e2e5;
 	z-index: 1;
 }
+
+.grid-select
+{
+	cursor: pointer;
+	border: solid 1px;
+}
