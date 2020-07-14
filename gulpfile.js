@@ -130,6 +130,10 @@ function Bundle(browserifyPipeline, destination)
 {
 	return browserifyPipeline
 		.bundle()
+		.on("error", (err) =>
+		{
+			console.error(err.message);
+		})
 		.pipe(source("./bundle.js"))
 		.pipe(buffer())
 		.pipe(sourcemaps.init({ loadMaps: true }))
