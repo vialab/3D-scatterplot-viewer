@@ -32,13 +32,18 @@ export class ScatterPlotDisplay extends TaskDisplay
 
 		this.inputGrid.OnPlaneHighlighted = (planeNormal : Three.Vector3) =>
 		{
-			this.fullView.TogglePlaneHighlight(planeNormal);
+			this.toggleHighlight(planeNormal);
 		}
 
 		this.inputGrid.OnPlaneUnHilighted = (planeNormal : Three.Vector3) =>
 		{
-			this.fullView.TogglePlaneHighlight(planeNormal);
+			this.toggleHighlight(planeNormal);
 		}
+	}
+
+	protected toggleHighlight(planeNormal : Three.Vector3)
+	{
+		this.fullView.TogglePlaneHighlight(planeNormal);
 	}
 
 	Display(screen: UserInterface): void

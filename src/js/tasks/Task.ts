@@ -1,6 +1,6 @@
 import {Option} from "./Option";
 import {TaskResult} from "./TaskResult";
-import {TaskDisplay} from "../io";
+import {TaskDisplay, UserInterface} from "../io";
 import {Timer, UnlimitedTimer} from "../metrics";
 
 export abstract class Task
@@ -10,6 +10,8 @@ export abstract class Task
 	private promise : Promise<TaskResult>;
 	protected resolve : (result : TaskResult) => any;
 	protected reject : (reason : any) => any;
+
+	private display : TaskDisplay;
 
 	private title : string;
 	private prompt : string;
@@ -31,6 +33,8 @@ export abstract class Task
 		
 		this.result = new TaskResult();
 
+		this.display = new NoDisplay();
+
 		this.title = "";
 		this.prompt = "";
 		this.timer = new UnlimitedTimer();
@@ -39,12 +43,12 @@ export abstract class Task
 		this.explicitSubmissionRequired = false;
 	}
 
-	async WaitForCompletion() : Promise<TaskResult>
+	public async WaitForCompletion() : Promise<TaskResult>
 	{
 		return this.promise;
 	}
 
-	Complete() : void
+	public Complete() : void
 	{
 		this.resolve(this.result);
 	}
@@ -54,63 +58,78 @@ export abstract class Task
 		this.reject(reason);
 	}
 
-	abstract Submit(selectedOptions : Option | Option[]) : void;
+	public abstract Submit(selectedOptions : Option | Option[]) : void;
+	public abstract GetOptions() : Option[];
+	
+	public SetDisplay(display : TaskDisplay)
+	{
+		this.display = display;
+	}
 
-	abstract GetOptions() : Option[];
-	abstract GetDisplay() : TaskDisplay;
+	public GetDisplay() : TaskDisplay
+	{
+		return this.display;
+	}
 
-	SetTitle(title : string) : void
+	public SetTitle(title : string) : void
 	{
 		this.title = title;
 	}
 
-	GetTitle() : string
+	public GetTitle() : string
 	{
 		return this.title;
 	}
 
-	SetPrompt(prompt : string) : void
+	public SetPrompt(prompt : string) : void
 	{
 		this.prompt = prompt;	
 	}
-	GetPrompt() : string
+	public GetPrompt() : string
 	{
 		return this.prompt;
 	}
 
-	SetTimer(timer : Timer) : void
+	public SetTimer(timer : Timer) : void
 	{
 		this.timer = timer;
 	}
-	GetTimer() : Timer
+	public GetTimer() : Timer
 	{
 		return this.timer;
 	}
 
-	SetCofidenceTracked(track : boolean) : void
+	public SetCofidenceTracked(track : boolean) : void
 	{
 		this.trackConfidence = track;	
 	}
-	IsConfidenceTracked() : boolean
+	public IsConfidenceTracked() : boolean
 	{
 		return this.trackConfidence;
 	}
 
-	SetExplicitSubmissionRequired(submit : boolean) : void
+	public SetExplicitSubmissionRequired(submit : boolean) : void
 	{
 		this.explicitSubmissionRequired = submit;
 	}
-	IsExplicitSubmissionRequired() : boolean
+	public IsExplicitSubmissionRequired() : boolean
 	{
 		return this.explicitSubmissionRequired;
 	}
 
-	SetResultsTracked(track : boolean) : void
+	public SetResultsTracked(track : boolean) : void
 	{
 		this.trackResults = track;	
 	}
-	IsResultsTracked() : boolean
+	public IsResultsTracked() : boolean
 	{
 		return this.trackResults;
+	}
+}
+
+class NoDisplay extends TaskDisplay
+{
+	public Display(screen: UserInterface): void
+	{
 	}
 }

@@ -19,6 +19,8 @@ export class PieChart extends Task
 		
 		this.originalData = originalData;
 		this.compareData = compareData;
+
+		this.SetDisplay(new PieChartDisplay(this.originalData, this.compareData));
 	}
 
 	Submit(selectedOptions: Option): void
@@ -29,11 +31,6 @@ export class PieChart extends Task
 	GetOptions(): Option[]
 	{
 		return [new Option(0, "Yes",), new Option(1, "No")];
-	}
-
-	GetDisplay(): TaskDisplay
-	{
-		return new PieChartDisplay(this.originalData, this.compareData);
 	}
 }
 

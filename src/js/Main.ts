@@ -4,7 +4,6 @@ import {TaskList} from "./tasks/TaskList";
 import {UserInterface} from "./io/UserInterface";
 
 import { Timer } from "./metrics";
-import { Consent } from "./forms/Consent";
 import { TestingComplete } from "./forms/TestingComplete";
 
 import * as Bowser from "bowser";

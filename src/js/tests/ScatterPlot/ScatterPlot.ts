@@ -5,33 +5,25 @@ import { PlotPoint } from "./PlotPoint";
 
 export class ScatterPlot extends Task
 {
-	private points : PlotPoint[];
-
 	constructor(points : PlotPoint[])
 	{
 		super();
-		
-		this.points = points;
 
 		this.SetExplicitSubmissionRequired(true);
+		this.SetDisplay(new ScatterPlotDisplay(points, this.SelectPlane));
 	}
 
-	Submit(selectedOptions: Option): void
+	public Submit(selectedOptions: Option): void
 	{
 	}
 
-	SelectPlane(x : number, y : number, z : number)
+	public SelectPlane(x : number, y : number, z : number)
 	{
 		
 	}
 
-	GetOptions(): Option[]
+	public GetOptions(): Option[]
 	{
 		return [];
-	}
-
-	GetDisplay(): TaskDisplay
-	{
-		return new ScatterPlotDisplay(this.points, this.SelectPlane);
 	}
 }
