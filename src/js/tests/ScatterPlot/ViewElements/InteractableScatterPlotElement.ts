@@ -6,24 +6,20 @@ import { PlotPoint } from "../PlotPoint";
 
 export class InteractableScatterPlotElement extends ScatterPlotElement
 {
-	orbit : OrbitControls;
+	perspectiveCameraOrbit : OrbitControls;
+	orthographicCameraOrbit : OrbitControls;
+
 	element : JQuery<HTMLElement>;
 
 	constructor(points : PlotPoint[], axisLength : number, pointRadius : number, initialRotation : Three.Vector2, maxRotation : number)
 	{
 		super(points, axisLength, pointRadius);
 
-		this.orbit = new OrbitControls(this.activeCamera, this.renderer.domElement);
+		this.perspectiveCameraOrbit = new OrbitControls(this.perspectiveCamera, this.renderer.domElement);
+		this.orthographicCameraOrbit = new OrbitControls(this.orthographicCamera, this.renderer.domElement);
 		
 		//TODO OrbitControls has max range from 0 to Math.PI
-		let initialX = this.toRadians(initialRotation.x)
-		let initialY = this.toRadians(initialRotation.y);
-		let maxDistance = this.toRadians(maxRotation);
-
-		this.orbit.maxAzimuthAngle = initialX + maxDistance;
-		this.orbit.minAzimuthAngle = initialX - maxDistance;
-		this.orbit.maxPolarAngle = initialY + maxDistance;
-		this.orbit.minPolarAngle = initialY - maxDistance;
+		this.applyAngleViewRange(initialRotation, maxRotation);
 
 		this.element = super.Element();
 		this.element.css("cursor", "grab");
@@ -38,6 +34,24 @@ export class InteractableScatterPlotElement extends ScatterPlotElement
 		});
 	}
 
+	protected applyAngleViewRange(initialRotation : Three.Vector2, maxRotation : number)
+	{
+		let initialX = this.toRadians(initialRotation.x)
+		let initialY = this.toRadians(initialRotation.y);
+		let maxDistance = this.toRadians(maxRotation);
+
+		this.setViewRange(this.perspectiveCameraOrbit, initialX, initialY, maxDistance);
+		this.setViewRange(this.orthographicCameraOrbit, initialX, initialY, maxDistance);
+	}
+
+	protected setViewRange(orbit : OrbitControls, initialX : number, initialY : number, maxDistance : number)
+	{
+		orbit.maxAzimuthAngle = initialX + maxDistance;
+		orbit.minAzimuthAngle = initialX - maxDistance;
+		orbit.maxPolarAngle = initialY + maxDistance;
+		orbit.minPolarAngle = initialY - maxDistance;
+	}
+
 	public Element() : JQuery<HTMLElement>
 	{
 		return this.element;
@@ -45,10 +59,9 @@ export class InteractableScatterPlotElement extends ScatterPlotElement
 
 	protected Render()
 	{
-		this.orbit.update();
+		this.perspectiveCameraOrbit.update();
+		this.orthographicCameraOrbit.update();
+
 		super.Render();
-		
-		this.activeCamera.lookAt(0,0,0);
-		this.renderer.render(this.scene, this.activeCamera);
 	}
 }

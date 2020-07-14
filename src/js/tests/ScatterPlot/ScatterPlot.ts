@@ -1,6 +1,6 @@
 import { Task, Option } from "../../tasks";
 import { TaskDisplay } from "../../io";
-import { ScatterPlotDisplay } from "./ScatterPlotDisplay";
+import { InteractablePlotView } from "./InteractablePlotView";
 import { PlotPoint } from "./PlotPoint";
 
 export class ScatterPlot extends Task
@@ -10,7 +10,7 @@ export class ScatterPlot extends Task
 		super();
 
 		this.SetExplicitSubmissionRequired(true);
-		this.SetDisplay(new ScatterPlotDisplay(points, this.SelectPlane));
+		this.SetDisplay(new InteractablePlotView(points, this.SelectPlane));
 	}
 
 	public Submit(selectedOptions: Option): void
