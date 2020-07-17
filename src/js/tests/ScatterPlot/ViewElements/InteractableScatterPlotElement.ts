@@ -42,29 +42,18 @@ export class InteractableScatterPlotElement extends ScatterPlotElement
 
 		this.setViewRange(this.perspectiveCameraOrbit, initialX, initialY, maxDistance);
 		this.setViewRange(this.orthographicCameraOrbit, initialX, initialY, maxDistance);
+
+		this.perspectiveCameraOrbit.update();
+		this.orthographicCameraOrbit.update();
 	}
 
 	protected setViewRange(orbit : OrbitControls, initialX : number, initialY : number, maxDistance : number)
 	{
 		//Wrap minX and minY within the OrbitControl's bounds of each axis
-		let minX = (initialX - maxDistance) % (-Math.PI);
-		let maxX = (initialX + maxDistance) % (Math.PI);
-		let minY = (initialY - maxDistance) % Math.PI;
-		let maxY = (initialY + maxDistance) % Math.PI;
-
-		if (minX > maxX)
-		{
-			let tmp = minX;
-			minX = maxX;
-			maxX = tmp; 
-		}
-
-		if (minY > maxY)
-		{
-			let tmp = minY;
-			minY = maxY;
-			maxY = tmp;
-		}
+		let minX = initialX - maxDistance;
+		let maxX = initialX + maxDistance;
+		let minY = initialY - maxDistance;
+		let maxY = initialY + maxDistance;
 
 		orbit.minAzimuthAngle = minX;
 		orbit.maxAzimuthAngle = maxX;

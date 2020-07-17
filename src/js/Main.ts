@@ -14,24 +14,50 @@ import { ScatterPlot } from "./tests/ScatterPlot/ScatterPlot";
 import { PlotPoint } from "./tests/ScatterPlot/PlotPoint";
 import { InteractablePlotView } from "./tests/ScatterPlot/InteractablePlotView";
 import { MultiPlotView } from "./tests/ScatterPlot/MultiPlotView";
+
+import {CsvParser} from "./PlotData/CsvParser";
+
+import WineData from "./PlotData/winequality-red";
+import IrisData from "./PlotData/iris";
+
 console.log(Bowser.parse(window.navigator.userAgent));
 
 let display : UserInterface;
 let testList : TaskList;
 let task : Task;
 
+let INTERACTABLE_PLOT_AXIS_LENGTH = 600;
+let INTERACTABLE_PLOT_PADDING = 20;
+
 let uiUpdateTimer : any;
 $(() =>
 {
 	display = new UserInterface();
-
-	let interactablePlotView = new InteractablePlotView(RandomPoints(100, -290, 290), 600);
-	let interactablePlot = new ScatterPlot();
-	interactablePlot.SetDisplay(interactablePlotView);
 	
-	let multiPlotView = new MultiPlotView(RandomPoints(100, -190, 190), 400);
-	let multiPlot = new ScatterPlot();
-	multiPlot.SetDisplay(multiPlotView);
+	let pointAxisLength = INTERACTABLE_PLOT_AXIS_LENGTH - INTERACTABLE_PLOT_PADDING*2;
+
+	//Plot points for interactable plot
+	let irisParser : CsvParser = new CsvParser(<number[]>IrisData, 12, 500);
+	let irisDataset = irisParser.PasePoints(pointAxisLength);
+	let wineDataset = new CsvParser(<number[]>WineData, 13, 500).PasePoints(pointAxisLength);
+	let noise = RandomPoints(40, -280, 280);
+	let alteredWineData = wineDataset.concat(noise);
+	let alteredIrisData = irisDataset.concat(noise);
+	
+	let winePlotView = new InteractablePlotView(alteredWineData, INTERACTABLE_PLOT_AXIS_LENGTH);
+	let winePlot = new ScatterPlot();
+	winePlot.SetDisplay(winePlotView);
+
+	let irisPlotView = new InteractablePlotView(alteredIrisData, INTERACTABLE_PLOT_AXIS_LENGTH);
+	let irisPlot = new ScatterPlot();
+	irisPlot.SetDisplay(irisPlotView);
+
+	let irisMultiViewDataset = irisParser.PasePoints(400);
+	let multiViewDatasetNoise = RandomPoints(40, -180, 180);
+	irisMultiViewDataset = irisMultiViewDataset.concat(multiViewDatasetNoise);
+	let irisMultiPlotView = new MultiPlotView(irisMultiViewDataset, 400);
+	let irisMultiPlot = new ScatterPlot();
+	irisMultiPlot.SetDisplay(irisMultiPlotView);
 
 	let piechart = new PieChart(
 		RandomPiechart(6),
@@ -40,9 +66,9 @@ $(() =>
 	piechart.SetPrompt("Do these charts represent the same data?");
 
 	testList  = new TaskList([
-		// multiPlot,
-		interactablePlot,
-		piechart,
+		irisMultiPlot,
+		irisPlot,
+		winePlot,
 	]);
 	
 	ApplyPageEventHandlers();

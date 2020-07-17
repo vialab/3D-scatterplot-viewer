@@ -1,5 +1,5 @@
 import * as Three from "three";
-import { Vector3 } from "three";
+import { Vector3, Matrix4, Matrix3 } from "three";
 
 export default class PlotNormals
 {
@@ -20,45 +20,4 @@ export default class PlotNormals
 		PlotNormals.RIGHT,
 		PlotNormals.LEFT
 	];
-
-	static UpFrom(direction : Three.Vector3) : Three.Vector3
-	{
-		return PlotNormals.Cross(direction, PlotNormals.LEFT);
-	}
-
-	static DownFrom(direction : Three.Vector3) : Three.Vector3
-	{
-		return PlotNormals.Cross(direction, PlotNormals.RIGHT);
-	}
-
-	static CloserFrom(direction : Three.Vector3) : Three.Vector3
-	{
-		let further = PlotNormals.Normal(direction);
-		return new Three.Vector3(further.x, further.y, -further.z);
-	}
-
-	static FurtherFrom(direction : Three.Vector3) : Three.Vector3
-	{
-		return PlotNormals.Normal(direction);
-	}
-
-	static RightFrom(direction : Three.Vector3) : Three.Vector3
-	{
-		return PlotNormals.Cross(direction, PlotNormals.UP);
-	}
-
-	static LeftFrom(direction : Three.Vector3) : Three.Vector3
-	{
-		return PlotNormals.Cross(direction, PlotNormals.DOWN);
-	}
-
-	private static Cross(first : Three.Vector3, second : Three.Vector3)
-	{
-		return PlotNormals.Normal(first).cross(PlotNormals.Normal(second));
-	}
-
-	private static Normal(of : Three.Vector3)
-	{
-		return new Vector3(of.x, of.y, of.z).normalize();
-	}
 };

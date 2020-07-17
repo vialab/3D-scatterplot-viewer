@@ -9,9 +9,13 @@ import PlotNormals from "./PlotNormals";
 import { PlotInputElement } from "./ViewElements/PlotInputElement";
 import { InteractableScatterPlotElement } from "./ViewElements/InteractableScatterPlotElement";
 import { ToggleOrthographicButton } from "./ViewElements/ToggleOrthographicButton";
+import { FixedRotationScatterPlotElement } from "./ViewElements/FixedRotationScatterPlotElement";
+import { Vector3, Vector2 } from "three";
+import { RandomPlane } from "./RandomPlane";
 
 export class InteractablePlotView extends TaskDisplay
 {
+	public CorrectPlane : Three.Vector3;
 	private planeView : ScatterPlotElement;
 	private fullView : ScatterPlotElement;
 	private inputGrid : PlotInputElement;
@@ -22,12 +26,17 @@ export class InteractablePlotView extends TaskDisplay
 	{
 		super();
 
-		//TODO only currently displays view down -z axis
-		this.planeView = new ScatterPlotElement(points, edgeLength, 5);
+		let planeSelection = RandomPlane.Select();
+		this.CorrectPlane = planeSelection.Normal;
+		let planeViewRotation = planeSelection.Rotation;
+		this.planeView = new FixedRotationScatterPlotElement(points, edgeLength, 5, planeViewRotation);
 		this.planeView.UseOrthographicCamera();
 
-		let initialRotation = new Three.Vector2(Math.random() * 360, Math.random() * 180);
 		let maxRotation = 15;
+		let initialRotation = new Three.Vector2(
+			Math.random() * (355 - maxRotation),
+			Math.random() * (175 - maxRotation)
+		);
 		this.fullView = new InteractableScatterPlotElement(points, edgeLength, 5, initialRotation, maxRotation);
 		this.fullView.UsePerspectiveCamera();
 
@@ -49,6 +58,8 @@ export class InteractablePlotView extends TaskDisplay
 	protected toggleHighlight(planeNormal : Three.Vector3)
 	{
 		this.fullView.TogglePlaneHighlight(planeNormal);
+		// this.planeView.TogglePlaneHighlight(planeNormal);
+		// this.planeView.RenderOnce();
 	}
 
 	Display(screen: UserInterface): void

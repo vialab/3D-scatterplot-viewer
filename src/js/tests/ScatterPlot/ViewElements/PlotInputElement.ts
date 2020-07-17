@@ -126,17 +126,17 @@ export class PlotInputElement
 		let closestPlane : Three.Vector3;
 
 		if (plane == "up")
-			direction = PlotNormals.UpFrom(this.viewDirection);
+			direction = PlotNormals.UP;
 		else if (plane == "down")
-			direction = PlotNormals.DownFrom(this.viewDirection);
+			direction = PlotNormals.DOWN;
 		else if (plane == "away")
-			direction = PlotNormals.FurtherFrom(this.viewDirection);
+			direction = PlotNormals.AWAY;
 		else if (plane == "towards")
-			direction = PlotNormals.CloserFrom(this.viewDirection);
+			direction = PlotNormals.TOWARDS;
 		else if (plane == "right")
-			direction = PlotNormals.RightFrom(this.viewDirection);
+			direction = PlotNormals.RIGHT;
 		else if (plane == "left")
-			direction = PlotNormals.LeftFrom(this.viewDirection);
+			direction = PlotNormals.LEFT;
 
 		if (direction == null)
 		{
