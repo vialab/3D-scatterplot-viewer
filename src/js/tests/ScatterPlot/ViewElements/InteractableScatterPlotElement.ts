@@ -36,29 +36,40 @@ export class InteractableScatterPlotElement extends ScatterPlotElement
 
 	protected applyAngleViewRange(initialRotation : Three.Vector2, maxRotation : number)
 	{
-		let initialX = this.toRadians(initialRotation.x);
-		let initialY = this.toRadians(initialRotation.y);
 		let maxDistance = this.toRadians(maxRotation);
 
-		this.setViewRange(this.perspectiveCameraOrbit, initialX, initialY, maxDistance);
-		this.setViewRange(this.orthographicCameraOrbit, initialX, initialY, maxDistance);
+		this.setCurrentRotation(this.perspectiveCamera, initialRotation);
+		this.setCurrentRotation(this.orthographicCamera, initialRotation);
 
-		this.perspectiveCameraOrbit.update();
-		this.orthographicCameraOrbit.update();
+		this.setViewRange(this.perspectiveCameraOrbit, maxDistance);
+		this.setViewRange(this.orthographicCameraOrbit, maxDistance);
 	}
 
-	protected setViewRange(orbit : OrbitControls, initialX : number, initialY : number, maxDistance : number)
+	protected setViewRange(orbit : OrbitControls, maxDistance : number)
 	{
 		//Wrap minX and minY within the OrbitControl's bounds of each axis
-		let minX = initialX - maxDistance;
-		let maxX = initialX + maxDistance;
-		let minY = initialY - maxDistance;
-		let maxY = initialY + maxDistance;
+		let minX = -maxDistance;
+		let maxX = maxDistance;
+		let minY = -maxDistance;
+		let maxY = maxDistance;
 
 		orbit.minAzimuthAngle = minX;
 		orbit.maxAzimuthAngle = maxX;
 		orbit.minPolarAngle = minY;
 		orbit.maxPolarAngle = maxY;
+	}
+
+	private setCurrentRotation(camera : Three.Camera, rotation : Three.Vector2)
+	{
+		//Silly hack that has to do with OrbitControls' rotation limits
+		let control = new OrbitControls(camera);
+		control.minAzimuthAngle = this.toRadians(rotation.x);
+		control.maxAzimuthAngle = this.toRadians(rotation.x);
+		control.minPolarAngle = this.toRadians(rotation.y);
+		control.maxPolarAngle = this.toRadians(rotation.y);
+
+		control.update();
+		control.dispose();
 	}
 
 	private isOutOfRange(value : number, min : number, max : number) : boolean

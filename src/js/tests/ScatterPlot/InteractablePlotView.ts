@@ -32,10 +32,10 @@ export class InteractablePlotView extends TaskDisplay
 		this.planeView = new FixedRotationScatterPlotElement(points, edgeLength, 5, planeViewRotation);
 		this.planeView.UseOrthographicCamera();
 
-		let maxRotation = 15;
+		let maxRotation = 45;
 		let initialRotation = new Three.Vector2(
-			Math.random() * (355 - maxRotation),
-			Math.random() * (175 - maxRotation)
+			Math.random() * (360 - maxRotation),
+			Math.random() * (180 - maxRotation)
 		);
 		this.fullView = new InteractableScatterPlotElement(points, edgeLength, 5, initialRotation, maxRotation);
 		this.fullView.UsePerspectiveCamera();
