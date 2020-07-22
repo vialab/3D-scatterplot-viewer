@@ -6,29 +6,29 @@ import { PlotPoint } from "../tests/ScatterPlot/PlotPoint";
 export class CsvParser
 {
 	public POINT_MULTIPLY = 1;
-	public LineLength = 3;
+	public EntriesPerLine = 3;
 
 	private dataset : number[];
 	private maxPoints : number;
 
-	constructor(dataset : number[], lineLength : number, maxPoints : number = 0)
+	constructor(dataset : number[], entriesPerLine : number, maxPoints : number = 0)
 	{
 		this.dataset = dataset;
-		this.LineLength = lineLength;
+		this.EntriesPerLine = entriesPerLine;
 		this.maxPoints = maxPoints;
 	}
 
-	public PasePoints(axisLength : number) : PlotPoint[]
+	public PasePoints(fitToAxisLength : number) : PlotPoint[]
 	{
 		let points : PlotPoint[] = [];
-		let graphValueRange = axisLength / 2;
+		let graphValueRange = fitToAxisLength / 2;
 
 		let highestDatasetAxisValue = -99999999;
 
-		let entriesPerRow = Math.floor(this.LineLength/3)*3;
+		let entriesPerRow = Math.floor(this.EntriesPerLine/3)*3;
 		let limit = this.maxPoints == 0? this.dataset.length : this.maxPoints*3;
 
-		for (let row = 0; row < limit; row+= this.LineLength)
+		for (let row = 0; row < limit; row+= this.EntriesPerLine)
 		{
 			for (let col = 0; col < entriesPerRow; col += 3)
 			{

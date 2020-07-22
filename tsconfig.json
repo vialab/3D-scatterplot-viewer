@@ -10,5 +10,9 @@
 	},
 	"include": [
 		"./src/js"
+	],
+	"exclude": [
+		"**/*.js",
+		"node_modules"
 	]
 }

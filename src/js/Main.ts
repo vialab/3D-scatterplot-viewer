@@ -13,14 +13,14 @@ import { PlotPoint } from "./tests/ScatterPlot/PlotPoint";
 import { ScatterPlot } from "./tests/ScatterPlot/ScatterPlot";
 import { PlaneDisplay } from "./tests/Isocontour/PlaneDisplay";
 
-console.log(Bowser.parse(window.navigator.userAgent));
+import Plane from "./PlotData/gaussianSurface";
+import { CsvParser } from "./PlotData/CsvParser";
+
+let EXAMPLE_PLANE_AXIS_LENGTH = 600;
 
 let display : UserInterface;
 let testList : TaskList;
 let task : Task;
-
-let INTERACTABLE_PLOT_AXIS_LENGTH = 600;
-let INTERACTABLE_PLOT_PADDING = 20;
 
 let uiUpdateTimer : any;
 
@@ -28,10 +28,19 @@ $(() =>
 {
 	display = new UserInterface();
 	let plot = new ScatterPlot();
-	let waves = GenerateWaveGraph(20, 200, 15);
-	let pyramid = PyramidPoints();
+	let waves = GenerateWaveGraph(40, EXAMPLE_PLANE_AXIS_LENGTH/1.8, 13);
+	let pyramid = PyramidPoints(EXAMPLE_PLANE_AXIS_LENGTH/1.8);
+	
+	let examplePlaneParser = new CsvParser(Plane, 3);
+	let examplePlane = examplePlaneParser.PasePoints(400);
 
-	plot.SetDisplay(new PlaneDisplay(waves, 1));
+	let planeDisplay = new PlaneDisplay(
+		waves,
+		EXAMPLE_PLANE_AXIS_LENGTH,
+		EXAMPLE_PLANE_AXIS_LENGTH,
+		EXAMPLE_PLANE_AXIS_LENGTH*3
+	);
+	plot.SetDisplay(planeDisplay);
 
 	testList = new TaskList([
 		plot
@@ -42,14 +51,16 @@ $(() =>
 	NextTask();
 });
 
-function PyramidPoints() : PlotPoint[]
+function PyramidPoints(baseSideLength : number) : PlotPoint[]
 {
+	let maxValue = baseSideLength/2;
+
 	return [
-		new PlotPoint(-100, 0, -100),
-		new PlotPoint(100, 0, -100),
-		new PlotPoint(0, 100, 0),
-		new PlotPoint(-100, 0, 100),
-		new PlotPoint(100, 0, 100),
+		new PlotPoint(-maxValue, 0, -maxValue),
+		new PlotPoint(maxValue, 0, -maxValue),
+		new PlotPoint(0, maxValue, 0),
+		new PlotPoint(-maxValue, 0, maxValue),
+		new PlotPoint(maxValue, 0, maxValue),
 	];
 }
 

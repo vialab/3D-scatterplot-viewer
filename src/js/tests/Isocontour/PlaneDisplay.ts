@@ -3,27 +3,30 @@ import Delaunator = require("delaunator");
 
 import { TaskDisplay, UserInterface } from "../../io";
 import { IdGenerator } from "../../util/IdGenerator";
-import { Draw } from "./d33dWrapper";
 import { PlotPoint } from "../ScatterPlot/PlotPoint";
 import { Vector3, BufferGeometry, BufferAttribute } from "three";
 import { OrbitControls } from "three-orbitcontrols-ts";
 
 export class PlaneDisplay extends TaskDisplay
 {
-	private points : PlotPoint[];
-	private scale : number;
-
 	private vectors : Three.Vector3[];
 
 	private minY : number;
 	private maxY : number;
+
+	private width : number;
+	private height : number;
+
+	//TODO can we calculate this based on range of x, y, z?
+	private viewDistance : number;
 	
-	constructor(points : PlotPoint[], scale : number)
+	constructor(points : PlotPoint[], width : number, height : number, viewDistance : number)
 	{
 		super();
 
-		this.points = points;
-		this.scale = scale;
+		this.width = width;
+		this.height = height;
+		this.viewDistance = viewDistance;
 
 		this.vectors = [];
 		let minY = 9999999999;
@@ -44,20 +47,27 @@ export class PlaneDisplay extends TaskDisplay
 		this.maxY = maxY;
 	}
 
+	public GetWidth() : number
+	{
+		return this.width;
+	}
+
+	public GetHeight() : number
+	{
+		return this.height;
+	}
+
 	public Display(screen: UserInterface): void
 	{
-		let width = 400;
-		let height = 400;
-		let padding = 20;
-
-		var camera = new Three.PerspectiveCamera();
-		camera.position.set(0, 100, 800);
+		var camera = new Three.PerspectiveCamera(50,1,0.1,10000);
+		// var camera = new Three.OrthographicCamera(-this.width/2, this.width/2, this.height/2, -this.height/2, 0.1, 10000);
+		camera.position.set(0, 100, this.viewDistance);
 
 		let scene = new Three.Scene();
 
 		var renderer = new Three.WebGLRenderer();
 		renderer.setClearColor("rgb(255, 255, 255)");
-		renderer.setSize(width, height);
+		renderer.setSize(this.width, this.height);
 		
 		let indices = Delaunator.from(
 			this.vectors,
@@ -86,7 +96,7 @@ export class PlaneDisplay extends TaskDisplay
 			colors[colorIndex+2] = color.b;
 		}
 
-		geometry.addAttribute("color", new BufferAttribute(colors, 3, false));
+		geometry.setAttribute("color", new BufferAttribute(colors, 3, false));
 
 		//Create Mesh
 		// wireMaterial.map.repeat.set( segments, segments );
