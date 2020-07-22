@@ -6,6 +6,7 @@ import { ToggleOrthographicButton } from "./ViewElements/ToggleOrthographicButto
 import { PlotInputElement } from "./ViewElements/PlotInputElement";
 import { FixedRotationScatterPlotElement } from "./ViewElements/FixedRotationScatterPlotElement";
 import { IdGenerator } from "../../util/IdGenerator";
+import { RandomPlane } from "./RandomPlane";
 
 export class MultiPlotView extends TaskDisplay
 {
@@ -20,8 +21,10 @@ export class MultiPlotView extends TaskDisplay
 	{
 		super();
 
+		let planeSelection = RandomPlane.Select();
+
 		//TODO only currently displays view down -z axis
-		this.planeView = new ScatterPlotElement(points, edgeLength, 5);
+		this.planeView = new FixedRotationScatterPlotElement(points, edgeLength, 5, planeSelection.Rotation);
 		this.planeView.UseOrthographicCamera();
 
 		let firstRotation = new Three.Vector2(Math.random() * 360, Math.random() * 180);

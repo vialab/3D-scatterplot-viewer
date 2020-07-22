@@ -19,6 +19,9 @@ let display : UserInterface;
 let testList : TaskList;
 let task : Task;
 
+let INTERACTABLE_PLOT_AXIS_LENGTH = 600;
+let INTERACTABLE_PLOT_PADDING = 20;
+
 let uiUpdateTimer : any;
 
 $(() =>
