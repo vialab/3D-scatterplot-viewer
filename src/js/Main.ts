@@ -7,13 +7,12 @@ import { Timer } from "./metrics";
 import { TestingComplete } from "./forms/TestingComplete";
 
 import * as Bowser from "bowser";
-import { PieChart } from "./tests/PieChart/PieChart";
 import { PieChartData } from "./tests/PieChart/PieChartData";
 import { Colour } from "./io/Colour";
-import { ScatterPlot } from "./tests/ScatterPlot/ScatterPlot";
 import { PlotPoint } from "./tests/ScatterPlot/PlotPoint";
-import { InteractablePlotView } from "./tests/ScatterPlot/InteractablePlotView";
-import { MultiPlotView } from "./tests/ScatterPlot/MultiPlotView";
+import { ScatterPlot } from "./tests/ScatterPlot/ScatterPlot";
+import { PlaneDisplay } from "./tests/Isocontour/PlaneDisplay";
+
 console.log(Bowser.parse(window.navigator.userAgent));
 
 let display : UserInterface;
@@ -21,34 +20,55 @@ let testList : TaskList;
 let task : Task;
 
 let uiUpdateTimer : any;
+
 $(() =>
 {
 	display = new UserInterface();
+	let plot = new ScatterPlot();
+	let waves = GenerateWaveGraph(20, 200, 15);
+	let pyramid = PyramidPoints();
 
-	let interactablePlotView = new InteractablePlotView(RandomPoints(100, -290, 290), 600);
-	let interactablePlot = new ScatterPlot();
-	interactablePlot.SetDisplay(interactablePlotView);
-	
-	let multiPlotView = new MultiPlotView(RandomPoints(100, -190, 190), 400);
-	let multiPlot = new ScatterPlot();
-	multiPlot.SetDisplay(multiPlotView);
+	plot.SetDisplay(new PlaneDisplay(waves, 1));
 
-	let piechart = new PieChart(
-		RandomPiechart(6),
-		RandomPiechart(6)
-	);
-	piechart.SetPrompt("Do these charts represent the same data?");
-
-	testList  = new TaskList([
-		// multiPlot,
-		interactablePlot,
-		piechart,
+	testList = new TaskList([
+		plot
 	]);
 	
 	ApplyPageEventHandlers();
 	
 	NextTask();
 });
+
+function PyramidPoints() : PlotPoint[]
+{
+	return [
+		new PlotPoint(-100, 0, -100),
+		new PlotPoint(100, 0, -100),
+		new PlotPoint(0, 100, 0),
+		new PlotPoint(-100, 0, 100),
+		new PlotPoint(100, 0, 100),
+	];
+}
+
+function GenerateWaveGraph(pointsPerSlice : number, dimension : number, multiplier : number=1) : PlotPoint[]
+{
+	let points : PlotPoint[] = [];
+	let increment = 1/pointsPerSlice;
+
+	for (let x = 0; x < 1; x +=increment)
+	{
+		for (let z = 0; z < 1; z += increment)
+		{
+			let screenY = (Math.sin(x*multiplier)-Math.cos(z*multiplier))*dimension;
+			let screenX = x*dimension - dimension/2;
+			let screenZ = z*dimension - dimension/2;
+
+			points.push(new PlotPoint(screenX, screenY, screenZ));
+		}
+	}
+
+	return points;
+}
 
 function RandomPiechart(numberOfSlices : number) : PieChartData[]
 {
