@@ -1,4 +1,4 @@
-import { ScatterPlotElement } from "./ScatterPlotElement";
+import { Graph } from "./Graph";
 import { IdGenerator } from "../../../util/IdGenerator";
 
 export class ToggleOrthographicButton
@@ -6,7 +6,7 @@ export class ToggleOrthographicButton
 	private button : JQuery<HTMLElement>;
 	private isViewOrthographic = false;
 
-	constructor(plot : ScatterPlotElement | ScatterPlotElement[], isCurrentlyOrthographic : boolean)
+	constructor(plot : Graph | Graph[], isCurrentlyOrthographic : boolean)
 	{
 		this.isViewOrthographic = isCurrentlyOrthographic;
 
@@ -16,9 +16,9 @@ export class ToggleOrthographicButton
 		
 	}
 
-	protected applyClickHandler(plot : ScatterPlotElement | ScatterPlotElement[])
+	protected applyClickHandler(plot : Graph | Graph[])
 	{
-		let handler = plot instanceof ScatterPlotElement?
+		let handler = plot instanceof Graph?
 			() => {
 				this.isViewOrthographic = !this.isViewOrthographic;
 
@@ -31,7 +31,7 @@ export class ToggleOrthographicButton
 			() =>
 			{
 				this.isViewOrthographic = !this.isViewOrthographic;
-				let plots = <ScatterPlotElement[]>plot;
+				let plots = <Graph[]>plot;
 
 				if (this.isViewOrthographic)
 					for (let i = 0; i < plots.length; i++)

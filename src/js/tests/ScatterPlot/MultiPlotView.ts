@@ -1,43 +1,48 @@
 import * as Three from "three";
 import { TaskDisplay, UserInterface } from "../../io";
-import { PlotPoint } from "./PlotPoint";
-import { ScatterPlotElement } from "./ViewElements/ScatterPlotElement";
-import { ToggleOrthographicButton } from "./ViewElements/ToggleOrthographicButton";
-import { PlotInputElement } from "./ViewElements/PlotInputElement";
-import { FixedRotationScatterPlotElement } from "./ViewElements/FixedRotationScatterPlotElement";
+import { Point } from "../../PlotData/Point";
+import { ToggleOrthographicButton } from "../../io/ui/components/ToggleOrthographicButton";
 import { IdGenerator } from "../../util/IdGenerator";
 import { RandomPlane } from "./RandomPlane";
+import { Graph } from "../../io/ui/components/Graph";
+import { PlaneSelector } from "../../io/ui/components/PlaneSelector";
+import { FixedRotationGraph } from "../../io/ui/components/FixedRotationGraph";
+import { ScatterPlotPoints } from "../../io/ui/threejs/ScatterPlotPoints";
 
 export class MultiPlotView extends TaskDisplay
 {
-	private planeView : ScatterPlotElement;
-	private firstAngleView : ScatterPlotElement;
-	private secondAngleView : ScatterPlotElement;
-	private inputGrid : PlotInputElement;
+	private planeView : Graph;
+	private firstAngleView : Graph;
+	private secondAngleView : Graph;
+	private inputGrid : PlaneSelector;
 
 	private toggleOrthoButton : ToggleOrthographicButton;
 
-	constructor(points : PlotPoint[], edgeLength : number)
+	constructor(points : Point[], edgeLength : number)
 	{
 		super();
 
 		let planeSelection = RandomPlane.Select();
 
+		let planeViewPoints = ScatterPlotPoints.FromPoints(points, edgeLength, 5, 20);
+		let firstRotationPoints = ScatterPlotPoints.Clone(planeViewPoints);
+		let secondRotationPoints = ScatterPlotPoints.Clone(planeViewPoints);
+
 		//TODO only currently displays view down -z axis
-		this.planeView = new FixedRotationScatterPlotElement(points, edgeLength, 5, planeSelection.Rotation);
+		this.planeView = new FixedRotationGraph(planeViewPoints, edgeLength, planeSelection.Rotation);
 		this.planeView.UseOrthographicCamera();
 
 		let firstRotation = new Three.Vector2(Math.random() * 360, Math.random() * 180);
-		this.firstAngleView = new FixedRotationScatterPlotElement(points, edgeLength, 5, firstRotation);
+		this.firstAngleView = new FixedRotationGraph(firstRotationPoints, edgeLength, firstRotation);
 		this.firstAngleView.UsePerspectiveCamera();
 
 		let secondRotation = new Three.Vector2(Math.random() * 360, Math.random() * 180);
-		this.secondAngleView = new FixedRotationScatterPlotElement(points, edgeLength, 5, secondRotation);
+		this.secondAngleView = new FixedRotationGraph(secondRotationPoints, edgeLength, secondRotation);
 		this.secondAngleView.UsePerspectiveCamera();
 
 		this.toggleOrthoButton = new ToggleOrthographicButton([this.firstAngleView, this.secondAngleView], false);
 
-		this.inputGrid = new PlotInputElement(this.firstAngleView.CameraNormal());
+		this.inputGrid = new PlaneSelector(this.firstAngleView.CameraNormal());
 		this.inputGrid.OnPlaneHighlighted = (planeNormal : Three.Vector3) =>
 		{
 			this.toggleHighlight(planeNormal);

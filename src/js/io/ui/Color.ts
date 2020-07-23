@@ -1,4 +1,4 @@
-export class Colour
+export class Color
 {
 	private red : number;
 	private green : number;

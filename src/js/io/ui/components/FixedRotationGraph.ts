@@ -1,18 +1,17 @@
 import * as Three from "three";
 
-import { ScatterPlot } from "../ScatterPlot";
-import { ScatterPlotElement } from "./ScatterPlotElement";
-import { PlotPoint } from "../PlotPoint";
+import { Graph } from "./Graph";
 import { OrbitControls } from "three-orbitcontrols-ts";
+import { ThreeJsComponent } from "../threejs/ThreeJsComponent";
 
-export class FixedRotationScatterPlotElement extends ScatterPlotElement
+export class FixedRotationGraph extends Graph
 {
 	perspectiveRotator : OrbitControls;
 	orthographicRotator : OrbitControls;
 	
-	constructor(points : PlotPoint[], axisLength : number, pointRadius : number, rotation : Three.Vector2)
+	constructor(points : ThreeJsComponent, axisLength : number, rotation : Three.Vector2)
 	{
-		super(points, axisLength, pointRadius);
+		super(points, axisLength);
 
 		this.perspectiveRotator = new OrbitControls(this.perspectiveCamera, this.renderer.domElement);
 		this.orthographicRotator = new OrbitControls(this.orthographicCamera, this.renderer.domElement);

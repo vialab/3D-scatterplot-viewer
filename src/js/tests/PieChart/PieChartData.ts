@@ -1,12 +1,12 @@
-import { Colour } from "../../io/Colour";
+import { Color } from "../../io/ui/Color";
 
 export class PieChartData
 {
 	public Label : string;
 	public Value : number;
-	public Colour : Colour;
+	public Colour : Color;
 
-	constructor(label : string, value : number, colour : Colour)
+	constructor(label : string, value : number, colour : Color)
 	{
 		this.Label = label;
 		this.Value = value;

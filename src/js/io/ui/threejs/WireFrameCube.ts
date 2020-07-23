@@ -1,9 +1,11 @@
 import * as Three from "three";
-import PlotNormals from "../PlotNormals";
+import GraphPlaneNormals from "../components/PlaneNormals";
+import { ThreeJsComponent } from "./ThreeJsComponent";
 
-export class CubeElement
+export class WireframeCube implements ThreeJsComponent
 {
-	private material = new Three.MeshBasicMaterial({color: 0x000000});
+	private frameMaterial = new Three.MeshBasicMaterial({color: 0x000000});
+	private highlightMaterial = new Three.MeshBasicMaterial( {color: 0xffff00, side: Three.DoubleSide} );
 
 	private edgeLength : number;
 
@@ -19,8 +21,6 @@ export class CubeElement
 	private highlightDirections : PlaneHighlightBinding[];
 	private activeHighlights : Three.Mesh[];
 
-	private highlightColour = 0xffff00;
-
 	constructor(edgeLength : number)
 	{
 		this.edgeLength = edgeLength;
@@ -28,59 +28,65 @@ export class CubeElement
 		//Wire Frame
 		var cubeGeometry = new Three.BoxGeometry(this.edgeLength, this.edgeLength, this.edgeLength);
 		var edges = new Three.EdgesGeometry(cubeGeometry);
-		this.wireFrame = new Three.LineSegments(edges, this.material);
+		this.wireFrame = new Three.LineSegments(edges, this.frameMaterial);
 		this.wireFrame.position.set(0, 0, 0);
 
 		//Highlights
 		var highlightPlaneGeometry = new Three.PlaneGeometry(this.edgeLength, this.edgeLength);
-		var highlightMaterial = new Three.MeshBasicMaterial( {color: this.highlightColour, side: Three.DoubleSide} );
-		highlightMaterial.transparent = true;
-		highlightMaterial.opacity = 0.5;
+		
+		this.highlightMaterial.transparent = true;
+		this.highlightMaterial.opacity = 0.5;
 
-		var top = new Three.Mesh(highlightPlaneGeometry, highlightMaterial);
+		var top = new Three.Mesh(highlightPlaneGeometry, this.highlightMaterial);
 		top.position.set(0, this.edgeLength/2, 0);
 		top.rotation.x = 1.5708;
 		this.topHighlight = top;
 
-		var back = new Three.Mesh(highlightPlaneGeometry, highlightMaterial);
+		var back = new Three.Mesh(highlightPlaneGeometry, this.highlightMaterial);
 		back.position.set(0, 0, -this.edgeLength/2);
 		this.backHighlight = back;
 
-		var bottom = new Three.Mesh(highlightPlaneGeometry, highlightMaterial);
+		var bottom = new Three.Mesh(highlightPlaneGeometry, this.highlightMaterial);
 		bottom.position.set(0, -this.edgeLength/2, 0);
 		bottom.rotation.x = 1.5708;
 		this.bottomHighlight = bottom;
 
-		var front = new Three.Mesh(highlightPlaneGeometry, highlightMaterial);
+		var front = new Three.Mesh(highlightPlaneGeometry, this.highlightMaterial);
 		front.position.set(0, 0, this.edgeLength/2);
 		this.frontHighlight = front;
 
-		var left = new Three.Mesh(highlightPlaneGeometry, highlightMaterial);
+		var left = new Three.Mesh(highlightPlaneGeometry, this.highlightMaterial);
 		left.position.set(-this.edgeLength/2, 0, 0);
 		left.rotation.y = 1.5708;
 		this.leftHighlight = left;
 
-		var right = new Three.Mesh(highlightPlaneGeometry, highlightMaterial);
+		var right = new Three.Mesh(highlightPlaneGeometry, this.highlightMaterial);
 		right.position.set(this.edgeLength/2, 0, 0);
 		right.rotation.y = 1.5708;
 		this.rightHighlight = right;
 
 		this.highlightDirections = [
-			{Normal: PlotNormals.UP, Highlight: this.topHighlight},
-			{Normal: PlotNormals.DOWN, Highlight: this.bottomHighlight},
+			{Normal: GraphPlaneNormals.UP, Highlight: this.topHighlight},
+			{Normal: GraphPlaneNormals.DOWN, Highlight: this.bottomHighlight},
 			
-			{Normal: PlotNormals.TOWARDS, Highlight: this.frontHighlight},
-			{Normal: PlotNormals.AWAY, Highlight: this.backHighlight},
+			{Normal: GraphPlaneNormals.TOWARDS, Highlight: this.frontHighlight},
+			{Normal: GraphPlaneNormals.AWAY, Highlight: this.backHighlight},
 			
-			{Normal: PlotNormals.RIGHT, Highlight: this.rightHighlight},
-			{Normal: PlotNormals.LEFT, Highlight: this.leftHighlight},
+			{Normal: GraphPlaneNormals.RIGHT, Highlight: this.rightHighlight},
+			{Normal: GraphPlaneNormals.LEFT, Highlight: this.leftHighlight},
 		];
 		this.activeHighlights = [];
 	}
 
-	public WireFrame() : Three.LineSegments
+	public Component() : Three.Object3D
 	{
 		return this.wireFrame;
+	}
+
+	public SetHighlightColour(color : number | string | Three.Color)
+	{
+		this.highlightMaterial.setValues({color: color});
+		this.highlightMaterial.needsUpdate = true;
 	}
 
 	public TogglePlaneHighlight(scene : Three.Scene, direction : Three.Vector3)

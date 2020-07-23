@@ -1,9 +1,9 @@
 import * as Three from "three";
 import { IdGenerator } from "../../../util/IdGenerator";
-import PlotNormals from "../PlotNormals";
 import { timeHours } from "d3";
+import GraphPlaneNormals from "./PlaneNormals";
 
-export class PlotInputElement
+export class PlaneSelector
 {
 	element : JQuery<HTMLElement>;
 	viewDirection : Three.Vector3;
@@ -115,28 +115,24 @@ export class PlotInputElement
 
 	private getCorrespondingPlaneNormal(gridCell : JQuery<HTMLElement>) : Three.Vector3
 	{
-		//TODO function binding the grid's data-plane to a normal vector relative to view direction
-		// //Highlighting a plane relative to the camera, useful later
-		// this.perspectivePlot.Cube.TogglePlaneHighlight(
-		// 	this.perspectivePlot.scene, PlotNormals.CloserFrom(this.perspectivePlot.CameraNormal())
-		// );
+		//TODO bind the grid's data-plane to a normal vector relative to view direction
 
 		let plane = gridCell.data("plane");
 		let direction : Three.Vector3 | null = null;
 		let closestPlane : Three.Vector3;
 
 		if (plane == "up")
-			direction = PlotNormals.UP;
+			direction = GraphPlaneNormals.UP;
 		else if (plane == "down")
-			direction = PlotNormals.DOWN;
+			direction = GraphPlaneNormals.DOWN;
 		else if (plane == "away")
-			direction = PlotNormals.AWAY;
+			direction = GraphPlaneNormals.AWAY;
 		else if (plane == "towards")
-			direction = PlotNormals.TOWARDS;
+			direction = GraphPlaneNormals.TOWARDS;
 		else if (plane == "right")
-			direction = PlotNormals.RIGHT;
+			direction = GraphPlaneNormals.RIGHT;
 		else if (plane == "left")
-			direction = PlotNormals.LEFT;
+			direction = GraphPlaneNormals.LEFT;
 
 		if (direction == null)
 		{
@@ -149,12 +145,12 @@ export class PlotInputElement
 
 	private closestPlane(normal : Three.Vector3) : Three.Vector3
 	{
-		let closestNormal = PlotNormals.ALL[0];
-		let closestDotProduct = normal.dot(PlotNormals.ALL[0]);
+		let closestNormal = GraphPlaneNormals.ALL[0];
+		let closestDotProduct = normal.dot(GraphPlaneNormals.ALL[0]);
 
-		for (let i = 1; i < PlotNormals.ALL.length; i++)
+		for (let i = 1; i < GraphPlaneNormals.ALL.length; i++)
 		{
-			let planeNormal = PlotNormals.ALL[i];
+			let planeNormal = GraphPlaneNormals.ALL[i];
 			let dotProduct = normal.dot(planeNormal);
 
 			if (dotProduct > closestDotProduct)

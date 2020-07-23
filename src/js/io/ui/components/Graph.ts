@@ -1,11 +1,9 @@
 import * as Three from "three";
-import { PlotPoint } from "../PlotPoint";
-import { CubeElement } from "./CubeElement";
-import { Points } from "three";
-import { PointsElement } from "./PointsElement";
-import { OrbitControls } from "three-orbitcontrols-ts";
+import { WireframeCube } from "../threejs/WireFrameCube";
+import { ThreeJsComponent } from "../threejs/ThreeJsComponent";
+import {UiElement} from "../UiElement";
 
-export class ScatterPlotElement
+export class Graph implements UiElement
 {
 	//For some reason getWorldDirection needs this, using single instance to save memory alloc
 	protected static worldDirectionParameterVector = new Three.Vector3();
@@ -17,10 +15,10 @@ export class ScatterPlotElement
 	protected perspectiveCamera : Three.PerspectiveCamera;
 	protected orthographicCamera : Three.OrthographicCamera;
 
-	protected cube : CubeElement;
-	protected points : PointsElement;
+	protected cube : WireframeCube;
+	protected data : ThreeJsComponent;
 
-	constructor(points : PlotPoint[], axisLength : number, pointRadius : number)
+	constructor(data : ThreeJsComponent, axisLength : number)
 	{
 		this.renderer = new Three.WebGLRenderer();
 		this.renderer.setSize(axisLength, axisLength);
@@ -28,8 +26,8 @@ export class ScatterPlotElement
 
 		this.scene = new Three.Scene();
 
-		this.perspectiveCamera = new Three.PerspectiveCamera(90, 1, 0.1, axisLength*3);
-		this.perspectiveCamera.position.z = axisLength + this.CAMERA_PADDING;
+		this.perspectiveCamera = new Three.PerspectiveCamera(50, 1, 0.1, axisLength*4);
+		this.perspectiveCamera.position.z = axisLength*2 + this.CAMERA_PADDING;
 
 		let orthographicSideLength = axisLength/2 + this.CAMERA_PADDING;
 		this.orthographicCamera = new Three.OrthographicCamera(
@@ -43,15 +41,11 @@ export class ScatterPlotElement
 
 		this.activeCamera = this.perspectiveCamera;
 
-		this.cube = new CubeElement(axisLength);
-		this.scene.add(this.cube.WireFrame());
+		this.cube = new WireframeCube(axisLength);
+		this.scene.add(this.cube.Component());
 
-		this.points = new PointsElement(points, pointRadius);
-		let spheres = this.points.Points();
-		for (let i = 0; i < spheres.length; i++)
-		{
-			this.scene.add(spheres[i]);
-		}
+		this.data = data;
+		this.scene.add(this.data.Component());
 
 		//Silly hack for requestAnimationFrame call
 		this.RenderContinuously = this.RenderContinuously.bind(this);

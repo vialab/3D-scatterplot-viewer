@@ -1,19 +1,19 @@
 import * as Three from "three";
 
-import { ScatterPlotElement } from "./ScatterPlotElement";
+import { Graph } from "./Graph";
 import { OrbitControls } from "three-orbitcontrols-ts";
-import { PlotPoint } from "../PlotPoint";
+import { ThreeJsComponent } from "../threejs/ThreeJsComponent";
 
-export class InteractableScatterPlotElement extends ScatterPlotElement
+export class InteractableGraph extends Graph
 {
 	perspectiveCameraOrbit : OrbitControls;
 	orthographicCameraOrbit : OrbitControls;
 
 	element : JQuery<HTMLElement>;
 
-	constructor(points : PlotPoint[], axisLength : number, pointRadius : number, initialRotation : Three.Vector2, maxRotation : number)
+	constructor(points : ThreeJsComponent, axisLength : number, initialRotation : Three.Vector2, maxRotation : number)
 	{
-		super(points, axisLength, pointRadius);
+		super(points, axisLength);
 
 		this.perspectiveCameraOrbit = new OrbitControls(this.perspectiveCamera, this.renderer.domElement);
 		this.orthographicCameraOrbit = new OrbitControls(this.orthographicCamera, this.renderer.domElement);

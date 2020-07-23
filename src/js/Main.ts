@@ -8,13 +8,17 @@ import { TestingComplete } from "./forms/TestingComplete";
 
 import * as Bowser from "bowser";
 import { PieChartData } from "./tests/PieChart/PieChartData";
-import { Colour } from "./io/Colour";
-import { PlotPoint } from "./tests/ScatterPlot/PlotPoint";
+import { Color } from "./io/ui/Color";
+import { Point } from "./PlotData/Point";
 import { ScatterPlot } from "./tests/ScatterPlot/ScatterPlot";
 import { PlaneDisplay } from "./tests/Isocontour/PlaneDisplay";
 
 import Plane from "./PlotData/gaussianSurface";
 import { CsvParser } from "./PlotData/CsvParser";
+import { InteractablePlotView } from "./tests/ScatterPlot/InteractablePlotView";
+import PlotData from "./PlotData/iris";
+import { MultiPlotView } from "./tests/ScatterPlot/MultiPlotView";
+import { Normalizer } from "./PlotData/Normalizer";
 
 let EXAMPLE_PLANE_AXIS_LENGTH = 600;
 
@@ -24,26 +28,28 @@ let task : Task;
 
 let uiUpdateTimer : any;
 
-$(() =>
+$(function Main()
 {
 	display = new UserInterface();
-	let plot = new ScatterPlot();
+	let visTaskWrapper = new ScatterPlot();
 	let waves = GenerateWaveGraph(40, EXAMPLE_PLANE_AXIS_LENGTH/1.8, 13);
 	let pyramid = PyramidPoints(EXAMPLE_PLANE_AXIS_LENGTH/1.8);
 	
-	let examplePlaneParser = new CsvParser(Plane, 3);
-	let examplePlane = examplePlaneParser.PasePoints(400);
+	let examplePlaneParser = new CsvParser(Plane);
+	let examplePlane = examplePlaneParser.ParsePoints();
 
-	let planeDisplay = new PlaneDisplay(
-		waves,
-		EXAMPLE_PLANE_AXIS_LENGTH,
-		EXAMPLE_PLANE_AXIS_LENGTH,
-		EXAMPLE_PLANE_AXIS_LENGTH*3
-	);
-	plot.SetDisplay(planeDisplay);
+	let planeDisplay = new PlaneDisplay(waves, EXAMPLE_PLANE_AXIS_LENGTH);
+	visTaskWrapper.SetDisplay(planeDisplay);
+	
+	let parsedPlotData = new CsvParser(<number[]>PlotData, 12, 500).ParsePoints();
+	let scatterPlotDisplay = new InteractablePlotView(parsedPlotData, 600);
+	let multiDisplay = new MultiPlotView(parsedPlotData, 400);
+	let scatterplot = new ScatterPlot();
+	scatterplot.SetDisplay(scatterPlotDisplay);
 
 	testList = new TaskList([
-		plot
+		// scatterplot,
+		visTaskWrapper,
 	]);
 	
 	ApplyPageEventHandlers();
@@ -51,22 +57,22 @@ $(() =>
 	NextTask();
 });
 
-function PyramidPoints(baseSideLength : number) : PlotPoint[]
+function PyramidPoints(baseSideLength : number) : Point[]
 {
 	let maxValue = baseSideLength/2;
 
-	return [
-		new PlotPoint(-maxValue, 0, -maxValue),
-		new PlotPoint(maxValue, 0, -maxValue),
-		new PlotPoint(0, maxValue, 0),
-		new PlotPoint(-maxValue, 0, maxValue),
-		new PlotPoint(maxValue, 0, maxValue),
-	];
+	return Normalizer.Normalize([
+		new Point(-maxValue, 0, -maxValue),
+		new Point(maxValue, 0, -maxValue),
+		new Point(0, maxValue, 0),
+		new Point(-maxValue, 0, maxValue),
+		new Point(maxValue, 0, maxValue),
+	]);
 }
 
-function GenerateWaveGraph(pointsPerSlice : number, dimension : number, multiplier : number=1) : PlotPoint[]
+function GenerateWaveGraph(pointsPerSlice : number, dimension : number, multiplier : number=1) : Point[]
 {
-	let points : PlotPoint[] = [];
+	let points : Point[] = [];
 	let increment = 1/pointsPerSlice;
 
 	for (let x = 0; x < 1; x +=increment)
@@ -77,11 +83,11 @@ function GenerateWaveGraph(pointsPerSlice : number, dimension : number, multipli
 			let screenX = x*dimension - dimension/2;
 			let screenZ = z*dimension - dimension/2;
 
-			points.push(new PlotPoint(screenX, screenY, screenZ));
+			points.push(new Point(screenX, screenY, screenZ));
 		}
 	}
 
-	return points;
+	return Normalizer.Normalize(points);
 }
 
 function RandomPiechart(numberOfSlices : number) : PieChartData[]
@@ -94,7 +100,7 @@ function RandomPiechart(numberOfSlices : number) : PieChartData[]
 	for (let i = 0; i < 6; i++)
 	{
 		let value : number = Math.random() * (MAX_VALUE - MIN_VALUE) + MIN_VALUE;
-		let colour = new Colour(Math.random() * 255, Math.random() * 255, Math.random() * 255, Math.random() * 0.5 + 0.5);
+		let colour = new Color(Math.random() * 255, Math.random() * 255, Math.random() * 255, Math.random() * 0.5 + 0.5);
 
 		result[i] = new PieChartData("" + i, value, colour);
 	}
@@ -102,13 +108,13 @@ function RandomPiechart(numberOfSlices : number) : PieChartData[]
 	return result;
 }
 
-function RandomPoints(numberOfPoints : number, min : number, max : number) : PlotPoint[]
+function RandomPoints(numberOfPoints : number, min : number, max : number) : Point[]
 {
-	let points : PlotPoint[] = [];
+	let points : Point[] = [];
 
 	for (let i = 0; i < numberOfPoints; i++)
 	{
-		points[i] = new PlotPoint(randomValue(), randomValue(), randomValue());
+		points[i] = new Point(randomValue(), randomValue(), randomValue());
 	}
 
 	return points;

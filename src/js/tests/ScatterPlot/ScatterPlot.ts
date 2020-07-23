@@ -1,7 +1,7 @@
 import { Task, Option } from "../../tasks";
 import { TaskDisplay } from "../../io";
 import { InteractablePlotView } from "./InteractablePlotView";
-import { PlotPoint } from "./PlotPoint";
+import { Point } from "../../PlotData/Point";
 
 export class ScatterPlot extends Task
 {

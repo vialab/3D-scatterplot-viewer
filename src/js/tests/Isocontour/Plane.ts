@@ -1,12 +1,12 @@
 import * as Three from "three";
-import { PlotPoint } from "../ScatterPlot/PlotPoint";
+import { Point } from "../../PlotData/Point";
 
 export class Plane
 {
-	private points : PlotPoint[];
-	private sortedPoints : PlotPoint[];
+	private points : Point[];
+	private sortedPoints : Point[];
 
-	constructor(points : PlotPoint[])
+	constructor(points : Point[])
 	{
 		this.points = points;
 		this.sortedPoints = [];
