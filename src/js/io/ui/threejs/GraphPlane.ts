@@ -1,5 +1,5 @@
 import { ThreeJsComponent } from "./ThreeJsComponent";
-import { Object3D, Vector3, BufferGeometry, Color, BufferAttribute, Mesh, MeshBasicMaterial, DoubleSide } from "three";
+import { Object3D, Vector3, BufferGeometry, Color, BufferAttribute, Mesh, DoubleSide, MeshPhongMaterial, MeshStandardMaterial, MeshLambertMaterial, MeshDepthMaterial, MeshDistanceMaterial, MeshToonMaterial, MeshNormalMaterial } from "three";
 import Delaunator = require("delaunator");
 import { Point } from "../../../PlotData/Point";
 import { Graph } from "../components/Graph";
@@ -28,6 +28,7 @@ export class GraphPlane implements ThreeJsComponent
 		let geometry = new BufferGeometry();
 		geometry.setFromPoints(vectors);
 		geometry.setIndex(new BufferAttribute(indices.triangles, 1, false));
+		geometry.computeVertexNormals();
 
 		geometry.computeBoundingBox();
 		let minY = <number>geometry.boundingBox?.min.y;
@@ -51,7 +52,7 @@ export class GraphPlane implements ThreeJsComponent
 
 		geometry.setAttribute("color", new BufferAttribute(colors, 3, false));
 
-		var vertexColorMaterial  = new MeshBasicMaterial( { vertexColors: true, side: DoubleSide } );
+		var vertexColorMaterial  = new MeshPhongMaterial( { vertexColors: true, side: DoubleSide, reflectivity: 0 } );
 		let mesh = new Mesh( geometry, vertexColorMaterial );
 
 		let plane = new GraphPlane(mesh);

@@ -3,6 +3,7 @@ import * as Three from "three";
 import { Graph } from "./Graph";
 import { OrbitControls } from "three-orbitcontrols-ts";
 import { ThreeJsComponent } from "../threejs/ThreeJsComponent";
+import { Vector2 } from "three";
 
 export class InteractableGraph extends Graph
 {
@@ -11,7 +12,7 @@ export class InteractableGraph extends Graph
 
 	element : JQuery<HTMLElement>;
 
-	constructor(points : ThreeJsComponent, axisLength : number, initialRotation : Three.Vector2, maxRotation : number)
+	constructor(points : ThreeJsComponent, axisLength : number, initialRotation : Three.Vector2, maxRotation : Three.Vector2)
 	{
 		super(points, axisLength);
 
@@ -34,9 +35,11 @@ export class InteractableGraph extends Graph
 		});
 	}
 
-	protected applyAngleViewRange(initialRotation : Three.Vector2, maxRotation : number)
+	protected applyAngleViewRange(initialRotation : Three.Vector2, maxRotation :Three.Vector2)
 	{
-		let maxDistance = this.toRadians(maxRotation);
+		let maxX = this.toRadians(maxRotation.x);
+		let maxY = this.toRadians(maxRotation.y);
+		let maxDistance = new Vector2(maxX, maxY);
 
 		this.setCurrentRotation(this.perspectiveCamera, initialRotation);
 		this.setCurrentRotation(this.orthographicCamera, initialRotation);
@@ -45,13 +48,15 @@ export class InteractableGraph extends Graph
 		this.setViewRange(this.orthographicCameraOrbit, maxDistance);
 	}
 
-	protected setViewRange(orbit : OrbitControls, maxDistance : number)
+	protected setViewRange(orbit : OrbitControls, maxDistance : Three.Vector2)
 	{
+		let frontY = this.toRadians(90);
+
 		//Wrap minX and minY within the OrbitControl's bounds of each axis
-		let minX = -maxDistance;
-		let maxX = maxDistance;
-		let minY = -maxDistance;
-		let maxY = maxDistance;
+		let minX = -maxDistance.x;
+		let maxX = maxDistance.x;
+		let minY = frontY-maxDistance.y;
+		let maxY = frontY+maxDistance.y;
 
 		orbit.minAzimuthAngle = minX;
 		orbit.maxAzimuthAngle = maxX;

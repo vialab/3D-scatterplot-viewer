@@ -6,18 +6,13 @@ import {UserInterface} from "./io/UserInterface";
 import { Timer } from "./metrics";
 import { TestingComplete } from "./forms/TestingComplete";
 
-import * as Bowser from "bowser";
 import { PieChartData } from "./tests/PieChart/PieChartData";
 import { Color } from "./io/ui/Color";
 import { Point } from "./PlotData/Point";
-import { ScatterPlot } from "./tests/ScatterPlot/ScatterPlot";
 import { PlaneDisplay } from "./tests/Isocontour/PlaneDisplay";
 
 import Plane from "./PlotData/gaussianSurface";
 import { CsvParser } from "./PlotData/CsvParser";
-import { InteractablePlotView } from "./tests/ScatterPlot/InteractablePlotView";
-import PlotData from "./PlotData/iris";
-import { MultiPlotView } from "./tests/ScatterPlot/MultiPlotView";
 import { LinearScaleNormalizer } from "./PlotData/Normalization/LinearScaleNormalizer";
 import { IndependentAxisNormalizer } from "./PlotData/Normalization/IndependentAxisNormalizer";
 import { Isocontour } from "./tests/Isocontour/IsoContour";
@@ -40,17 +35,17 @@ $(function Main()
 	let waves = GenerateWaveGraph(40, EXAMPLE_PLANE_AXIS_LENGTH/1.8, 13);
 	let pyramid = PyramidPoints(EXAMPLE_PLANE_AXIS_LENGTH/1.8);
 	
-	let examplePlaneParser = new CsvParser(axisNormalizer, Plane);
-	let examplePlane = examplePlaneParser.ParsePoints();
-	for (let i = 0; i < examplePlane.length; i++)
-	{
-		let p = examplePlane[i];
-		let tmp = p.Z;
-		p.Z = p.Y;
-		p.Y = tmp;
-	}
+	// let examplePlaneParser = new CsvParser(axisNormalizer, Plane);
+	// let examplePlane = examplePlaneParser.ParsePoints();
+	// for (let i = 0; i < examplePlane.length; i++)
+	// {
+	// 	let p = examplePlane[i];
+	// 	let tmp = p.Z;
+	// 	p.Z = p.Y;
+	// 	p.Y = tmp;
+	// }
 
-	let planeDisplay = new PlaneDisplay(examplePlane, EXAMPLE_PLANE_AXIS_LENGTH);
+	let planeDisplay = new PlaneDisplay(waves, EXAMPLE_PLANE_AXIS_LENGTH);
 	isoContour.SetDisplay(planeDisplay);
 
 	testList = new TaskList([

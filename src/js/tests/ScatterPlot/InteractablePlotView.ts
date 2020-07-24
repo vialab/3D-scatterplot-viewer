@@ -41,7 +41,8 @@ export class InteractablePlotView extends TaskDisplay
 			Math.random() * (360 - maxRotation),
 			Math.random() * (180 - maxRotation)
 		);
-		this.fullView = new InteractableGraph(fullViewPoints, axisLength, initialRotation, maxRotation);
+		let rotationRange = new Three.Vector2(maxRotation, maxRotation);
+		this.fullView = new InteractableGraph(fullViewPoints, axisLength, initialRotation, rotationRange);
 		this.fullView.UsePerspectiveCamera();
 
 		this.toggleOrthoButton = new ToggleOrthographicButton(this.fullView, false);

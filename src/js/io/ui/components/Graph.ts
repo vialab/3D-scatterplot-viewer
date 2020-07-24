@@ -51,6 +51,16 @@ export class Graph implements UiElement
 		this.RenderContinuously = this.RenderContinuously.bind(this);
 	}
 
+	public AddToScene(obj : Three.Object3D) : void
+	{
+		this.scene.add(obj);
+	}
+
+	public RemoveFromScene(obj : Three.Object3D) : void
+	{
+		this.scene.remove(obj);
+	}
+
 	protected toRadians(deg : number)
 	{
 		return deg * Math.PI / 180;
