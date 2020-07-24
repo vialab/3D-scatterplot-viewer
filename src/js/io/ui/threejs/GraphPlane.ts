@@ -2,12 +2,13 @@ import { ThreeJsComponent } from "./ThreeJsComponent";
 import { Object3D, Vector3, BufferGeometry, Color, BufferAttribute, Mesh, MeshBasicMaterial, DoubleSide } from "three";
 import Delaunator = require("delaunator");
 import { Point } from "../../../PlotData/Point";
+import { Graph } from "../components/Graph";
 
 export class GraphPlane implements ThreeJsComponent
 {
 	private mesh : Mesh;
 
-	constructor(points : Point[], axisLength : number)
+	public static FromPoints(points : Point[], axisLength : number)
 	{
 		let maxValue = axisLength/2;
 
@@ -51,7 +52,22 @@ export class GraphPlane implements ThreeJsComponent
 		geometry.setAttribute("color", new BufferAttribute(colors, 3, false));
 
 		var vertexColorMaterial  = new MeshBasicMaterial( { vertexColors: true, side: DoubleSide } );
-		this.mesh = new Mesh( geometry, vertexColorMaterial );
+		let mesh = new Mesh( geometry, vertexColorMaterial );
+
+		let plane = new GraphPlane(mesh);
+
+		return plane;
+	}
+
+	public static Clone(plane : GraphPlane) : GraphPlane
+	{
+		let copy = new GraphPlane(plane.mesh.clone());
+		return copy;
+	}
+
+	private constructor(mesh : Mesh)
+	{
+		this.mesh = mesh;
 	}
 
 	Component(): Object3D

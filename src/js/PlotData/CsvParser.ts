@@ -1,16 +1,18 @@
 import { Point } from "./Point";
-import { Normalizer } from "./Normalizer";
+import { Normalizer } from "./Normalization/Normalizer";
 
 export class CsvParser
 {
 	public POINT_MULTIPLY = 1;
 	public EntriesPerLine = 3;
 
+	private normalizer : Normalizer;
 	private dataset : number[];
 	private maxPoints : number;
 
-	constructor(dataset : number[], entriesPerLine : number=3, maxPoints : number = 0)
+	constructor(normalizer : Normalizer, dataset : number[], entriesPerLine : number=3, maxPoints : number = 0)
 	{
+		this.normalizer = normalizer;
 		this.dataset = dataset;
 		this.EntriesPerLine = entriesPerLine;
 		this.maxPoints = maxPoints;
@@ -36,6 +38,6 @@ export class CsvParser
 			}
 		}
 
-		return Normalizer.Normalize(points);
+		return this.normalizer.Normalize(points);
 	}
 }

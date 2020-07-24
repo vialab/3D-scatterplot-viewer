@@ -1,8 +1,9 @@
-import { Point } from "./Point";
+import { Normalizer } from "./Normalizer";
+import { Point } from "../Point";
 
-export class Normalizer
+export class LinearScaleNormalizer implements Normalizer
 {
-	public static Normalize(points : Point[]) : Point[]
+	Normalize(points: Point[]): Point[]
 	{
 		let normalizedPoints : Point[] = [];
 		let highestAxisValue = -Infinity;

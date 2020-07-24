@@ -18,7 +18,9 @@ import { CsvParser } from "./PlotData/CsvParser";
 import { InteractablePlotView } from "./tests/ScatterPlot/InteractablePlotView";
 import PlotData from "./PlotData/iris";
 import { MultiPlotView } from "./tests/ScatterPlot/MultiPlotView";
-import { Normalizer } from "./PlotData/Normalizer";
+import { LinearScaleNormalizer } from "./PlotData/Normalization/LinearScaleNormalizer";
+import { IndependentAxisNormalizer } from "./PlotData/Normalization/IndependentAxisNormalizer";
+import { Isocontour } from "./tests/Isocontour/IsoContour";
 
 let EXAMPLE_PLANE_AXIS_LENGTH = 600;
 
@@ -30,26 +32,29 @@ let uiUpdateTimer : any;
 
 $(function Main()
 {
+	let linearNormalizer = new LinearScaleNormalizer();
+	let axisNormalizer = new IndependentAxisNormalizer();
+
 	display = new UserInterface();
-	let visTaskWrapper = new ScatterPlot();
+	let isoContour = new Isocontour();
 	let waves = GenerateWaveGraph(40, EXAMPLE_PLANE_AXIS_LENGTH/1.8, 13);
 	let pyramid = PyramidPoints(EXAMPLE_PLANE_AXIS_LENGTH/1.8);
 	
-	let examplePlaneParser = new CsvParser(Plane);
+	let examplePlaneParser = new CsvParser(axisNormalizer, Plane);
 	let examplePlane = examplePlaneParser.ParsePoints();
+	for (let i = 0; i < examplePlane.length; i++)
+	{
+		let p = examplePlane[i];
+		let tmp = p.Z;
+		p.Z = p.Y;
+		p.Y = tmp;
+	}
 
-	let planeDisplay = new PlaneDisplay(waves, EXAMPLE_PLANE_AXIS_LENGTH);
-	visTaskWrapper.SetDisplay(planeDisplay);
-	
-	let parsedPlotData = new CsvParser(<number[]>PlotData, 12, 500).ParsePoints();
-	let scatterPlotDisplay = new InteractablePlotView(parsedPlotData, 600);
-	let multiDisplay = new MultiPlotView(parsedPlotData, 400);
-	let scatterplot = new ScatterPlot();
-	scatterplot.SetDisplay(scatterPlotDisplay);
+	let planeDisplay = new PlaneDisplay(examplePlane, EXAMPLE_PLANE_AXIS_LENGTH);
+	isoContour.SetDisplay(planeDisplay);
 
 	testList = new TaskList([
-		// scatterplot,
-		visTaskWrapper,
+		isoContour,
 	]);
 	
 	ApplyPageEventHandlers();
@@ -61,7 +66,7 @@ function PyramidPoints(baseSideLength : number) : Point[]
 {
 	let maxValue = baseSideLength/2;
 
-	return Normalizer.Normalize([
+	return new LinearScaleNormalizer().Normalize([
 		new Point(-maxValue, 0, -maxValue),
 		new Point(maxValue, 0, -maxValue),
 		new Point(0, maxValue, 0),
@@ -87,7 +92,7 @@ function GenerateWaveGraph(pointsPerSlice : number, dimension : number, multipli
 		}
 	}
 
-	return Normalizer.Normalize(points);
+	return new IndependentAxisNormalizer().Normalize(points);
 }
 
 function RandomPiechart(numberOfSlices : number) : PieChartData[]
