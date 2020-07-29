@@ -2,8 +2,6 @@ import { Conrec } from "../../../lib/conrec/conrec";
 import { Point } from "../../../PlotData/Point";
 import {ThreeJsComponent} from "./ThreeJsComponent";
 import { Object3D, Group, LineBasicMaterial, BufferGeometry, Vector3, Line, LineLoop } from "three";
-import { group } from "d3";
-// let MarchingSquares : any = require("marchingsquares");
 
 export class Isolines implements ThreeJsComponent
 {
@@ -18,20 +16,14 @@ export class Isolines implements ThreeJsComponent
 		//Pseudo-HashMaps to collect unique values per axis
 		let xDict : number[] = [];
 		let yDict : number[] = [];
-		// let zDict : number[] = [];
 
 		let thresholds : number[] = [];
-		let NUM_THRESHOLDS = 12;
-		let THRESHOLD_INCREMENT = 1/NUM_THRESHOLDS;
+		let NUM_THRESHOLDS = 20;
+		let THRESHOLD_INCREMENT = 2/NUM_THRESHOLDS;
 		for (let i = -1; i <= 1; i +=THRESHOLD_INCREMENT)
 		{
 			thresholds.push(i);
 		}
-
-		//Sort by x-z in ascending order
-		// points.sort((p1, p2) => 
-		// 	p1.X == p2.X? p1.Z-p2.Z : p1.X - p2.X
-		// );
 
 		for (let i = 0; i < points.length; i++)
 		{
