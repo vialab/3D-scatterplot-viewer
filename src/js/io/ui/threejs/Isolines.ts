@@ -1,7 +1,7 @@
 import { Conrec } from "../../../lib/conrec/conrec";
 import { Point } from "../../../PlotData/Point";
 import {ThreeJsComponent} from "./ThreeJsComponent";
-import { Object3D, Group, LineBasicMaterial, BufferGeometry, Vector3, Line, LineLoop } from "three";
+import { Object3D, Group, LineBasicMaterial, BufferGeometry, Vector3, Line, LineLoop, CatmullRomCurve3, RGBA_PVRTC_2BPPV1_Format } from "three";
 
 export class Isolines implements ThreeJsComponent
 {
@@ -16,6 +16,11 @@ export class Isolines implements ThreeJsComponent
 		//Pseudo-HashMaps to collect unique values per axis
 		let xDict : number[] = [];
 		let yDict : number[] = [];
+
+		//Order along x-z ascending
+		points.sort((p1, p2) =>
+			p1.X == p2.X? p1.Z-p2.Z : p1.X-p2.X
+		);
 
 		let thresholds : number[] = [];
 		let NUM_THRESHOLDS = 20;
@@ -70,6 +75,7 @@ export class Isolines implements ThreeJsComponent
 				linePoints.push(new Vector3(point.x*highestAxisValue, 0, point.y*highestAxisValue));
 			}
 
+			// let curve = new CatmullRomCurve3(linePoints, false, "centripetal", 1);
 			geometry.setFromPoints(linePoints);
 			this.lineGroup.add(new Line(geometry, material));
 		}
