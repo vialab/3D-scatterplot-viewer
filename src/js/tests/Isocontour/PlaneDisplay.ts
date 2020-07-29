@@ -9,6 +9,7 @@ import { OrbitControls } from "three-orbitcontrols-ts";
 import { GraphPlane } from "../../io/ui/threejs/GraphPlane";
 import { InteractableGraph } from "../../io/ui/components/InteractableGraph";
 import { FixedRotationGraph } from "../../io/ui/components/FixedRotationGraph";
+import { Isolines } from "../../io/ui/threejs/Isolines";
 
 export class PlaneDisplay extends TaskDisplay
 {
@@ -21,7 +22,7 @@ export class PlaneDisplay extends TaskDisplay
 		super();
 
 		let plane = GraphPlane.FromPoints(points, axisLength-10);
-		let orthoPlane = GraphPlane.Clone(plane);
+		let orthoPlane = new Isolines(points, axisLength);
 
 		this.graph = new InteractableGraph(plane, axisLength, new Vector2(0,0), new Three.Vector2(360, 30));
 		this.orthoGraph = new FixedRotationGraph(orthoPlane, axisLength, new Vector2(0,0));

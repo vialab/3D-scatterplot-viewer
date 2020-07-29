@@ -16,6 +16,7 @@ import { CsvParser } from "./PlotData/CsvParser";
 import { LinearScaleNormalizer } from "./PlotData/Normalization/LinearScaleNormalizer";
 import { IndependentAxisNormalizer } from "./PlotData/Normalization/IndependentAxisNormalizer";
 import { Isocontour } from "./tests/Isocontour/IsoContour";
+import { Isolines } from "./io/ui/threejs/Isolines";
 
 let EXAMPLE_PLANE_AXIS_LENGTH = 600;
 
@@ -34,6 +35,8 @@ $(function Main()
 	let isoContour = new Isocontour();
 	let waves = GenerateWaveGraph(40, EXAMPLE_PLANE_AXIS_LENGTH/1.8, 13);
 	let pyramid = PyramidPoints(EXAMPLE_PLANE_AXIS_LENGTH/1.8);
+
+	// new Isolines(waves);
 	
 	// let examplePlaneParser = new CsvParser(axisNormalizer, Plane);
 	// let examplePlane = examplePlaneParser.ParsePoints();
