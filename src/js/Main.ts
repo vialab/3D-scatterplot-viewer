@@ -20,10 +20,12 @@ import { Isolines } from "./io/ui/threejs/Isolines";
 import { InteractablePlotView } from "./tests/ScatterPlot/InteractablePlotView";
 import { MultiPlotView } from "./tests/ScatterPlot/MultiPlotView";
 import { HeatmapPlaneDisplay } from "./tests/Isocontour/HeatmapPlaneDisplay";
+import { PieChartDisplay } from "./tests/PieChart/PieChartDisplay";
+import { PieChart } from "./tests/PieChart/PieChart";
 
 let EXAMPLE_PLANE_AXIS_LENGTH = 600;
 
-let display : UserInterface;
+let UI : UserInterface;
 let testList : TaskList;
 let task : Task;
 
@@ -34,8 +36,7 @@ $(function Main()
 	let linearNormalizer = new LinearScaleNormalizer();
 	let axisNormalizer = new IndependentAxisNormalizer();
 
-	display = new UserInterface();
-	let isoContour = new Isocontour();
+	UI = new UserInterface();
 	let waves = GenerateWaveGraph(40, EXAMPLE_PLANE_AXIS_LENGTH/1.8, 13);
 
 	// let examplePlaneParser = new CsvParser(axisNormalizer, Plane);
@@ -48,11 +49,15 @@ $(function Main()
 	// 	p.Y = tmp;
 	// }
 
-	let planeDisplay = new HeatmapPlaneDisplay(waves, EXAMPLE_PLANE_AXIS_LENGTH);
-	isoContour.SetDisplay(planeDisplay);
+	let firstChart = RandomPiechart(6);
+	let second = RandomPiechart(6);
+	let task = new PieChart(firstChart, second);
+	task.SetPrompt("Do these pie charts represent the same data?");
+	let display = new PieChartDisplay(firstChart, second);
+	task.SetDisplay(display);
 
 	testList = new TaskList([
-		isoContour,
+		task,
 	]);
 	
 	ApplyPageEventHandlers();
@@ -169,7 +174,7 @@ async function NextTask() : Promise<void>
 	//TODO temp code for mockups to show timer functionality
 	if (task.IsConfidenceTracked())
 	{
-		display.SetTimerProgress(Math.random() * 75);
+		UI.SetTimerProgress(Math.random() * 75);
 	}
 	
 	let result : TaskResult = await task.WaitForCompletion();
@@ -189,17 +194,17 @@ function AllTestsCompleted()
 
 function DisplayTask(task : Task)
 {
-	display.ClearView();
+	UI.ClearView();
 	
-	display.SetTimerProgress(0);
+	UI.SetTimerProgress(0);
 
-	display.SetTitle(task.GetTitle());
-	display.SetPrompt(task.GetPrompt());
-	display.ShowOptions(task);
+	UI.SetTitle(task.GetTitle());
+	UI.SetPrompt(task.GetPrompt());
+	UI.ShowOptions(task);
 	if (task.IsExplicitSubmissionRequired())
-		display.ShowSubmitButton();
+		UI.ShowSubmitButton();
 	else
-		display.HideSubmitButton();
+		UI.HideSubmitButton();
 	
-	task.GetDisplay().Display(display);
+	task.GetDisplay().Display(UI);
 }
