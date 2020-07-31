@@ -3,6 +3,7 @@ import { WireframeCube } from "../threejs/WireFrameCube";
 import { ThreeJsComponent } from "../threejs/ThreeJsComponent";
 import {UiElement} from "../UiElement";
 import { PlaneHighlights } from "../threejs/AxisHighlight";
+import { Color } from "../Color";
 
 export class Graph implements UiElement
 {
@@ -15,15 +16,17 @@ export class Graph implements UiElement
 	protected activeCamera : Three.Camera;
 	protected perspectiveCamera : Three.PerspectiveCamera;
 	protected orthographicCamera : Three.OrthographicCamera;
-
-	protected highlights : PlaneHighlights;
+	
 	protected border : ThreeJsComponent;
 	protected data : ThreeJsComponent;
 
+	protected highlights : PlaneHighlights;
+
+	protected directionalLight : Three.DirectionalLight;
+	protected ambientLight : Three.AmbientLight;
+
 	constructor(border : ThreeJsComponent, data : ThreeJsComponent, axisLength : number)
 	{
-		this.highlights = new PlaneHighlights(axisLength);
-		
 		this.renderer = new Three.WebGLRenderer();
 		this.renderer.setSize(axisLength, axisLength);
 		this.renderer.setClearColor(0xffffff);
@@ -51,18 +54,29 @@ export class Graph implements UiElement
 		this.data = data;
 		this.scene.add(this.data.Component());
 
+		let lightColor = new Three.Color(1, 1, 1);
+
+		this.directionalLight = new Three.DirectionalLight(lightColor, 0);
+		this.scene.add(this.directionalLight);
+
+		this.ambientLight = new Three.AmbientLight(lightColor, 1);
+		this.scene.add(this.ambientLight);
+		
+
+		this.highlights = new PlaneHighlights(axisLength);
+
 		//Silly hack for requestAnimationFrame call
 		this.RenderContinuously = this.RenderContinuously.bind(this);
 	}
 
-	public AddToScene(obj : Three.Object3D) : void
+	public SetCameraLightStrength(strength : number)
 	{
-		this.scene.add(obj);
+		this.directionalLight.intensity = strength;
 	}
 
-	public RemoveFromScene(obj : Three.Object3D) : void
+	public SetAmbientLightStrength(strength : number)
 	{
-		this.scene.remove(obj);
+		this.ambientLight.intensity = strength;
 	}
 
 	protected toRadians(deg : number)
@@ -105,6 +119,10 @@ export class Graph implements UiElement
 	protected Render()
 	{
 		this.activeCamera.lookAt(0,0,0);
+
+		this.directionalLight.position.copy(this.activeCamera.position);
+		this.directionalLight.lookAt(0,0,0);
+		
 		this.renderer.render(this.scene, this.activeCamera);
 	}
 
