@@ -7,11 +7,9 @@ import { Vector2, DirectionalLight, AmbientLight } from "three";
 import { GraphPlane } from "../../io/ui/threejs/GraphPlane";
 import { InteractableGraph } from "../../io/ui/components/InteractableGraph";
 import { FixedRotationGraph } from "../../io/ui/components/FixedRotationGraph";
-import { Isolines } from "../../io/ui/threejs/Isolines";
-import { WireframeCube } from "../../io/ui/threejs/WireFrameCube";
 import { AxisLabel } from "../../io/ui/threejs/AxisLabel";
 
-export class PlaneDisplay extends TaskDisplay
+export class HeatmapPlaneDisplay extends TaskDisplay
 {
 	private interactableGraph : InteractableGraph;
 	private orthoGraph : FixedRotationGraph;
@@ -22,7 +20,7 @@ export class PlaneDisplay extends TaskDisplay
 
 		let interactableAxisLabel = new AxisLabel(axisLength);
 		let interactablePlane = GraphPlane.FromPoints(points, axisLength);
-		let orthoPlane = new Isolines(points, axisLength);
+		let orthoPlane = GraphPlane.Clone(interactablePlane);
 		
 		this.interactableGraph = new InteractableGraph(interactableAxisLabel, interactablePlane, axisLength, new Vector2(0,0), new Three.Vector2(360, 30));
 		this.interactableGraph.SetAmbientLightStrength(0.5);

@@ -9,7 +9,7 @@ import { TestingComplete } from "./forms/TestingComplete";
 import { PieChartData } from "./tests/PieChart/PieChartData";
 import { Color } from "./io/ui/Color";
 import { Point } from "./PlotData/Point";
-import { PlaneDisplay } from "./tests/Isocontour/PlaneDisplay";
+import { ContourPlaneDisplay } from "./tests/Isocontour/ContourPlaneDisplay";
 
 import Plane from "./PlotData/gaussianSurface";
 import { CsvParser } from "./PlotData/CsvParser";
@@ -19,6 +19,7 @@ import { Isocontour } from "./tests/Isocontour/IsoContour";
 import { Isolines } from "./io/ui/threejs/Isolines";
 import { InteractablePlotView } from "./tests/ScatterPlot/InteractablePlotView";
 import { MultiPlotView } from "./tests/ScatterPlot/MultiPlotView";
+import { HeatmapPlaneDisplay } from "./tests/Isocontour/HeatmapPlaneDisplay";
 
 let EXAMPLE_PLANE_AXIS_LENGTH = 600;
 
@@ -47,7 +48,7 @@ $(function Main()
 	// 	p.Y = tmp;
 	// }
 
-	let planeDisplay = new PlaneDisplay(waves, EXAMPLE_PLANE_AXIS_LENGTH);
+	let planeDisplay = new HeatmapPlaneDisplay(waves, EXAMPLE_PLANE_AXIS_LENGTH);
 	isoContour.SetDisplay(planeDisplay);
 
 	testList = new TaskList([
