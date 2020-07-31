@@ -23,7 +23,10 @@ import { HeatmapPlaneDisplay } from "./tests/Isocontour/HeatmapPlaneDisplay";
 import { PieChartDisplay } from "./tests/PieChart/PieChartDisplay";
 import { PieChart } from "./tests/PieChart/PieChart";
 
-let EXAMPLE_PLANE_AXIS_LENGTH = 600;
+import Iris from "./PlotData/iris";
+import { ScatterPlot } from "./tests/ScatterPlot/ScatterPlot";
+
+let EXAMPLE_PLANE_AXIS_LENGTH = 450;
 
 let UI : UserInterface;
 let testList : TaskList;
@@ -49,11 +52,14 @@ $(function Main()
 	// 	p.Y = tmp;
 	// }
 
-	let firstChart = RandomPiechart(6);
-	let second = RandomPiechart(6);
-	let task = new PieChart(firstChart, second);
+	let parser = new CsvParser(axisNormalizer, Iris, 13, 1000);
+	let parsedData = parser.ParsePoints();
+	let noise = RandomPoints(75, -0.9, 0.9);
+	let points = parsedData.concat(noise);
+
+	let task = new ScatterPlot();
 	task.SetPrompt("Do these pie charts represent the same data?");
-	let display = new PieChartDisplay(firstChart, second);
+	let display = new InteractablePlotView(points, EXAMPLE_PLANE_AXIS_LENGTH-10);
 	task.SetDisplay(display);
 
 	testList = new TaskList([
