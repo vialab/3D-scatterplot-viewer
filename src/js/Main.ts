@@ -17,6 +17,7 @@ import { LinearScaleNormalizer } from "./PlotData/Normalization/LinearScaleNorma
 import { IndependentAxisNormalizer } from "./PlotData/Normalization/IndependentAxisNormalizer";
 import { Isocontour } from "./tests/Isocontour/IsoContour";
 import { Isolines } from "./io/ui/threejs/Isolines";
+import { InteractablePlotView } from "./tests/ScatterPlot/InteractablePlotView";
 
 let EXAMPLE_PLANE_AXIS_LENGTH = 600;
 
@@ -34,20 +35,20 @@ $(function Main()
 	display = new UserInterface();
 	let isoContour = new Isocontour();
 	let waves = GenerateWaveGraph(40, EXAMPLE_PLANE_AXIS_LENGTH/1.8, 13);
-	let pyramid = PyramidPoints(EXAMPLE_PLANE_AXIS_LENGTH/1.8);
 
-	let examplePlaneParser = new CsvParser(axisNormalizer, Plane);
-	let examplePlane = examplePlaneParser.ParsePoints();
-	for (let i = 0; i < examplePlane.length; i++)
-	{
-		let p = examplePlane[i];
-		let tmp = p.Z;
-		p.Z = p.Y;
-		p.Y = tmp;
-	}
+	// let examplePlaneParser = new CsvParser(axisNormalizer, Plane);
+	// let examplePlane = examplePlaneParser.ParsePoints();
+	// for (let i = 0; i < examplePlane.length; i++)
+	// {
+	// 	let p = examplePlane[i];
+	// 	let tmp = p.Z;
+	// 	p.Z = p.Y;
+	// 	p.Y = tmp;
+	// }
 
 	let planeDisplay = new PlaneDisplay(waves, EXAMPLE_PLANE_AXIS_LENGTH);
-	isoContour.SetDisplay(planeDisplay);
+	let plot = new InteractablePlotView(waves, EXAMPLE_PLANE_AXIS_LENGTH);
+	isoContour.SetDisplay(plot);
 
 	testList = new TaskList([
 		isoContour,
@@ -57,19 +58,6 @@ $(function Main()
 	
 	NextTask();
 });
-
-function PyramidPoints(baseSideLength : number) : Point[]
-{
-	let maxValue = baseSideLength/2;
-
-	return new LinearScaleNormalizer().Normalize([
-		new Point(-maxValue, 0, -maxValue),
-		new Point(maxValue, 0, -maxValue),
-		new Point(0, maxValue, 0),
-		new Point(-maxValue, 0, maxValue),
-		new Point(maxValue, 0, maxValue),
-	]);
-}
 
 function GenerateWaveGraph(pointsPerSlice : number, dimension : number, multiplier : number=1) : Point[]
 {

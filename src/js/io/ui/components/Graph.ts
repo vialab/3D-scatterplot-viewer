@@ -2,6 +2,8 @@ import * as Three from "three";
 import { WireframeCube } from "../threejs/WireFrameCube";
 import { ThreeJsComponent } from "../threejs/ThreeJsComponent";
 import {UiElement} from "../UiElement";
+import { PlaneHighlights } from "../threejs/AxisHighlight";
+import { Plane } from "three";
 
 export class Graph implements UiElement
 {
@@ -15,11 +17,14 @@ export class Graph implements UiElement
 	protected perspectiveCamera : Three.PerspectiveCamera;
 	protected orthographicCamera : Three.OrthographicCamera;
 
-	protected cube : WireframeCube;
+	protected highlights : PlaneHighlights;
+	protected border : ThreeJsComponent;
 	protected data : ThreeJsComponent;
 
 	constructor(data : ThreeJsComponent, axisLength : number)
 	{
+		this.highlights = new PlaneHighlights(axisLength);
+
 		this.renderer = new Three.WebGLRenderer();
 		this.renderer.setSize(axisLength, axisLength);
 		this.renderer.setClearColor(0xffffff);
@@ -40,9 +45,9 @@ export class Graph implements UiElement
 		this.orthographicCamera.position.z = axisLength;
 
 		this.activeCamera = this.perspectiveCamera;
-
-		this.cube = new WireframeCube(axisLength);
-		this.scene.add(this.cube.Component());
+		
+		this.border = new WireframeCube(axisLength);
+		this.scene.add(this.border.Component());
 
 		this.data = data;
 		this.scene.add(this.data.Component());
@@ -68,7 +73,7 @@ export class Graph implements UiElement
 
 	public TogglePlaneHighlight(planeNormal : Three.Vector3)
 	{
-		this.cube.TogglePlaneHighlight(this.scene, planeNormal);
+		this.highlights.TogglePlaneHighlight(this.scene, planeNormal);
 	}
 
 	public CameraNormal() : Three.Vector3
