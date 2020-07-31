@@ -12,9 +12,9 @@ export class InteractableGraph extends Graph
 
 	element : JQuery<HTMLElement>;
 
-	constructor(points : ThreeJsComponent, axisLength : number, initialRotation : Three.Vector2, maxRotation : Three.Vector2)
+	constructor(border : ThreeJsComponent, points : ThreeJsComponent, axisLength : number, initialRotation : Three.Vector2, maxRotation : Three.Vector2)
 	{
-		super(points, axisLength);
+		super(border, points, axisLength);
 
 		this.perspectiveCameraOrbit = new OrbitControls(this.perspectiveCamera, this.renderer.domElement);
 		this.orthographicCameraOrbit = new OrbitControls(this.orthographicCamera, this.renderer.domElement);

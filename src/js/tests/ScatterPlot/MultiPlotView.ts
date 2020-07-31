@@ -8,6 +8,8 @@ import { Graph } from "../../io/ui/components/Graph";
 import { PlaneSelector } from "../../io/ui/components/PlaneSelector";
 import { FixedRotationGraph } from "../../io/ui/components/FixedRotationGraph";
 import { ScatterPlotPoints } from "../../io/ui/threejs/ScatterPlotPoints";
+import { WireframeCube } from "../../io/ui/threejs/WireFrameCube";
+import { axisLeft } from "d3";
 
 export class MultiPlotView extends TaskDisplay
 {
@@ -29,15 +31,18 @@ export class MultiPlotView extends TaskDisplay
 		let secondRotationPoints = ScatterPlotPoints.Clone(planeViewPoints);
 
 		//TODO only currently displays view down -z axis
-		this.planeView = new FixedRotationGraph(planeViewPoints, edgeLength, planeSelection.Rotation);
+		let planeViewBorder = new WireframeCube(edgeLength);
+		this.planeView = new FixedRotationGraph(planeViewBorder, planeViewPoints, edgeLength, planeSelection.Rotation);
 		this.planeView.UseOrthographicCamera();
 
+		let firstRotationBorder = new WireframeCube(edgeLength);
 		let firstRotation = new Three.Vector2(Math.random() * 360, Math.random() * 180);
-		this.firstAngleView = new FixedRotationGraph(firstRotationPoints, edgeLength, firstRotation);
+		this.firstAngleView = new FixedRotationGraph(firstRotationBorder, firstRotationPoints, edgeLength, firstRotation);
 		this.firstAngleView.UsePerspectiveCamera();
 
+		let secondRotationBorder = new WireframeCube(edgeLength);
 		let secondRotation = new Three.Vector2(Math.random() * 360, Math.random() * 180);
-		this.secondAngleView = new FixedRotationGraph(secondRotationPoints, edgeLength, secondRotation);
+		this.secondAngleView = new FixedRotationGraph(secondRotationBorder, secondRotationPoints, edgeLength, secondRotation);
 		this.secondAngleView.UsePerspectiveCamera();
 
 		this.toggleOrthoButton = new ToggleOrthographicButton([this.firstAngleView, this.secondAngleView], false);

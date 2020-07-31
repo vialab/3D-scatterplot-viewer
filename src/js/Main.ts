@@ -18,6 +18,7 @@ import { IndependentAxisNormalizer } from "./PlotData/Normalization/IndependentA
 import { Isocontour } from "./tests/Isocontour/IsoContour";
 import { Isolines } from "./io/ui/threejs/Isolines";
 import { InteractablePlotView } from "./tests/ScatterPlot/InteractablePlotView";
+import { MultiPlotView } from "./tests/ScatterPlot/MultiPlotView";
 
 let EXAMPLE_PLANE_AXIS_LENGTH = 600;
 
@@ -47,8 +48,7 @@ $(function Main()
 	// }
 
 	let planeDisplay = new PlaneDisplay(waves, EXAMPLE_PLANE_AXIS_LENGTH);
-	let plot = new InteractablePlotView(waves, EXAMPLE_PLANE_AXIS_LENGTH);
-	isoContour.SetDisplay(plot);
+	isoContour.SetDisplay(planeDisplay);
 
 	testList = new TaskList([
 		isoContour,

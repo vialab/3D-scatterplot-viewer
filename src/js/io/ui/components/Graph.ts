@@ -3,7 +3,6 @@ import { WireframeCube } from "../threejs/WireFrameCube";
 import { ThreeJsComponent } from "../threejs/ThreeJsComponent";
 import {UiElement} from "../UiElement";
 import { PlaneHighlights } from "../threejs/AxisHighlight";
-import { Plane } from "three";
 
 export class Graph implements UiElement
 {
@@ -21,10 +20,10 @@ export class Graph implements UiElement
 	protected border : ThreeJsComponent;
 	protected data : ThreeJsComponent;
 
-	constructor(data : ThreeJsComponent, axisLength : number)
+	constructor(border : ThreeJsComponent, data : ThreeJsComponent, axisLength : number)
 	{
 		this.highlights = new PlaneHighlights(axisLength);
-
+		
 		this.renderer = new Three.WebGLRenderer();
 		this.renderer.setSize(axisLength, axisLength);
 		this.renderer.setClearColor(0xffffff);
@@ -46,7 +45,7 @@ export class Graph implements UiElement
 
 		this.activeCamera = this.perspectiveCamera;
 		
-		this.border = new WireframeCube(axisLength);
+		this.border = border;
 		this.scene.add(this.border.Component());
 
 		this.data = data;

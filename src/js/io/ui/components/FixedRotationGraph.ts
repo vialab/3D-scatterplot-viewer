@@ -9,9 +9,9 @@ export class FixedRotationGraph extends Graph
 	perspectiveRotator : OrbitControls;
 	orthographicRotator : OrbitControls;
 	
-	constructor(points : ThreeJsComponent, axisLength : number, rotation : Three.Vector2)
+	constructor(border : ThreeJsComponent, points : ThreeJsComponent, axisLength : number, rotation : Three.Vector2)
 	{
-		super(points, axisLength);
+		super(border, points, axisLength);
 
 		this.perspectiveRotator = new OrbitControls(this.perspectiveCamera, this.renderer.domElement);
 		this.orthographicRotator = new OrbitControls(this.orthographicCamera, this.renderer.domElement);

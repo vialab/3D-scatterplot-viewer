@@ -11,6 +11,7 @@ import { InteractableGraph } from "../../io/ui/components/InteractableGraph";
 import { FixedRotationGraph } from "../../io/ui/components/FixedRotationGraph";
 import { Isolines } from "../../io/ui/threejs/Isolines";
 import { Graph } from "../../io/ui/components/Graph";
+import { WireframeCube } from "../../io/ui/threejs/WireFrameCube";
 
 export class PlaneDisplay extends TaskDisplay
 {
@@ -22,13 +23,15 @@ export class PlaneDisplay extends TaskDisplay
 	constructor(points : Point[], axisLength : number)
 	{
 		super();
+		let interactableGraphBorder = new WireframeCube(axisLength);
+		let orthoGraphBorder = new WireframeCube(axisLength);
 
 		let plane = GraphPlane.FromPoints(points, axisLength);
 		let orthoPlane = new Isolines(points, axisLength);
 		this.isoLine = orthoPlane;
 
-		this.graph = new InteractableGraph(plane, axisLength, new Vector2(0,0), new Three.Vector2(360, 30));
-		this.orthoGraph = new FixedRotationGraph(orthoPlane, axisLength, new Vector2(0,0));
+		this.graph = new InteractableGraph(interactableGraphBorder, plane, axisLength, new Vector2(0,0), new Three.Vector2(360, 30));
+		this.orthoGraph = new FixedRotationGraph(orthoGraphBorder, orthoPlane, axisLength, new Vector2(0,0));
 		this.orthoGraph.UseOrthographicCamera();
 
 		let lightColor = new Three.Color(1, 1, 1);
