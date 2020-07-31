@@ -30,7 +30,7 @@ export class Isolines implements ThreeJsComponent
 		let xDict : number[] = [];
 		let yDict : number[] = [];
 
-		//Order along z-x ascending
+		//Order along z-x axis ascending order
 		points.sort((p1, p2) =>
 			p1.Z == p2.Z? p1.X-p2.X : p1.Z-p2.Z
 		);
