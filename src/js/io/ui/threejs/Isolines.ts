@@ -30,9 +30,9 @@ export class Isolines implements ThreeJsComponent
 		let xDict : number[] = [];
 		let yDict : number[] = [];
 
-		//Order along x-z ascending
+		//Order along z-x ascending
 		points.sort((p1, p2) =>
-			p1.X == p2.X? p1.Z-p2.Z : p1.X-p2.X
+			p1.Z == p2.Z? p1.X-p2.X : p1.Z-p2.Z
 		);
 
 		let thresholds : number[] = [];
@@ -141,7 +141,7 @@ export class Isolines implements ThreeJsComponent
 
 		let planeComponent = plane.Component();
 		planeComponent.rotateX(1.5708);
-		// planeComponent.rotateY(-1.5708);
+		planeComponent.rotateY(1.5708);
 
 		scene.add(planeComponent);
 		scene.add(new AmbientLight(new Color(1,1,1), 1));
