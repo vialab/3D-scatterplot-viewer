@@ -36,17 +36,15 @@ $(function Main()
 	let waves = GenerateWaveGraph(40, EXAMPLE_PLANE_AXIS_LENGTH/1.8, 13);
 	let pyramid = PyramidPoints(EXAMPLE_PLANE_AXIS_LENGTH/1.8);
 
-	// new Isolines(waves);
-	
-	// let examplePlaneParser = new CsvParser(axisNormalizer, Plane);
-	// let examplePlane = examplePlaneParser.ParsePoints();
-	// for (let i = 0; i < examplePlane.length; i++)
-	// {
-	// 	let p = examplePlane[i];
-	// 	let tmp = p.Z;
-	// 	p.Z = p.Y;
-	// 	p.Y = tmp;
-	// }
+	let examplePlaneParser = new CsvParser(axisNormalizer, Plane);
+	let examplePlane = examplePlaneParser.ParsePoints();
+	for (let i = 0; i < examplePlane.length; i++)
+	{
+		let p = examplePlane[i];
+		let tmp = p.Z;
+		p.Z = p.Y;
+		p.Y = tmp;
+	}
 
 	let planeDisplay = new PlaneDisplay(waves, EXAMPLE_PLANE_AXIS_LENGTH);
 	isoContour.SetDisplay(planeDisplay);
@@ -78,9 +76,9 @@ function GenerateWaveGraph(pointsPerSlice : number, dimension : number, multipli
 	let points : Point[] = [];
 	let increment = 1/pointsPerSlice;
 
-	for (let x = 0; x < 1; x +=increment)
+	for (let x = 0; x <= 1; x +=increment)
 	{
-		for (let z = 0; z < 1; z += increment)
+		for (let z = 0; z <= 1; z += increment)
 		{
 			let screenY = (Math.sin(x*multiplier)-Math.cos(z*multiplier))*dimension;
 			let screenX = x*dimension - dimension/2;

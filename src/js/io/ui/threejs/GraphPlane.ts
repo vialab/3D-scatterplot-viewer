@@ -3,6 +3,7 @@ import { Object3D, Vector3, BufferGeometry, Color, BufferAttribute, Mesh, Double
 import Delaunator = require("delaunator");
 import { Point } from "../../../PlotData/Point";
 import { Graph } from "../components/Graph";
+import { range, csvParse } from "d3";
 
 export class GraphPlane implements ThreeJsComponent
 {
@@ -33,24 +34,24 @@ export class GraphPlane implements ThreeJsComponent
 		geometry.computeBoundingBox();
 		let minY = <number>geometry.boundingBox?.min.y;
 		let maxY = <number>geometry.boundingBox?.max.y;
-		let range = maxY-minY;
+		let range = maxY - minY;
 
 		let colors = new Uint8Array(vectors.length*3);
+		let ramp = new ColorRamp(minY, maxY)
 
 		for (let i = 0; i < vectors.length; i++)
 		{
 			let colorIndex = i*3;
 
 			let point = vectors[i];
-			let color = new Color( 0x0000ff );
-			color.setHSL( 0.7 * (maxY - point.y) / range, 1, 0.5 );
+			let color = ramp.Color(point.y);
 			
 			colors[colorIndex] = color.r;
 			colors[colorIndex+1] = color.g;
 			colors[colorIndex+2] = color.b;
 		}
-
-		geometry.setAttribute("color", new BufferAttribute(colors, 3, false));
+		
+		geometry.setAttribute("color", new BufferAttribute(colors, 3, true));
 
 		var vertexColorMaterial  = new MeshPhongMaterial( { vertexColors: true, side: DoubleSide, reflectivity: 0 } );
 		let mesh = new Mesh( geometry, vertexColorMaterial );
@@ -74,5 +75,40 @@ export class GraphPlane implements ThreeJsComponent
 	Component(): Object3D
 	{
 		return this.mesh;
+	}
+}
+
+class ColorRamp
+{
+	private minValue : number;
+	private maxValue : number;
+	private valueRange : number;
+
+	private colors : Color[];
+
+	constructor(minValue : number, maxValue : number)
+	{
+		this.minValue = minValue;
+		this.maxValue = maxValue;
+		this.valueRange = maxValue - minValue;
+		
+		this.colors = [
+			new Color(43, 131, 86),
+			new Color(171, 221, 164),
+			new Color(255, 255, 191),
+			new Color(253, 174, 97),
+			new Color(215, 25, 28),
+		];
+	}
+
+	public Color(value : number) : Color
+	{
+		if (value == this.maxValue)
+			return this.colors[this.colors.length-1];
+
+		let percentageOfMaximum = (value - this.minValue) / this.valueRange;
+		let closestColorIndex = Math.round(percentageOfMaximum * (this.colors.length-1));
+		let closestColor = this.colors[closestColorIndex];
+		return closestColor;
 	}
 }
