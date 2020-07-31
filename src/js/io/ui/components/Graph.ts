@@ -2,7 +2,7 @@ import * as Three from "three";
 import { WireframeCube } from "../threejs/WireFrameCube";
 import { ThreeJsComponent } from "../threejs/ThreeJsComponent";
 import {UiElement} from "../UiElement";
-import { PlaneHighlights } from "../threejs/AxisHighlight";
+import { PlaneHighlights } from "../threejs/PlaneHighlights";
 import { Color } from "../Color";
 
 export class Graph implements UiElement
@@ -122,7 +122,7 @@ export class Graph implements UiElement
 
 		this.directionalLight.position.copy(this.activeCamera.position);
 		this.directionalLight.lookAt(0,0,0);
-		
+
 		this.renderer.render(this.scene, this.activeCamera);
 	}
 
