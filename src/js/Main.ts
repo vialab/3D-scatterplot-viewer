@@ -26,7 +26,7 @@ import { PieChart } from "./tests/PieChart/PieChart";
 import Iris from "./PlotData/iris";
 import { ScatterPlot } from "./tests/ScatterPlot/ScatterPlot";
 
-let EXAMPLE_PLANE_AXIS_LENGTH = 450;
+let EXAMPLE_PLANE_AXIS_LENGTH = 400;
 
 let UI : UserInterface;
 let testList : TaskList;
@@ -59,7 +59,7 @@ $(function Main()
 
 	let task = new ScatterPlot();
 	task.SetPrompt("Do these pie charts represent the same data?");
-	let display = new InteractablePlotView(points, EXAMPLE_PLANE_AXIS_LENGTH-10);
+	let display = new MultiPlotView(points, EXAMPLE_PLANE_AXIS_LENGTH-10);
 	task.SetDisplay(display);
 
 	testList = new TaskList([
