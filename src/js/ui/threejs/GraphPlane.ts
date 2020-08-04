@@ -1,7 +1,7 @@
 import { ThreeJsComponent } from "./ThreeJsComponent";
 import { Object3D, Vector3, BufferGeometry, Color, BufferAttribute, Mesh, DoubleSide, MeshPhongMaterial, MeshStandardMaterial, MeshLambertMaterial, MeshDepthMaterial, MeshDistanceMaterial, MeshToonMaterial, MeshNormalMaterial } from "three";
 import Delaunator = require("delaunator");
-import { Point } from "../../../PlotData/Point";
+import { Point } from "../../PlotData/Point";
 import { Graph } from "../components/Graph";
 import { range, csvParse } from "d3";
 

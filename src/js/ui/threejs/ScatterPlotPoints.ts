@@ -1,5 +1,5 @@
 import * as Three from "three";
-import { Point } from "../../../PlotData/Point";
+import { Point } from "../../PlotData/Point";
 import { ThreeJsComponent } from "./ThreeJsComponent";
 
 export class ScatterPlotPoints implements ThreeJsComponent

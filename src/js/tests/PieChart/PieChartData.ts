@@ -1,4 +1,4 @@
-import { Color } from "../../io/ui/Color";
+import { Color } from "../../ui/Color";
 
 export class PieChartData
 {

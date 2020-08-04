@@ -1,14 +1,14 @@
 import * as Three from "three";
 import { TaskDisplay, UserInterface } from "../../io";
 import { Point } from "../../PlotData/Point";
-import { ToggleOrthographicButton } from "../../io/ui/components/ToggleOrthographicButton";
+import { ToggleOrthographicButton } from "../../ui/components/ToggleOrthographicButton";
 import { IdGenerator } from "../../util/IdGenerator";
 import { RandomPlane } from "./RandomPlane";
-import { Graph } from "../../io/ui/components/Graph";
-import { PlaneSelector } from "../../io/ui/components/PlaneSelector";
-import { FixedRotationGraph } from "../../io/ui/components/FixedRotationGraph";
-import { ScatterPlotPoints } from "../../io/ui/threejs/ScatterPlotPoints";
-import { WireframeCube } from "../../io/ui/threejs/WireFrameCube";
+import { Graph } from "../../ui/components/Graph";
+import { PlaneSelector } from "../../ui/components/PlaneSelector";
+import { FixedRotationGraph } from "../../ui/components/FixedRotationGraph";
+import { ScatterPlotPoints } from "../../ui/threejs/ScatterPlotPoints";
+import { WireframeCube } from "../../ui/threejs/WireFrameCube";
 import { axisLeft } from "d3";
 
 export class MultiPlotView extends TaskDisplay

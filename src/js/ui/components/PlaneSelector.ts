@@ -1,5 +1,5 @@
 import * as Three from "three";
-import { IdGenerator } from "../../../util/IdGenerator";
+import { IdGenerator } from "../../util/IdGenerator";
 import { timeHours } from "d3";
 import GraphPlaneNormals from "./PlaneNormals";
 

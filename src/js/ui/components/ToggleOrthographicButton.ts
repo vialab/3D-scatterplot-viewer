@@ -1,5 +1,5 @@
 import { Graph } from "./Graph";
-import { IdGenerator } from "../../../util/IdGenerator";
+import { IdGenerator } from "../../util/IdGenerator";
 
 export class ToggleOrthographicButton
 {

@@ -1,5 +1,5 @@
 import { Vector3, Vector2 } from "three";
-import GraphPlaneNormals from "../../io/ui/components/PlaneNormals";
+import GraphPlaneNormals from "../../ui/components/PlaneNormals";
 
 export class RandomPlane
 {

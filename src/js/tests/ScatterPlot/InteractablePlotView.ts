@@ -4,16 +4,16 @@ import { TaskDisplay, UserInterface } from "../../io";
 import { Point } from "../../PlotData/Point";
 import { IdGenerator } from "../../util/IdGenerator";
 import { OrbitControls } from 'three-orbitcontrols-ts';
-import GraphPlaneNormals from "../../io/ui/components/PlaneNormals";
-import { ToggleOrthographicButton } from "../../io/ui/components/ToggleOrthographicButton";
+import GraphPlaneNormals from "../../ui/components/PlaneNormals";
+import { ToggleOrthographicButton } from "../../ui/components/ToggleOrthographicButton";
 import { Vector3, Vector2 } from "three";
 import { RandomPlane } from "./RandomPlane";
-import { Graph } from "../../io/ui/components/Graph";
-import { PlaneSelector } from "../../io/ui/components/PlaneSelector";
-import { FixedRotationGraph } from "../../io/ui/components/FixedRotationGraph";
-import { InteractableGraph } from "../../io/ui/components/InteractableGraph";
-import { ScatterPlotPoints } from "../../io/ui/threejs/ScatterPlotPoints";
-import { WireframeCube } from "../../io/ui/threejs/WireFrameCube";
+import { Graph } from "../../ui/components/Graph";
+import { PlaneSelector } from "../../ui/components/PlaneSelector";
+import { FixedRotationGraph } from "../../ui/components/FixedRotationGraph";
+import { InteractableGraph } from "../../ui/components/InteractableGraph";
+import { ScatterPlotPoints } from "../../ui/threejs/ScatterPlotPoints";
+import { WireframeCube } from "../../ui/threejs/WireFrameCube";
 
 export class InteractablePlotView extends TaskDisplay
 {
