@@ -1,17 +1,14 @@
-import {Option} from "./Option";
-import {TaskResult} from "./TaskResult";
-import {TaskDisplay, UserInterface} from "../io";
-import {Timer, UnlimitedTimer} from "../metrics";
 
-export abstract class Task
+import {TaskDisplay} from "../io";
+import {TaskController} from "./TaskController";
+import { Timer, UnlimitedTimer } from "../metrics";
+
+export class Task
 {
-	protected result : TaskResult;
+	public Metadata : Object = {};
 
-	private promise : Promise<TaskResult>;
-	protected resolve : (result : TaskResult) => any;
-	protected reject : (reason : any) => any;
-
-	private display : TaskDisplay;
+	public Display : TaskDisplay;
+	public Controller : TaskController;
 
 	private title : string;
 	private prompt : string;
@@ -19,21 +16,11 @@ export abstract class Task
 	private trackConfidence : boolean;
 	private trackResults : boolean;
 	private explicitSubmissionRequired : boolean;
-
-	constructor()
+	
+	constructor(display : TaskDisplay, controller : TaskController)
 	{
-		this.resolve = (result : TaskResult) => null;
-		this.reject = (reason : any) => null;
-
-		this.promise = new Promise<TaskResult>((resolve, reject) =>
-		{
-			this.resolve = resolve;
-			this.reject = reject;
-		});
-		
-		this.result = new TaskResult();
-
-		this.display = new NoDisplay();
+		this.Display = display;
+		this.Controller = controller;
 
 		this.title = "";
 		this.prompt = "";
@@ -41,34 +28,6 @@ export abstract class Task
 		this.trackConfidence = false;
 		this.trackResults = false;
 		this.explicitSubmissionRequired = false;
-	}
-
-	public async WaitForCompletion() : Promise<TaskResult>
-	{
-		return this.promise;
-	}
-
-	public Complete() : void
-	{
-		this.resolve(this.result);
-	}
-
-	Error(reason : any)
-	{
-		this.reject(reason);
-	}
-
-	public abstract Submit(selectedOptions : Option | Option[]) : void;
-	public abstract GetOptions() : Option[];
-	
-	public SetDisplay(display : TaskDisplay)
-	{
-		this.display = display;
-	}
-
-	public GetDisplay() : TaskDisplay
-	{
-		return this.display;
 	}
 
 	public SetTitle(title : string) : void
@@ -124,12 +83,5 @@ export abstract class Task
 	public IsResultsTracked() : boolean
 	{
 		return this.trackResults;
-	}
-}
-
-class NoDisplay extends TaskDisplay
-{
-	public Display(screen: UserInterface): void
-	{
 	}
 }

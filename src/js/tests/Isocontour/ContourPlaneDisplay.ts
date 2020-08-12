@@ -10,11 +10,12 @@ import { FixedRotationGraph } from "../../ui/components/FixedRotationGraph";
 import { Isolines } from "../../ui/threejs/Isolines";
 import { WireframeCube } from "../../ui/threejs/WireFrameCube";
 import { AxisLabel } from "../../ui/threejs/AxisLabel";
+import { Graph } from "../../ui/components/Graph";
 
 export class ContourPlaneDisplay extends TaskDisplay
 {
-	private interactableGraph : InteractableGraph;
-	private orthoGraph : FixedRotationGraph;
+	private interactableGraph : Graph;
+	private orthoGraph : Graph;
 
 	constructor(points : Point[], axisLength : number)
 	{
@@ -24,7 +25,13 @@ export class ContourPlaneDisplay extends TaskDisplay
 		let interactablePlane = GraphPlane.FromPoints(points, axisLength);
 		let orthoPlane = new Isolines(points, axisLength);
 		
-		this.interactableGraph = new InteractableGraph(interactableAxisLabel, interactablePlane, axisLength, new Vector2(0,0), new Three.Vector2(360, 30));
+		this.interactableGraph = new InteractableGraph(
+			interactableAxisLabel,
+			interactablePlane,
+			axisLength,
+			new Vector2(0,0),
+			new Three.Vector2(360, 30)
+		);
 		this.interactableGraph.SetAmbientLightStrength(0.5);
 		this.interactableGraph.SetCameraLightStrength(0.5);
 		

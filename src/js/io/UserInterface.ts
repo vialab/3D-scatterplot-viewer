@@ -58,7 +58,7 @@ export class UserInterface
 	{
 		this.optionsContainer.html("");
 
-		let options = task.GetOptions();
+		let options = task.Controller.GetOptions();
 
 		for (let i = 0; i < options.length; i++)
 		{
@@ -69,7 +69,7 @@ export class UserInterface
 			element.prop("data-option-id", option.Id);
 			element.click(() =>
 			{
-				task.Submit(option);
+				task.Controller.Submit(option);
 			});
 
 			this.optionsContainer.append(element);

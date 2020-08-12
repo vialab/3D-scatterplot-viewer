@@ -4,6 +4,7 @@ import { Graph } from "./Graph";
 import { OrbitControls } from "three-orbitcontrols-ts";
 import { ThreeJsComponent } from "../threejs/ThreeJsComponent";
 import { Vector2 } from "three";
+import { CameraInteractor } from "../threejs/CameraInteractor";
 
 export class InteractableGraph extends Graph
 {
@@ -20,7 +21,7 @@ export class InteractableGraph extends Graph
 		this.orthographicCameraOrbit = new OrbitControls(this.orthographicCamera, this.renderer.domElement);
 		
 		//TODO OrbitControls has max range from 0 to Math.PI
-		this.applyAngleViewRange(initialRotation, maxRotation);
+		// this.applyAngleViewRange(initialRotation, maxRotation);
 
 		this.element = super.Element();
 		this.element.css("cursor", "grab");

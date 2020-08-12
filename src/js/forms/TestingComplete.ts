@@ -1,32 +1,30 @@
 import { Task, Option, TaskResult } from "../tasks";
 import { UserInterface, TaskDisplay } from "../io";
 import { Timer, UnlimitedTimer } from "../metrics";
+import { TaskController } from "../tasks/TaskController";
 
 export class TestingComplete extends Task
 {
 	constructor()
 	{
-		super();
+		super(new TestingCompleteDisplay(), new TestingCompleteController());
+	}
+}
 
+class TestingCompleteController extends TaskController
+{
+	constructor()
+	{
+		super();
 	}
 
 	Submit(selectedOptions: Option): void
 	{
-		throw new Error("Method not implemented.");
 	}
+
 	GetOptions(): Option[]
 	{
 		return [];
-	}
-
-	GetDisplay(): TaskDisplay
-	{
-		return new TestingCompleteDisplay();
-	}
-
-	GetTimer(): Timer
-	{
-		return new UnlimitedTimer();
 	}
 }
 

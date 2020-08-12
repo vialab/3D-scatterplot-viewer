@@ -1,11 +1,11 @@
 import { Task, Option } from "../../tasks";
+import { TaskController } from "../../tasks/TaskController";
 
-export class Isocontour extends Task
+export class Isocontour extends TaskController
 {
 	constructor()
 	{
 		super();
-		this.SetPrompt("Does the isocontour represent the graph?");
 	}
 
 	public Submit(selectedOptions: Option | Option[]): void

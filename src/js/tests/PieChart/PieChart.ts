@@ -2,8 +2,9 @@ import {Task, Option} from "../../tasks";
 import { TaskDisplay } from "../../io";
 import { PieChartData } from "./PieChartData";
 import { PieChartDisplay } from "./PieChartDisplay";
+import { TaskController } from "../../tasks/TaskController";
 
-export class PieChart extends Task
+export class PieChart extends TaskController
 {
 	originalData : PieChartData[];
 	compareData : PieChartData[];
@@ -19,8 +20,6 @@ export class PieChart extends Task
 		
 		this.originalData = originalData;
 		this.compareData = compareData;
-
-		this.SetDisplay(new PieChartDisplay(this.originalData, this.compareData));
 	}
 
 	Submit(selectedOptions: Option): void

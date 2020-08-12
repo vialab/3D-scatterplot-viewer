@@ -11,7 +11,7 @@ import { Color } from "./ui/Color";
 import { Point } from "./PlotData/Point";
 import { ContourPlaneDisplay } from "./tests/Isocontour/ContourPlaneDisplay";
 
-import Plane from "./PlotData/gaussianSurface";
+import * as Plane from "./PlotData/gaussianSurface.json";
 import { CsvParser } from "./PlotData/CsvParser";
 import { LinearScaleNormalizer } from "./PlotData/Normalization/LinearScaleNormalizer";
 import { IndependentAxisNormalizer } from "./PlotData/Normalization/IndependentAxisNormalizer";
@@ -23,8 +23,11 @@ import { HeatmapPlaneDisplay } from "./tests/Isocontour/HeatmapPlaneDisplay";
 import { PieChartDisplay } from "./tests/PieChart/PieChartDisplay";
 import { PieChart } from "./tests/PieChart/PieChart";
 
-import Iris from "./PlotData/iris";
+import * as Iris from "./PlotData/iris.json";
 import { ScatterPlot } from "./tests/ScatterPlot/ScatterPlot";
+import { RandomIsocontourProvider } from "./tests/Isocontour/RandomIsocontourProvider";
+import { DemographicSurvey } from "./forms/demograpic";
+import { IshiharaTest } from "./forms/ishihara";
 
 let EXAMPLE_PLANE_AXIS_LENGTH = 400;
 
@@ -40,7 +43,7 @@ $(function Main()
 	let axisNormalizer = new IndependentAxisNormalizer();
 
 	UI = new UserInterface();
-	let waves = GenerateWaveGraph(40, EXAMPLE_PLANE_AXIS_LENGTH/1.8, 13);
+	// let waves = GenerateWaveGraph(40, EXAMPLE_PLANE_AXIS_LENGTH/1.8, 13);
 
 	// let examplePlaneParser = new CsvParser(axisNormalizer, Plane);
 	// let examplePlane = examplePlaneParser.ParsePoints();
@@ -52,44 +55,26 @@ $(function Main()
 	// 	p.Y = tmp;
 	// }
 
-	let parser = new CsvParser(axisNormalizer, Iris, 13, 1000);
-	let parsedData = parser.ParsePoints();
-	let noise = RandomPoints(75, -0.9, 0.9);
-	let points = parsedData.concat(noise);
+	// let parser = new CsvParser(axisNormalizer, Iris, 13, 1000);
+	// let parsedData = parser.ParsePoints();
+	// let noise = RandomPoints(75, -0.9, 0.9);
+	// let points = parsedData.concat(noise);
 
-	let task = new ScatterPlot();
-	task.SetPrompt("Do these pie charts represent the same data?");
-	let display = new MultiPlotView(points, EXAMPLE_PLANE_AXIS_LENGTH-10);
-	task.SetDisplay(display);
+	// let task = new ScatterPlot();
+	// task.SetPrompt("Do these pie charts represent the same data?");
+	// let display = new InteractablePlotView(points, EXAMPLE_PLANE_AXIS_LENGTH-10);
+	// task.SetDisplay(display);
 
 	testList = new TaskList([
-		task,
+		new IshiharaTest(),
+		new DemographicSurvey(),
+		new RandomIsocontourProvider(EXAMPLE_PLANE_AXIS_LENGTH).Create()
 	]);
 	
 	ApplyPageEventHandlers();
 	
 	NextTask();
 });
-
-function GenerateWaveGraph(pointsPerSlice : number, dimension : number, multiplier : number=1) : Point[]
-{
-	let points : Point[] = [];
-	let increment = 1/pointsPerSlice;
-
-	for (let x = 0; x <= 1; x +=increment)
-	{
-		for (let z = 0; z <= 1; z += increment)
-		{
-			let screenY = (Math.sin(x*multiplier)-Math.cos(z*multiplier))*dimension;
-			let screenX = x*dimension - dimension/2;
-			let screenZ = z*dimension - dimension/2;
-
-			points.push(new Point(screenX, screenY, screenZ));
-		}
-	}
-
-	return new IndependentAxisNormalizer().Normalize(points);
-}
 
 function RandomPiechart(numberOfSlices : number) : PieChartData[]
 {
@@ -109,27 +94,10 @@ function RandomPiechart(numberOfSlices : number) : PieChartData[]
 	return result;
 }
 
-function RandomPoints(numberOfPoints : number, min : number, max : number) : Point[]
-{
-	let points : Point[] = [];
-
-	for (let i = 0; i < numberOfPoints; i++)
-	{
-		points[i] = new Point(randomValue(), randomValue(), randomValue());
-	}
-
-	return points;
-
-	function randomValue()
-	{
-		return Math.random() * (max - min) + min;
-	}
-}
-
 function ApplyPracticeProperties(task : Task)
 {
 	let promptAppend = "&#9888; This is an example of the test you are about to do. Results of this test are not tracked.";
-
+	
 	task.SetTitle("Instructions");
 	task.SetPrompt(
 		task.GetPrompt() != ""?
@@ -144,7 +112,7 @@ function ApplyPageEventHandlers()
 {
 	$("#submit-test").click(() =>
 	{
-		NextTask();
+		task.Controller.Submit([]);
 	});
 }
 
@@ -183,7 +151,7 @@ async function NextTask() : Promise<void>
 		UI.SetTimerProgress(Math.random() * 75);
 	}
 	
-	let result : TaskResult = await task.WaitForCompletion();
+	let result : TaskResult = await task.Controller.WaitForCompletion();
 
 	if (task.IsResultsTracked())
 	{
@@ -212,5 +180,5 @@ function DisplayTask(task : Task)
 	else
 		UI.HideSubmitButton();
 	
-	task.GetDisplay().Display(UI);
+	task.Display.Display(UI);
 }

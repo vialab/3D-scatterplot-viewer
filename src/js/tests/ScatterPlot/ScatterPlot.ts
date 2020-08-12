@@ -2,13 +2,13 @@ import { Task, Option } from "../../tasks";
 import { TaskDisplay } from "../../io";
 import { InteractablePlotView } from "./InteractablePlotView";
 import { Point } from "../../PlotData/Point";
+import { TaskController } from "../../tasks/TaskController";
 
-export class ScatterPlot extends Task
+export class ScatterPlot extends TaskController
 {
 	constructor()
 	{
 		super();
-		this.SetExplicitSubmissionRequired(true);
 	}
 
 	public Submit(selectedOptions: Option): void

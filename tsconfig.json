@@ -6,7 +6,8 @@
 		],
 		"removeComments": true,
 		"strict": true,
-		"allowJs": true
+		"allowJs": true,
+		"resolveJsonModule": true
 	},
 	"include": [
 		"./src/js"

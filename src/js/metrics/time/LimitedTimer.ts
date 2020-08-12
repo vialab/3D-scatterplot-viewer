@@ -18,7 +18,7 @@ export class LimitedTimer extends Timer
 		if (this.Progress() >= 100)
 		{
 			//TODO make special result for timeout?
-			this.task.Complete();
+			this.task.Controller.Complete();
 		}
 	}
 
