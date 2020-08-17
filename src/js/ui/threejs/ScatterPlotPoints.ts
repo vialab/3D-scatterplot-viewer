@@ -13,6 +13,8 @@ export class ScatterPlotPoints implements ThreeJsComponent
 
 		let sphere = new Three.SphereGeometry(pointRadius, 10, 10);
 		let material = new Three.MeshBasicMaterial({color: 0x0033ff});
+		material.opacity = 0.7;
+		material.transparent = true;
 		element.createMesh(points, sphere, material, axisLength - padding);
 
 		return element;

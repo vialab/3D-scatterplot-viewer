@@ -21,7 +21,7 @@ export class InteractableGraph extends Graph
 		this.orthographicCameraOrbit = new OrbitControls(this.orthographicCamera, this.renderer.domElement);
 		
 		//TODO OrbitControls has max range from 0 to Math.PI
-		// this.applyAngleViewRange(initialRotation, maxRotation);
+		this.applyAngleViewRange(initialRotation, maxRotation);
 
 		this.element = super.Element();
 		this.element.css("cursor", "grab");

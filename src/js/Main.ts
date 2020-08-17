@@ -28,8 +28,9 @@ import { ScatterPlot } from "./tests/ScatterPlot/ScatterPlot";
 import { RandomIsocontourProvider } from "./tests/Isocontour/RandomIsocontourProvider";
 import { DemographicSurvey } from "./forms/demograpic";
 import { IshiharaTest } from "./forms/ishihara";
+import { RandomScatterPlotProvider } from "./tests/ScatterPlot/RandomScatterPlotProvider";
 
-let EXAMPLE_PLANE_AXIS_LENGTH = 400;
+let EXAMPLE_PLANE_AXIS_LENGTH = 450;
 
 let UI : UserInterface;
 let testList : TaskList;
@@ -39,36 +40,13 @@ let uiUpdateTimer : any;
 
 $(function Main()
 {
-	let linearNormalizer = new LinearScaleNormalizer();
-	let axisNormalizer = new IndependentAxisNormalizer();
-
 	UI = new UserInterface();
-	// let waves = GenerateWaveGraph(40, EXAMPLE_PLANE_AXIS_LENGTH/1.8, 13);
-
-	// let examplePlaneParser = new CsvParser(axisNormalizer, Plane);
-	// let examplePlane = examplePlaneParser.ParsePoints();
-	// for (let i = 0; i < examplePlane.length; i++)
-	// {
-	// 	let p = examplePlane[i];
-	// 	let tmp = p.Z;
-	// 	p.Z = p.Y;
-	// 	p.Y = tmp;
-	// }
-
-	// let parser = new CsvParser(axisNormalizer, Iris, 13, 1000);
-	// let parsedData = parser.ParsePoints();
-	// let noise = RandomPoints(75, -0.9, 0.9);
-	// let points = parsedData.concat(noise);
-
-	// let task = new ScatterPlot();
-	// task.SetPrompt("Do these pie charts represent the same data?");
-	// let display = new InteractablePlotView(points, EXAMPLE_PLANE_AXIS_LENGTH-10);
-	// task.SetDisplay(display);
 
 	testList = new TaskList([
-		new IshiharaTest(),
-		new DemographicSurvey(),
-		new RandomIsocontourProvider(EXAMPLE_PLANE_AXIS_LENGTH).Create()
+		// new DemographicSurvey(),
+		// new IshiharaTest(),
+		// new RandomIsocontourProvider(EXAMPLE_PLANE_AXIS_LENGTH).Create(),
+		new RandomScatterPlotProvider(EXAMPLE_PLANE_AXIS_LENGTH).Create()
 	]);
 	
 	ApplyPageEventHandlers();

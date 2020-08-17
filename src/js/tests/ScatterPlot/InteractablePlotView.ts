@@ -21,8 +21,6 @@ export class InteractablePlotView extends TaskDisplay
 	private planeView : Graph;
 	private fullView : Graph;
 	private inputGrid : PlaneSelector;
-	
-	private toggleOrthoButton : ToggleOrthographicButton;
 
 	constructor(points : Point[], axisLength : number)
 	{
@@ -48,8 +46,6 @@ export class InteractablePlotView extends TaskDisplay
 		this.fullView = new InteractableGraph(fullViewBorder, fullViewPoints, axisLength, initialRotation, rotationRange);
 		this.fullView.UsePerspectiveCamera();
 
-		this.toggleOrthoButton = new ToggleOrthographicButton(this.fullView, false);
-
 		this.inputGrid = new PlaneSelector(this.fullView.CameraNormal());
 
 		this.inputGrid.OnPlaneHighlighted = (planeNormal : Three.Vector3) =>
@@ -74,7 +70,6 @@ export class InteractablePlotView extends TaskDisplay
 
 		screen.OriginalViewContainer().append(this.planeView.Element());
 		screen.ComparisonViewContainer().append(this.fullView.Element());
-		screen.ComparisonViewContainer().append(this.toggleOrthoButton.Element());
 		
 		screen.PromptContainer().append(this.inputGrid.Element());
 
