@@ -80,7 +80,6 @@ html, body
 	min-height: 100%;
 
 	justify-content: center;
-	align-items: center;
 }
 
 #prompt
@@ -166,4 +165,9 @@ html, body
 {
 	cursor: pointer;
 	border: solid 1px;
+}
+
+canvas
+{
+	border: solid 1px white;	
 }
