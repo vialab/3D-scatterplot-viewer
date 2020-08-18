@@ -32,23 +32,33 @@ export class ContourPlaneDisplay extends TaskDisplay
 			new Vector2(0,0),
 			new Three.Vector2(360, 30)
 		);
-		this.interactableGraph.SetAmbientLightStrength(0.5);
-		this.interactableGraph.SetCameraLightStrength(0.5);
+		this.interactableGraph.SetAmbientLightStrength(1);
+		this.interactableGraph.SetCameraLightStrength(0);
 		
 		let orthoAxisLabel = new AxisLabel(axisLength);
 		this.orthoGraph = new FixedRotationGraph(orthoAxisLabel, orthoPlane, axisLength, new Vector2(0,0));
 		this.orthoGraph.UseOrthographicCamera();
 	}
 
+	public GetInteractableGraph() : Graph
+	{
+		return this.interactableGraph;
+	}
+
+	public GetPlaneView() : Graph
+	{
+		return this.orthoGraph;
+	}
+
 	public Display(screen: UserInterface): void
 	{
+		this.GetInteractableGraph().RenderContinuously();
+		this.GetPlaneView().RenderOnce();
+
 		screen.ViewModeComparison();
 
-		screen.ComparisonViewContainer().append(this.interactableGraph.Element());
-		screen.OriginalViewContainer().append(this.orthoGraph.Element());
-
-		this.interactableGraph.RenderContinuously();
-		this.orthoGraph.RenderOnce();
+		screen.ComparisonViewContainer().append(this.GetInteractableGraph().Element());
+		screen.OriginalViewContainer().append(this.GetPlaneView().Element());
 	}
 	
 }

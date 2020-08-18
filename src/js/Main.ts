@@ -24,11 +24,12 @@ import { PieChartDisplay } from "./tests/PieChart/PieChartDisplay";
 import { PieChart } from "./tests/PieChart/PieChart";
 
 import * as Iris from "./PlotData/iris.json";
-import { ScatterPlot } from "./tests/ScatterPlot/ScatterPlot";
+import { ScatterPlotController } from "./tests/ScatterPlot/ScatterPlotController";
 import { RandomIsocontourProvider } from "./tests/Isocontour/RandomIsocontourProvider";
 import { DemographicSurvey } from "./forms/demograpic";
 import { IshiharaTest } from "./forms/ishihara";
 import { RandomScatterPlotProvider } from "./tests/ScatterPlot/RandomScatterPlotProvider";
+import { IsocontourTutorial } from "./tests/Isocontour/IsocontourTutorial";
 
 let EXAMPLE_PLANE_AXIS_LENGTH = 450;
 
@@ -41,12 +42,15 @@ let uiUpdateTimer : any;
 $(function Main()
 {
 	UI = new UserInterface();
+	let contour = new RandomIsocontourProvider(EXAMPLE_PLANE_AXIS_LENGTH);
+	let ScatterPlot = new RandomScatterPlotProvider(EXAMPLE_PLANE_AXIS_LENGTH);
 
 	testList = new TaskList([
 		// new DemographicSurvey(),
 		// new IshiharaTest(),
-		// new RandomIsocontourProvider(EXAMPLE_PLANE_AXIS_LENGTH).Create(),
-		new RandomScatterPlotProvider(EXAMPLE_PLANE_AXIS_LENGTH).Create()
+		// contour.Tutorial(),
+		contour.Create(),
+		ScatterPlot.Create(),
 	]);
 	
 	ApplyPageEventHandlers();
@@ -123,13 +127,17 @@ async function NextTask() : Promise<void>
 	// 	10
 	// );
 	
-	//TODO temp code for mockups to show timer functionality
+	let result : TaskResult = await task.Controller.WaitForCompletion();
+
 	if (task.IsConfidenceTracked())
 	{
-		UI.SetTimerProgress(Math.random() * 75);
+		UI.GetIntermediateTestScreen().OnSubmit = () =>
+		{
+			result.Confidence = UI.GetIntermediateTestScreen().ConfidenceValue();
+		};
+		
+		UI.GetIntermediateTestScreen().Show();
 	}
-	
-	let result : TaskResult = await task.Controller.WaitForCompletion();
 
 	if (task.IsResultsTracked())
 	{

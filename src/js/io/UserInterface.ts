@@ -1,4 +1,5 @@
 import {Option, Task} from "../tasks";
+import { ConfidenceWindow } from "./ConfidenceWindow";
 
 export class UserInterface
 {
@@ -19,6 +20,8 @@ export class UserInterface
 
 	protected submitButton : JQuery<HTMLElement>;
 
+	protected intermediateScreen : ConfidenceWindow;
+
 	constructor()
 	{
 		this.titleContainer = $("#title");
@@ -37,6 +40,8 @@ export class UserInterface
 		this.confidenceArea = $("#feedback");
 
 		this.submitButton = $("#submit-test");
+
+		this.intermediateScreen = new ConfidenceWindow();
 	}
 
 	SetTitle(title : string) : void
@@ -136,5 +141,10 @@ export class UserInterface
 	HideSubmitButton()
 	{
 		this.submitButton.hide();
+	}
+
+	GetIntermediateTestScreen()
+	{
+		return this.intermediateScreen;
 	}
 }

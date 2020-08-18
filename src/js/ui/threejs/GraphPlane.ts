@@ -2,8 +2,6 @@ import { ThreeJsComponent } from "./ThreeJsComponent";
 import { Object3D, Vector3, BufferGeometry, Color, BufferAttribute, Mesh, DoubleSide, MeshPhongMaterial, MeshStandardMaterial, MeshLambertMaterial, MeshDepthMaterial, MeshDistanceMaterial, MeshToonMaterial, MeshNormalMaterial } from "three";
 import Delaunator = require("delaunator");
 import { Point } from "../../PlotData/Point";
-import { Graph } from "../components/Graph";
-import { range, csvParse } from "d3";
 
 export class GraphPlane implements ThreeJsComponent
 {
@@ -31,13 +29,8 @@ export class GraphPlane implements ThreeJsComponent
 		geometry.setIndex(new BufferAttribute(indices.triangles, 1, false));
 		geometry.computeVertexNormals();
 
-		geometry.computeBoundingBox();
-		let minY = <number>geometry.boundingBox?.min.y;
-		let maxY = <number>geometry.boundingBox?.max.y;
-		let range = maxY - minY;
-
 		let colors = new Uint8Array(vectors.length*3);
-		let ramp = new ColorRamp(minY, maxY)
+		let ramp = new ColorRamp(-maxValue, maxValue)
 
 		for (let i = 0; i < vectors.length; i++)
 		{
@@ -107,8 +100,24 @@ class ColorRamp
 			return this.colors[this.colors.length-1];
 
 		let percentageOfMaximum = (value - this.minValue) / this.valueRange;
-		let closestColorIndex = Math.round(percentageOfMaximum * (this.colors.length-1));
-		let closestColor = this.colors[closestColorIndex];
-		return closestColor;
+		let unroundedIndex = percentageOfMaximum * (this.colors.length-1);
+		let floorIndex = Math.floor(unroundedIndex);
+		let lerpPercentage = unroundedIndex % 1;
+
+		//Move the index back by 1 if it's the last element of the array
+		// Shouldn't happen but can happen due to rounding errors
+		if (floorIndex == this.colors.length - 1)
+		{
+			floorIndex--;
+			console.log(floorIndex);
+		}
+		
+		let colorFloor = this.colors[floorIndex];
+		let colorCeil = this.colors[floorIndex+1];
+
+		let result = new Color(colorFloor);
+		result.lerp(colorCeil, lerpPercentage);
+
+		return result;
 	}
 }
