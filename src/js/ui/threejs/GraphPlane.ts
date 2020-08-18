@@ -88,7 +88,10 @@ class ColorRamp
 		this.colors = [
 			new Color(43, 131, 86),
 			new Color(171, 221, 164),
-			new Color(255, 255, 191),
+
+			new Color(225, 225, 150),
+			// new Color(255, 255, 191),
+			
 			new Color(253, 174, 97),
 			new Color(215, 25, 28),
 		];
