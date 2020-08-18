@@ -69,6 +69,16 @@ export class Graph implements UiElement
 		this.RenderContinuously = this.RenderContinuously.bind(this);
 	}
 
+	public GetRotation() : {x:number, y:number}
+	{
+		let rotation = {
+			x: this.toDegrees(this.scene.rotation.x),
+			y: this.toDegrees(this.scene.rotation.y)
+		};
+
+		return rotation;
+	}
+
 	public SetCameraLightStrength(strength : number)
 	{
 		this.directionalLight.intensity = strength;
@@ -82,6 +92,11 @@ export class Graph implements UiElement
 	protected toRadians(deg : number)
 	{
 		return deg * Math.PI / 180;
+	}
+
+	protected toDegrees(rad : number)
+	{
+		return rad*180/Math.PI;
 	}
 
 	public TogglePlaneHighlight(planeNormal : Three.Vector3)

@@ -36,6 +36,14 @@ export class InteractableGraph extends Graph
 		});
 	}
 
+	public GetOrbitRotation() : {x:number, y:number}
+	{
+		let x = this.toDegrees(this.perspectiveCameraOrbit.getAzimuthalAngle());
+		let y = this.toDegrees(this.perspectiveCameraOrbit.getPolarAngle());
+
+		return {x, y};
+	}
+
 	protected applyAngleViewRange(initialRotation : Three.Vector2, maxRotation :Three.Vector2)
 	{
 		let maxX = this.toRadians(maxRotation.x);

@@ -1,20 +1,22 @@
 import * as Three from "three";
 import Delaunator = require("delaunator");
 
-import { TaskDisplay, UserInterface } from "../../io";
-import { Point } from "../../PlotData/Point";
+import { TaskDisplay, UserInterface } from "../../../io";
+import { Point } from "../../../PlotData/Point";
 import { Vector2, DirectionalLight, AmbientLight } from "three";
-import { GraphPlane } from "../../ui/threejs/GraphPlane";
-import { InteractableGraph } from "../../ui/components/InteractableGraph";
-import { FixedRotationGraph } from "../../ui/components/FixedRotationGraph";
-import { Isolines } from "../../ui/threejs/Isolines";
-import { WireframeCube } from "../../ui/threejs/WireFrameCube";
-import { AxisLabel } from "../../ui/threejs/AxisLabel";
-import { Graph } from "../../ui/components/Graph";
+import { GraphPlane } from "../../../ui/threejs/GraphPlane";
+import { InteractableGraph } from "../../../ui/components/InteractableGraph";
+import { FixedRotationGraph } from "../../../ui/components/FixedRotationGraph";
+import { Isolines } from "../../../ui/threejs/Isolines";
+import { AxisLabel } from "../../../ui/threejs/AxisLabel";
+import { Graph } from "../../../ui/components/Graph";
+import { GraphRotationTracker } from "../../../metrics";
 
-export class ContourPlaneDisplay extends TaskDisplay
+export class ContourPlotComparison extends TaskDisplay
 {
-	private interactableGraph : Graph;
+	public readonly RotationMetrics : GraphRotationTracker;
+
+	private interactableGraph : InteractableGraph;
 	private orthoGraph : Graph;
 
 	constructor(points : Point[], axisLength : number)
@@ -38,6 +40,15 @@ export class ContourPlaneDisplay extends TaskDisplay
 		let orthoAxisLabel = new AxisLabel(axisLength);
 		this.orthoGraph = new FixedRotationGraph(orthoAxisLabel, orthoPlane, axisLength, new Vector2(0,0));
 		this.orthoGraph.UseOrthographicCamera();
+
+		this.RotationMetrics = new GraphRotationTracker(
+			this.interactableGraph.Element(),
+			this.interactableGraph.GetRotation(),
+			() =>
+			{
+				return this.interactableGraph.GetOrbitRotation();
+			}
+		);
 	}
 
 	public GetInteractableGraph() : Graph

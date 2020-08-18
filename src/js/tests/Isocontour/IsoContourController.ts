@@ -1,7 +1,7 @@
 import { Task, Option } from "../../tasks";
 import { TaskController } from "../../tasks/TaskController";
 
-export class Isocontour extends TaskController
+export class IsocontourController extends TaskController
 {
 	constructor()
 	{

@@ -1,7 +1,6 @@
 import { Task, TaskController, Option } from "../../tasks";
 import { TaskDisplay, UserInterface } from "../../io";
-import { ContourPlaneDisplay } from "./ContourPlaneDisplay";
-import { WaveGraphDisplay } from "./WaveGraph";
+import { WaveGraphContourComparison } from "./Displays/WaveGraphContourComparison";
 
 export class IsocontourTutorial extends Task
 {
@@ -21,7 +20,7 @@ class IsoTutorialDisplay extends TaskDisplay
 
 	public Display(screen: UserInterface): void
 	{
-		let graph = new WaveGraphDisplay(300);
+		let graph = new WaveGraphContourComparison(300);
 		let template = $(
 		`<div style="width: 800px; text-align: center;">
 			<div style="display: flex; justify-content: center;">

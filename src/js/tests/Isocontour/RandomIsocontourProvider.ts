@@ -1,13 +1,8 @@
 import { TaskProvider } from "../../tasks/TaskProvider";
 import { Task } from "../../tasks";
-import { Point } from "../../PlotData/Point";
-import { IndependentAxisNormalizer } from "../../PlotData/Normalization/IndependentAxisNormalizer";
-import { RandomPoints } from "../../util/RandomPoints";
-import { ContourPlaneDisplay } from "./ContourPlaneDisplay";
-import { Isocontour } from "./IsoContour";
-import { WaveGraphDisplay } from "./WaveGraph";
-import { IsocontourTutorial } from "./IsocontourTutorial";
-import { HeatmapPlaneDisplay } from "./HeatmapPlaneDisplay";
+import { ContourPlotComparison } from "./Displays/ContourPlotComparison";
+import { IsocontourController } from "./IsoContourController";
+import { IsocontourTutorial } from "./IsocontourTutorial";;
 import { WaveGraphPoints } from "../../util/WaveGraphPoints";
 
 export class RandomIsocontourProvider implements TaskProvider
@@ -26,11 +21,11 @@ export class RandomIsocontourProvider implements TaskProvider
 
 	Create(): Task
 	{
-		let graphDisplay = new ContourPlaneDisplay(
+		let graphDisplay = new ContourPlotComparison(
 			WaveGraphPoints.GeneratePoints(40, 15),
 			this.axisLength
 		);
-		let graphTask = new Isocontour();
+		let graphTask = new IsocontourController();
 
 		let task = new Task(graphDisplay, graphTask);
 		task.SetCofidenceTracked(true);

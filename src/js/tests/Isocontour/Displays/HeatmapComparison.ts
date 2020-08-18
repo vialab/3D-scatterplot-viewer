@@ -1,15 +1,15 @@
 import * as Three from "three";
 import Delaunator = require("delaunator");
 
-import { TaskDisplay, UserInterface } from "../../io";
-import { Point } from "../../PlotData/Point";
+import { TaskDisplay, UserInterface } from "../../../io";
+import { Point } from "../../../PlotData/Point";
 import { Vector2, DirectionalLight, AmbientLight } from "three";
-import { GraphPlane } from "../../ui/threejs/GraphPlane";
-import { InteractableGraph } from "../../ui/components/InteractableGraph";
-import { FixedRotationGraph } from "../../ui/components/FixedRotationGraph";
-import { AxisLabel } from "../../ui/threejs/AxisLabel";
+import { GraphPlane } from "../../../ui/threejs/GraphPlane";
+import { InteractableGraph } from "../../../ui/components/InteractableGraph";
+import { FixedRotationGraph } from "../../../ui/components/FixedRotationGraph";
+import { AxisLabel } from "../../../ui/threejs/AxisLabel";
 
-export class HeatmapPlaneDisplay extends TaskDisplay
+export class HeatmapComparison extends TaskDisplay
 {
 	private interactableGraph : InteractableGraph;
 	private orthoGraph : FixedRotationGraph;
