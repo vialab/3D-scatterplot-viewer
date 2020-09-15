@@ -1,11 +1,12 @@
-
 import {TaskDisplay} from "../io";
 import {TaskController} from "./TaskController";
 import { Timer, UnlimitedTimer } from "../metrics";
+import { ResultLog } from "../metrics/ResultLog";
+import { SerializedTask } from "./SerializedTask";
 
-export class Task
+export abstract class Task
 {
-	public Metadata : Object = {};
+	public Metadata : any = {};
 
 	public Display : TaskDisplay;
 	public Controller : TaskController;
@@ -16,6 +17,8 @@ export class Task
 	private trackConfidence : boolean;
 	private trackResults : boolean;
 	private explicitSubmissionRequired : boolean;
+
+	private confidence : number = 0;
 	
 	constructor(display : TaskDisplay, controller : TaskController)
 	{
@@ -28,6 +31,13 @@ export class Task
 		this.trackConfidence = false;
 		this.trackResults = false;
 		this.explicitSubmissionRequired = false;
+	}
+
+	public abstract LogResults(log : ResultLog) : void;
+
+	public async Initialize() : Promise<void>
+	{
+		return;
 	}
 
 	public SetTitle(title : string) : void
@@ -83,5 +93,23 @@ export class Task
 	public IsResultsTracked() : boolean
 	{
 		return this.trackResults;
+	}
+
+	public SetConfidence(confidence : number) : void
+	{
+		this.confidence = confidence;
+	}
+	public GetConfidence() : number
+	{
+		return this.confidence;
+	}
+
+	public Serialize() : SerializedTask
+	{
+		throw new Error(`Serialize is not implemented on type ${this.constructor.name}`);
+	}
+
+	public SetValues(serialization : SerializedTask) : void
+	{
 	}
 }

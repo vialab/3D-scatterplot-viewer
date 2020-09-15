@@ -115,7 +115,7 @@ export class DemographicForm extends TaskDisplay
 export class DemographicFormData
 {
 	public FieldOfStudy : number | null = null;
-	public EducationHistory : {degree : string, specialty : string, inProgress : boolean, years : number}[] = [];
+	public EducationHistory : {Degree : string, Specialty : string, IsCompleted : boolean, Years : number}[] = [];
 	public IsBachelorsAchieved : boolean | null = null;
 	public WorkplaceGraphicImportance : number | null = null;
 	public WorkplaceGraphicDescription : string = "";
@@ -124,6 +124,7 @@ export class DemographicFormData
 	public TimeSpentMakingArt : number | null = null;
 	public TypesOfArtMade : string = "";
 	public TimeSpentPlayingGames : number | null = null;
+	public VideoGamesTimeSpent : number | null = null;
 	public VideoGamesPlayed : string = "";
 	public Age : number = 0;
 	public Gender : string | null = null;

@@ -1,8 +1,10 @@
 import { Task } from "../../tasks";
 import { IshiharaController } from "./ishiharaController";
 import { IshiharaForm } from "./IshiharaForm";
+import { ResultLog } from "../../metrics/ResultLog";
+import { SerializedTask } from "../../tasks/SerializedTask";
 
-export class IshiharaTest extends Task
+export class IshiharaTask extends Task
 {
 	constructor()
 	{
@@ -12,5 +14,35 @@ export class IshiharaTest extends Task
 		super(form, controller);
 		this.SetTitle("Screening");
 		this.SetExplicitSubmissionRequired(true);
+	}
+
+	public IsCorrect() : boolean
+	{
+		return (<IshiharaController>this.Controller).IsCorrect;
+	}
+
+	protected SetCorrect(isCorrect : boolean)
+	{
+		(<IshiharaController>this.Controller).IsCorrect = isCorrect;
+	}
+
+	public LogResults(log : ResultLog) : void
+	{
+	}
+
+	public Serialize() : SerializedTask
+	{
+		return {
+			Name: IshiharaTask.name,
+			DatasetName: "",
+			Metadata: {
+				isCorrect: this.IsCorrect()
+			}
+		}
+	}
+
+	public SetValues(serialization : SerializedTask) : void
+	{
+		this.SetCorrect(serialization.Metadata.isCorrect);
 	}
 }

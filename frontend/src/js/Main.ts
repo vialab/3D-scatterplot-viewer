@@ -1,4 +1,3 @@
-import {TaskResult} from "./tasks/TaskResult";
 import {Task} from "./tasks/Task";
 import {TaskList} from "./tasks/TaskList";
 import {UserInterface} from "./io/UserInterface";
@@ -10,130 +9,203 @@ import { PieChartData } from "./tests/PieChart/PieChartData";
 import { Color } from "./ui/Color";
 
 import { RandomIsocontourProvider } from "./tests/Isocontour/RandomIsocontourProvider";
-import { DemographicSurvey } from "./forms/demograpic";
-import { IshiharaTest } from "./forms/ishihara";
-import { RandomScatterPlotProvider } from "./tests/ScatterPlot/RandomScatterPlotProvider";
+import { DemographicTask } from "./forms/demograpic";
+import { IshiharaTask } from "./forms/ishihara";
+import { ScatterPlotDatasetLoader } from "./tests/ScatterPlot/ScatterPlotDatasetLoader";
 import { IsocontourTutorial } from "./tests/Isocontour/IsocontourTutorial";
-
-let EXAMPLE_PLANE_AXIS_LENGTH = 450;
+import { DemographicExclusion } from "./forms/exclusion";
+import { Backend } from "./Backend";
+import { DatasetParser } from "./plotData/DatasetParser";
+import { IndependentAxisNormalizer } from "./plotData/normalization/IndependentAxisNormalizer";
+import { TaskLoader } from "./tasks/TaskLoader";
+import { ConfidenceWindow } from "./io/ConfidenceWindow";
+import { ResultLog } from "./metrics/ResultLog";
+import {BrowserDetails} from "./BrowserDetails";
+import { SavedSession, NewSession } from "./TaskListLoader";
+import { TaskFactory } from "./tasks";
 
 let UI : UserInterface;
+let LoadingScreen : ConfidenceWindow;
+let backend = new Backend();
+
+let Results : ResultLog = new ResultLog();
+
 let testList : TaskList;
-let task : Task;
+let CurrentTask : Task;
+let ResolveLoading : (task : Task) => void;
 
 let uiUpdateTimer : any;
 
-$(function Main()
+$(async function Main()
 {
 	UI = new UserInterface();
-	let contour = new RandomIsocontourProvider(EXAMPLE_PLANE_AXIS_LENGTH);
-	let ScatterPlot = new RandomScatterPlotProvider(EXAMPLE_PLANE_AXIS_LENGTH);
+	LoadingScreen = UI.GetIntermediateTestScreen();
 
-	testList = new TaskList([
-		// new DemographicSurvey(),
-		// new IshiharaTest(),
-		// contour.Tutorial(),
-		contour.Create(),
-		ScatterPlot.Create(),
-	]);
-	
+	let browser = new BrowserDetails();
+
+	if (browser.IsMobile())
+	{
+		UI.ViewModeMobileBrowserRejection();
+		return;
+	}
+
+	await LoadSession();
 	ApplyPageEventHandlers();
 	
 	NextTask();
 });
 
-function RandomPiechart(numberOfSlices : number) : PieChartData[]
+async function LoadSession()
 {
-	const MAX_VALUE = 6;
-	const MIN_VALUE = 0;
-
-	let result : PieChartData[] = [];
-
-	for (let i = 0; i < 6; i++)
-	{
-		let value : number = Math.random() * (MAX_VALUE - MIN_VALUE) + MIN_VALUE;
-		let colour = new Color(Math.random() * 255, Math.random() * 255, Math.random() * 255, Math.random() * 0.5 + 0.5);
-
-		result[i] = new PieChartData("" + i, value, colour);
-	}
-
-	return result;
-}
-
-function ApplyPracticeProperties(task : Task)
-{
-	let promptAppend = "&#9888; This is an example of the test you are about to do. Results of this test are not tracked.";
+	let sessionLoader = SavedSession.IsLocalSessionSaved()?
+		new SavedSession(new TaskFactory(backend, Results))
+		:
+		new NewSession(backend, Results);
 	
-	task.SetTitle("Instructions");
-	task.SetPrompt(
-		task.GetPrompt() != ""?
-			task.GetPrompt() + "<br />" + promptAppend
-			: promptAppend
-	);
-	task.SetCofidenceTracked(false);
-	task.SetResultsTracked(false);
+	let [taskList, results] = await Promise.all([
+		sessionLoader.LoadList(),
+		sessionLoader.LoadResults()
+	]);
+
+	testList = taskList;
+	Results = results;
 }
 
 function ApplyPageEventHandlers()
 {
 	$("#submit-test").click(() =>
 	{
-		task.Controller.Submit([]);
-	});
+		CurrentTask.Controller.Submit([]);
+	});	
 }
 
-async function NextTask() : Promise<void>
+async function NextTask()
 {
-	// clearInterval(uiUpdateTimer);
-
 	if (testList.IsComplete())
 	{
 		AllTestsCompleted();
 		return;
 	}
-
-	task = testList.Next();
-	let timer : Timer = task.GetTimer();
-
-	DisplayTask(task);
 	
-	// timer.Begin();
-	// uiUpdateTimer = setInterval(() =>
-	// 	{
-	// 		//TODO js setinterval is inconsistent, timer is jumpy at points
-	// 		//  Possible solutions:
-	// 		//     - Really low time interval (timers internally use accurate time so they'll be fine)
-	// 		//     so function runs more
-	// 		//     - Look for more consistent timer implementation
-	// 		timer.Tick();
-	// 		display.SetTimerProgress(Math.ceil(timer.Progress()));
-	// 	},
-	// 	10
-	// );
-	
-	let result : TaskResult = await task.Controller.WaitForCompletion();
+	let nextTask = testList.Next();
 
-	if (task.IsConfidenceTracked())
+	if (
+		CurrentTask && CurrentTask.IsConfidenceTracked()
+		|| nextTask && nextTask instanceof TaskLoader
+	)
+		LoadingScreen.Show();
+
+	//Possible load error 1: load from provider
+	if (nextTask instanceof TaskLoader)
 	{
-		UI.GetIntermediateTestScreen().OnSubmit = () =>
+		CurrentTask = await BeginLoadingProvider(nextTask);
+	}
+	else
+	{
+		CurrentTask = nextTask;
+	}
+
+	if (CurrentTask.IsConfidenceTracked())
+	{
+		LoadingScreen.ShowConfidenceBar();
+
+		LoadingScreen.OnSubmit = () =>
 		{
-			result.Confidence = UI.GetIntermediateTestScreen().ConfidenceValue();
+			let confidence = LoadingScreen.ConfidenceValue();
+			CurrentTask.SetConfidence(confidence);
+			LoadingScreen.Hide();
 		};
-		
-		UI.GetIntermediateTestScreen().Show();
+	}
+	else
+	{
+		LoadingScreen.HideConfidenceBar();
 	}
 
-	if (task.IsResultsTracked())
-	{
-		//TODO submit results somewhere
-	}
+	await BeginInitialize(CurrentTask);
+	await PerformTask(CurrentTask);
 
 	NextTask();
 }
 
+async function BeginLoadingProvider(provider : TaskLoader) : Promise<Task>
+{
+	LoadingScreen.OnRetryLoading = async () =>
+	{
+		TryLoadProvider(provider);
+	};
+
+	return new Promise(async (resolve, reject) =>
+	{
+		ResolveLoading = resolve;
+		TryLoadProvider(provider);
+	});
+}
+
+async function TryLoadProvider(provider : TaskLoader)
+{
+	LoadingScreen.ShowLoading();
+
+	try
+	{
+		let test = await provider.Create();
+		ResolveLoading(test);
+	}
+	catch (err)
+	{
+		console.error(err);
+		LoadingScreen.ShowLoadingFailed();
+	}
+}
+
+async function BeginInitialize(task : Task)
+{
+	return new Promise((resolve, reject) =>
+	{
+		ResolveLoading = resolve;
+		TryInitialize(task);
+	});
+}
+
+async function TryInitialize(task : Task)
+{
+	LoadingScreen.ShowLoading();
+
+	LoadingScreen.OnRetryLoading = async () =>
+	{
+		TryInitialize(task);
+	};
+
+	try
+	{
+		//Possible load error 2: in Initialize
+		await task.Initialize();
+
+		//Possible load error 2: in display
+		DisplayTask(task);
+
+		//Possible load error 3: Images not loaded
+
+		//Catch-all for load errors; notify the server if possbile
+		// If cannot contact server, internet is likely down
+
+		LoadingScreen.ShowNextTestReady();
+		ResolveLoading(task);
+	}
+	catch (err)
+	{
+		console.error(err);
+		LoadingScreen.ShowLoadingFailed();
+	}
+}
+
+async function PerformTask(task : Task)
+{
+	let result = await task.Controller.WaitForCompletion();
+	task.LogResults(Results);
+}
+
 function AllTestsCompleted()
 {
-	DisplayTask(new TestingComplete());
 }
 
 function DisplayTask(task : Task)
@@ -145,6 +217,7 @@ function DisplayTask(task : Task)
 	UI.SetTitle(task.GetTitle());
 	UI.SetPrompt(task.GetPrompt());
 	UI.ShowOptions(task);
+	
 	if (task.IsExplicitSubmissionRequired())
 		UI.ShowSubmitButton();
 	else

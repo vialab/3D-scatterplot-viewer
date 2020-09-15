@@ -1,0 +1,13 @@
+{
+	"MaximumPerFieldOfStudy": 33,
+	"DatasetDirectory": "./datasets",
+	"HtmlLocation": "../frontend/src",
+	"SessionDumpDir": "./",
+	"ContactDumpDir": "./",
+
+	"Mail": {
+		"Server": "localhost",
+		"Port": 2500,
+		"NotifyEmail": "anthony.kouroupis@ontariotechu.net"
+	}
+}

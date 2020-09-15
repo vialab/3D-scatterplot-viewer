@@ -8,6 +8,8 @@ var uglify = require("gulp-uglify");
 var sourcemaps = require("gulp-sourcemaps");
 var buffer = require("vinyl-buffer");
 
+var {createProxyMiddleware} = require('http-proxy-middleware');
+
 const DIST_JS_DEST = "build";
 const DEBUG_JS_DEST = "./src";
 
@@ -79,10 +81,14 @@ gulp.task("watch", gulp.series(
 		"sync-css",
 		WatchJs
 	),
-	function Watch()
+	function Watch(done)
 	{
+		var proxy = createProxyMiddleware('/api', {target: 'http://localhost:8080'})
+
 		browserSync.init({
-			server: "./src"
+			server: "./src",
+			port: 3000,
+			middleware: [proxy],
 		});
 
 		gulp.watch("src/css/*.css", gulp.series("sync-css"));
@@ -90,6 +96,8 @@ gulp.task("watch", gulp.series(
 		gulp.watch("src/images/**/*.*", browserSync.reload);
 		gulp.watch("src/bundle.js")
 			.on("change", browserSync.reload);
+
+		done();
 	}
 ));
 

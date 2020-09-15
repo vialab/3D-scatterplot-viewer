@@ -76,7 +76,7 @@ export class EducationHistory implements FormElement
 				return;
 			}
 
-			let entry = new EducationEntry(degree, specialty, isInProgress, years);
+			let entry = new EducationEntry(degree, specialty, !isInProgress, years);
 			this.pushEntry(entry);
 			
 			this.resetInputs();
@@ -101,7 +101,7 @@ export class EducationHistory implements FormElement
 		`<tr id="educationHistory_${this.entries.length-1}">
 			<td>${entry.Degree}</td>
 			<td>${entry.Specialty}</td>
-			<td>${entry.IsInProgress? "In Progress" : "Complete"}${entry.Years? "<br />("+entry.Years+" years)" : ""}</td>
+			<td>${entry.IsCompleted? "In Progress" : "Complete"}${entry.Years? "<br />("+entry.Years+" years)" : ""}</td>
 			<td><button class="w3-button w3-deep-purple">- Remove</button></td>
 		</tr>`
 		);
@@ -148,14 +148,14 @@ class EducationEntry
 {
 	public Degree : string;
 	public Specialty : string;
-	public IsInProgress : boolean;
+	public IsCompleted : boolean;
 	public Years : number;
 
 	constructor(degree : string, specialty : string, isInProgress : boolean, years : number)
 	{
 		this.Degree = degree;
 		this.Specialty = specialty;
-		this.IsInProgress = isInProgress;
+		this.IsCompleted = isInProgress;
 		this.Years = years;
 	}
 }

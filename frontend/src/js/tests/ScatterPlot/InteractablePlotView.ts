@@ -1,7 +1,7 @@
 import * as Three from "three";
 
 import { TaskDisplay, UserInterface } from "../../io";
-import { Point } from "../../PlotData/Point";
+import { Point } from "../../plotData/Point";
 import { IdGenerator } from "../../util/IdGenerator";
 import { OrbitControls } from 'three-orbitcontrols-ts';
 import GraphPlaneNormals from "../../ui/components/PlaneNormals";

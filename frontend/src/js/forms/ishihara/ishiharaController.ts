@@ -1,8 +1,10 @@
-import { TaskController, Option, TaskResult } from "../../tasks";
+import { TaskController, Option } from "../../tasks";
 import { IshiharaForm } from "./IshiharaForm";
 
 export class IshiharaController extends TaskController
 {
+	public IsCorrect : boolean = false;
+
 	form : IshiharaForm;
 	correctAnswers : number[];
 
@@ -17,9 +19,9 @@ export class IshiharaController extends TaskController
 	public Submit(selectedOptions: Option | Option[]): void
 	{
 		let answersGiven = this.form.Inputs();
-		let correct : boolean = false;
+		let correct : boolean = true;
 
-		for (let i = 0; i < answersGiven.length && i < this.correctAnswers.length && !correct; i++)
+		for (let i = 0; i < answersGiven.length && i < this.correctAnswers.length && correct; i++)
 		{
 			let givenAnswer = answersGiven[i];
 			let correctAnswer = this.correctAnswers[i];
@@ -33,7 +35,7 @@ export class IshiharaController extends TaskController
 			correct = parseInt(givenAnswer) == correctAnswer;
 		}
 
-		this.result.IsCorrect = correct;
+		this.IsCorrect = correct;
 		this.Complete();
 	}
 

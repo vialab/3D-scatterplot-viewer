@@ -1,6 +1,7 @@
 import { Task, TaskController, Option } from "../../tasks";
 import { TaskDisplay, UserInterface } from "../../io";
 import { WaveGraphContourComparison } from "./Displays/WaveGraphContourComparison";
+import { ResultLog } from "../../metrics/ResultLog";
 
 export class IsocontourTutorial extends Task
 {
@@ -8,7 +9,11 @@ export class IsocontourTutorial extends Task
 	{
 		super (new IsoTutorialDisplay(), new IsoTutorialController());
 		this.SetExplicitSubmissionRequired(true);
-	}	
+	}
+
+	public LogResults(log : ResultLog) : void
+	{
+	}
 }
 
 class IsoTutorialDisplay extends TaskDisplay

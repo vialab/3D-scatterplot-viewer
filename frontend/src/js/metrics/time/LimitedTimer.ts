@@ -1,5 +1,5 @@
 import {Timer} from "./Timer";
-import {Task, TaskResult} from "../../tasks";
+import {Task} from "../../tasks";
 
 export class LimitedTimer extends Timer
 {

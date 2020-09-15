@@ -1,5 +1,5 @@
-import { Point } from "../PlotData/Point";
-import { IndependentAxisNormalizer } from "../PlotData/Normalization/IndependentAxisNormalizer";
+import { Point } from "../plotData/Point";
+import { IndependentAxisNormalizer } from "../plotData/normalization/IndependentAxisNormalizer";
 
 export class WaveGraphPoints
 {

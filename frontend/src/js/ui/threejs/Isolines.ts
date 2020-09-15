@@ -1,5 +1,5 @@
 import { Conrec } from "../../lib/conrec/conrec";
-import { Point } from "../../PlotData/Point";
+import { Point } from "../../plotData/Point";
 import {ThreeJsComponent} from "./ThreeJsComponent";
 import { Object3D, Group, Vector3, Scene, WebGLRenderer, WebGLRenderTarget, AmbientLight, Color, OrthographicCamera, LineBasicMaterial, Geometry, Line, BufferGeometry, BufferAttribute } from "three";
 import { GraphPlane } from "./GraphPlane";

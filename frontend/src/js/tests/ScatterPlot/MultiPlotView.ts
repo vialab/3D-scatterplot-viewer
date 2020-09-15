@@ -1,6 +1,6 @@
 import * as Three from "three";
 import { TaskDisplay, UserInterface } from "../../io";
-import { Point } from "../../PlotData/Point";
+import { Point } from "../../plotData/Point";
 import { ToggleOrthographicButton } from "../../ui/components/ToggleOrthographicButton";
 import { IdGenerator } from "../../util/IdGenerator";
 import { RandomPlane } from "./RandomPlane";

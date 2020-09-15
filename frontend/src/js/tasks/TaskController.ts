@@ -1,38 +1,33 @@
 import {Option} from "./Option";
-import {TaskResult} from "./TaskResult";
 import {TaskDisplay, UserInterface} from "../io";
 import {Timer, UnlimitedTimer} from "../metrics";
 
 export abstract class TaskController
 {
-	protected result : TaskResult;
-
-	private promise : Promise<TaskResult>;
-	protected resolve : (result : TaskResult) => any;
+	private promise : Promise<void>;
+	protected resolve : () => any;
 	protected reject : (reason : any) => any;
 	
 	constructor()
 	{
-		this.resolve = (result : TaskResult) => null;
+		this.resolve = () => null;
 		this.reject = (reason : any) => null;
 
-		this.promise = new Promise<TaskResult>((resolve, reject) =>
+		this.promise = new Promise<void>((resolve, reject) =>
 		{
 			this.resolve = resolve;
 			this.reject = reject;
 		});
-		
-		this.result = new TaskResult();
 	}
 
-	public async WaitForCompletion() : Promise<TaskResult>
+	public async WaitForCompletion() : Promise<void>
 	{
 		return this.promise;
 	}
 
 	public Complete() : void
 	{
-		this.resolve(this.result);
+		this.resolve();
 	}
 
 	Error(reason : any)

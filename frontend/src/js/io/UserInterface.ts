@@ -21,6 +21,7 @@ export class UserInterface
 	protected submitButton : JQuery<HTMLElement>;
 
 	protected intermediateScreen : ConfidenceWindow;
+	protected mobileRejectionScreen : JQuery<HTMLElement>;
 
 	constructor()
 	{
@@ -42,6 +43,7 @@ export class UserInterface
 		this.submitButton = $("#submit-test");
 
 		this.intermediateScreen = new ConfidenceWindow();
+		this.mobileRejectionScreen = $("#mobile-rejection");
 	}
 
 	SetTitle(title : string) : void
@@ -105,7 +107,7 @@ export class UserInterface
 	{
 		this.contentContainer.hide();
 		this.completionContainer.hide();
-
+		this.mobileRejectionScreen.hide();
 		this.comparisonContainer.show();
 	}
 
@@ -113,7 +115,7 @@ export class UserInterface
 	{
 		this.comparisonContainer.hide();
 		this.completionContainer.hide();
-
+		this.mobileRejectionScreen.hide();
 		this.contentContainer.show();
 	}
 
@@ -121,8 +123,16 @@ export class UserInterface
 	{
 		this.comparisonContainer.hide();
 		this.contentContainer.hide();
-		
+		this.mobileRejectionScreen.hide();
 		this.completionContainer.show();
+	}
+
+	ViewModeMobileBrowserRejection()
+	{
+		this.comparisonContainer.hide();
+		this.contentContainer.hide();
+		this.completionContainer.hide();
+		this.mobileRejectionScreen.show();
 	}
 
 	ClearView()

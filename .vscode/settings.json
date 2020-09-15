@@ -7,7 +7,9 @@
 		"**/.DS_Store": true,
 		"**/node_modules": true,
 		"dist": true,
-		"frontend/build": true
+		"frontend/build": true,
+		"frontend/src/bundle.js": true,
+		"frontend/src/bundle.js.map": true,
 	},
 	"search.exclude": {
 		"**/node_modules": true,
@@ -15,6 +17,8 @@
 		"**/*.code-search": true,
 		"frontend/build": true,
 		"frontend/dist": true,
+		"frontend/src/bundle.js": true,
+		"frontend/src/bundle.js.map": true,
 		"package.json": true,
 		"package-lock.json": true,
 		".vscode": true

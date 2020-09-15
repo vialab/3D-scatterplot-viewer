@@ -1,4 +1,4 @@
-import { Point } from "../PlotData/Point";
+import { Point } from "../plotData/Point";
 
 export class RandomPoints
 {

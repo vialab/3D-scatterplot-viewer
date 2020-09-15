@@ -2,7 +2,7 @@ import * as Three from "three";
 import Delaunator = require("delaunator");
 
 import { TaskDisplay, UserInterface } from "../../../io";
-import { Point } from "../../../PlotData/Point";
+import { Point } from "../../../plotData/Point";
 import { Vector2, DirectionalLight, AmbientLight } from "three";
 import { GraphPlane } from "../../../ui/threejs/GraphPlane";
 import { InteractableGraph } from "../../../ui/components/InteractableGraph";
