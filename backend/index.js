@@ -24,7 +24,7 @@ app.get("/api/IsFieldFull/:field",
 	ValidationController.CheckIfFieldFull
 );
 
-app.get("/ping",
+app.get("/api/ping",
 	(req, res) => res.send("pong")
 );
 

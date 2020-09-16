@@ -1,2 +1,2 @@
 #!/bin/bash
-docker run --publish 8000:8080 --detach spatial-abilities
+docker run --publish 80:80 --detach spatial-abilities
