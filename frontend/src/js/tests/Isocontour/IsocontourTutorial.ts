@@ -2,13 +2,15 @@ import { Task, TaskController, Option } from "../../tasks";
 import { TaskDisplay, UserInterface } from "../../io";
 import { WaveGraphContourComparison } from "./Displays/WaveGraphContourComparison";
 import { ResultLog } from "../../metrics/ResultLog";
+import { EmptyTaskcontroller } from "../../tasks/EmptyTaskController";
 
 export class IsocontourTutorial extends Task
 {
 	constructor()
 	{
-		super (new IsoTutorialDisplay(), new IsoTutorialController());
+		super (new IsoTutorialDisplay(), new EmptyTaskcontroller());
 		this.SetExplicitSubmissionRequired(true);
+		this.SetCofidenceTracked(false);
 	}
 
 	public LogResults(log : ResultLog) : void
@@ -25,7 +27,7 @@ class IsoTutorialDisplay extends TaskDisplay
 
 	public Display(screen: UserInterface): void
 	{
-		let graph = new WaveGraphContourComparison(300);
+		let graph = new WaveGraphContourComparison(400);
 		let template = $(
 		`<div style="width: 800px; text-align: center;">
 			<div style="display: flex; justify-content: center;">
@@ -36,12 +38,12 @@ class IsoTutorialDisplay extends TaskDisplay
 			</div>
 			
 			<hr />
-			<div>
-				This is where the explanation goes
+			<div style="text-align: center;">
+				<p>You will be shown a in isocontour in 2d and 3d.</p>
+				<p>Choose whether the 2d and 3d isocontours match.</p>
 			</div>
 			<hr />
 			<div>
-				This is where the timer notification goes
 			</div>
 		</div>`
 		);
@@ -56,17 +58,4 @@ class IsoTutorialDisplay extends TaskDisplay
 		screen.ContentContainer().append(template);
 	}
 
-}
-
-class IsoTutorialController extends TaskController
-{
-	public Submit(selectedOptions: Option | Option[]): void
-	{
-		this.Complete();
-	}
-
-	public GetOptions(): Option[]
-	{
-		return [];
-	}
 }

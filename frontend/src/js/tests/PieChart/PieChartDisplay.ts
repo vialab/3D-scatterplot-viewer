@@ -1,13 +1,17 @@
 import * as d3 from "d3";
 import { TaskDisplay, UserInterface } from "../../io";
 import { PieChartData } from "./PieChartData";
-import { PieChart } from "./PieChart";
+import { PieChartController } from "./PieChartController";
 import { IdGenerator } from "../../util/IdGenerator";
 
 export class PieChartDisplay extends TaskDisplay
 {
-	private originalData : PieChartData[];
-	private comparedata : PieChartData[];
+	protected originalData : PieChartData[];
+	protected comparedata : PieChartData[];
+
+	protected width = 450;
+	protected height = 450;
+	protected margin = 40;
 
 	constructor(data : PieChartData[], compareData : PieChartData[])
 	{
@@ -23,24 +27,20 @@ export class PieChartDisplay extends TaskDisplay
 		this.displayPie(screen.ComparisonViewContainer(), this.comparedata);
 	}
 
-	private displayPie(container : JQuery<HTMLElement>, drawData : PieChartData[]) : void
+	protected displayPie(container : JQuery<HTMLElement>, drawData : PieChartData[]) : void
 	{
 		let containerId : string = IdGenerator.Generate();
 		container.append(`<div id="${containerId}" class="center-content" style="width: 100%; height: 100%;"></div>`);
 
-		var width = 450,
-			height = 450,
-			margin = 40;
-
-		var radius = Math.min(width, height) / 2 - margin
+		var radius = Math.min(this.width, this.height) / 2 - this.margin
 
 		var svg = d3.select("#" + containerId).append("svg")
-			.attr("width", width)
-			.attr("height", height)
+			.attr("width", this.width)
+			.attr("height", this.height)
 			;
 		
 		var graphic = svg.append("g")
-			.attr("transform", "translate(" + width/2 + "," + height/2 + ")");
+			.attr("transform", "translate(" + this.width/2 + "," + this.height/2 + ")");
 
 		let values = drawData.map(d => d.Value);
 		let arcs = d3.pie().sort(null)(values);

@@ -1,5 +1,7 @@
 import { Dataset } from "./plotData/Dataset";
 import { ResultLog } from "./metrics/ResultLog";
+import { PieChartData } from "./tests/PieChart/PieChartData";
+import { Color } from "./ui/Color";
 
 export class Backend
 {
@@ -15,16 +17,22 @@ export class Backend
 		return <Dataset>response;
 	}
 
-	public async GetPieChartDataset(name : string) : Promise<Dataset>
-	{
-		let response = await $.get(`/api/datasets/piechart/${name}`);
-		return <Dataset>response;
-	}
-
 	public async GetIsocontourDataset(name : string) : Promise<Dataset>
 	{
 		let response = await $.get(`/api/datasets/isocontour/${name}`);
 		return <Dataset>response;
+	}
+
+	public async GetPieChartDataset(name : string) : Promise<PieChartData[]>
+	{
+		return [
+			new PieChartData("A", 1, new Color(215, 48, 39, 1)),
+			new PieChartData("B", 1, new Color(252, 141, 89, 1)),
+			new PieChartData("C", 1, new Color(254, 224, 144, 1)),
+			new PieChartData("D", 1, new Color(224, 243, 248, 1)),
+			new PieChartData("E", 1, new Color(145, 191, 219, 1)),
+			new PieChartData("F", 1, new Color(69, 117, 180, 1))
+		];
 	}
 
 	public async SubmitSession(log : ResultLog) : Promise<void>

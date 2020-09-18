@@ -2,25 +2,11 @@ import {Task} from "./tasks/Task";
 import {TaskList} from "./tasks/TaskList";
 import {UserInterface} from "./io/UserInterface";
 
-import { Timer } from "./metrics";
-import { TestingComplete } from "./forms/TestingComplete";
-
-import { PieChartData } from "./tests/PieChart/PieChartData";
-import { Color } from "./ui/Color";
-
-import { RandomIsocontourProvider } from "./tests/Isocontour/RandomIsocontourProvider";
-import { DemographicTask } from "./forms/demograpic";
-import { IshiharaTask } from "./forms/ishihara";
-import { ScatterPlotDatasetLoader } from "./tests/ScatterPlot/ScatterPlotDatasetLoader";
-import { IsocontourTutorial } from "./tests/Isocontour/IsocontourTutorial";
-import { DemographicExclusion } from "./forms/exclusion";
 import { Backend } from "./Backend";
-import { DatasetParser } from "./plotData/DatasetParser";
-import { IndependentAxisNormalizer } from "./plotData/normalization/IndependentAxisNormalizer";
 import { TaskLoader } from "./tasks/TaskLoader";
 import { ConfidenceWindow } from "./io/ConfidenceWindow";
 import { ResultLog } from "./metrics/ResultLog";
-import {BrowserDetails} from "./BrowserDetails";
+import { BrowserDetails } from "./BrowserDetails";
 import { SavedSession, NewSession } from "./TaskListLoader";
 import { TaskFactory } from "./tasks";
 
@@ -103,7 +89,10 @@ async function NextTask()
 	else
 	{
 		CurrentTask = nextTask;
-	}
+	}	
+
+	await BeginInitialize(CurrentTask);
+	await PerformTask(CurrentTask);
 
 	if (CurrentTask.IsConfidenceTracked())
 	{
@@ -120,9 +109,6 @@ async function NextTask()
 	{
 		LoadingScreen.HideConfidenceBar();
 	}
-
-	await BeginInitialize(CurrentTask);
-	await PerformTask(CurrentTask);
 
 	NextTask();
 }

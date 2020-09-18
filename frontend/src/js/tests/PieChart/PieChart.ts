@@ -1,35 +1,18 @@
-import {Task, Option} from "../../tasks";
-import { TaskDisplay } from "../../io";
-import { PieChartData } from "./PieChartData";
+import { Task } from "../../tasks";
+import { ResultLog } from "../../metrics/ResultLog";
 import { PieChartDisplay } from "./PieChartDisplay";
-import { TaskController } from "../../tasks/TaskController";
+import { PieChartData } from "./PieChartData";
+import { PieChartController } from "./PieChartController";
 
-export class PieChart extends TaskController
+export class PieChart extends Task
 {
-	originalData : PieChartData[];
-	compareData : PieChartData[];
-
-	constructor(originalData : PieChartData[], compareData : PieChartData[])
+	constructor(pie1 : PieChartData[], pie2 : PieChartData[])
 	{
-		if (originalData.length == 0 || compareData.length == 0)
-		{
-			throw new Error("Cannot pass empty pie chart data");
-		}
-
-		super();
-		
-		this.originalData = originalData;
-		this.compareData = compareData;
+		super(new PieChartDisplay(pie1, pie2), new PieChartController(pie1, pie2));
+		this.SetCofidenceTracked(true);
 	}
 
-	Submit(selectedOptions: Option): void
+	public LogResults(log: ResultLog): void
 	{
-		this.Complete();
-	}
-
-	GetOptions(): Option[]
-	{
-		return [new Option(0, "Yes",), new Option(1, "No")];
 	}
 }
-

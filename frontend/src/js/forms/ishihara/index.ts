@@ -13,6 +13,7 @@ export class IshiharaTask extends Task
 
 		super(form, controller);
 		this.SetTitle("Screening");
+		this.SetCofidenceTracked(true);
 		this.SetExplicitSubmissionRequired(true);
 	}
 

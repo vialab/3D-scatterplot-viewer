@@ -10,6 +10,14 @@ import { IshiharaTask } from "./forms/ishihara";
 import { DemographicExclusion } from "./forms/exclusion";
 import { ScatterPlotDatasetLoader } from "./tests/ScatterPlot/ScatterPlotDatasetLoader";
 import { TestingComplete } from "./forms/TestingComplete";
+import { PieChartTutorial } from "./tests/PieChart/PieChartTutorial";
+import { PieChart } from "./tests/PieChart/PieChart";
+import { PieChartData } from "./tests/PieChart/PieChartData";
+import { IsocontourDatasetLoader } from "./tests/Isocontour/IsocontourDatasetLoader";
+import { IsocontourTutorial } from "./tests/Isocontour/IsocontourTutorial";
+import { ScatterPlotTutorial } from "./tests/ScatterPlot/ScatterPlotTutorial";
+import { RotationTask } from "./tests/Rotation/RotationTask";
+import { RotationTutorial } from "./tests/Rotation/RotationTutorial";
 
 export abstract class TestSessionStorage
 {
@@ -44,14 +52,27 @@ export class NewSession extends TestSessionStorage
 		let ishiharaTest = new IshiharaTask();
 		let demographicEvaluation = new DemographicExclusion(this.backend, demographicSurvey, ishiharaTest);
 
-		// let contour = new RandomIsocontourProvider(backend, EXAMPLE_PLANE_AXIS_LENGTH);
+		let contour = new IsocontourDatasetLoader(this.backend, "", GRAPH_AXIS_LENGTH);
 		let ScatterPlot = new ScatterPlotDatasetLoader(this.backend, defaultParser, "iris", GRAPH_AXIS_LENGTH);
+
+		let pie1 = await this.backend.GetPieChartDataset("");
+		let pie2 = this.shufflePie(pie1);
 
 		let tasks = new TaskList([
 			demographicSurvey,
 			ishiharaTest,
 			demographicEvaluation,
 
+			new RotationTutorial(),
+			new RotationTask(15),
+
+			new PieChartTutorial(),
+			new PieChart(pie1, pie2),
+
+			new IsocontourTutorial(),
+			contour,
+
+			new ScatterPlotTutorial(),
 			ScatterPlot,
 
 			new TestingComplete(this.backend, this.resultLog)
@@ -59,6 +80,16 @@ export class NewSession extends TestSessionStorage
 
 		return tasks
 	}
+
+	private shufflePie(pie : PieChartData[]) : PieChartData[]
+	{
+		let data : PieChartData[] = [];
+		for (let i = 0; i < pie.length; i++) data.push(pie[i]);
+		data.sort( () => Math.random() - 0.5 );
+		return data;
+	}
+
+
 	async LoadResults(): Promise<ResultLog>
 	{
 		return new ResultLog();

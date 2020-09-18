@@ -24,6 +24,8 @@ export class DemographicExclusion extends Task
 		this.survey = demographicSurvey;
 		this.ishihara = ishihara;
 
+		this.SetCofidenceTracked(false);
+
 		this.isExcluded = null;
 	}
 

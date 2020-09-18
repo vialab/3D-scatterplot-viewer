@@ -8,20 +8,18 @@ import { Backend } from "../../Backend";
 import { IsocontourTask } from "./IsocontourTask";
 import { SerializedTask } from "../../tasks/SerializedTask";
 
-export class RandomIsocontourProvider implements TaskLoader
+export class IsocontourDatasetLoader extends TaskLoader
 {
 	private backend : Backend;
+	private dataset : string;
 	private axisLength : number;
 
-	constructor(backend: Backend, axisLength : number)
+	constructor(backend: Backend, datasetName : string, axisLength : number)
 	{
+		super();
 		this.backend = backend;
+		this.dataset = datasetName;
 		this.axisLength = axisLength;
-	}
-
-	Tutorial() : Task
-	{
-		return new IsocontourTutorial();
 	}
 
 	async Create(): Promise<Task>

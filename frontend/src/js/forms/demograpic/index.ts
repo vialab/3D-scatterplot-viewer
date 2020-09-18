@@ -20,6 +20,7 @@ export class DemographicTask extends Task
 
 		super(form, controller);
 		this.SetTitle("Screening");
+		this.SetCofidenceTracked(false);
 
 		this.savedValues = null;
 	}
@@ -38,6 +39,7 @@ export class DemographicTask extends Task
 
 	public LogResults(log : ResultLog) : void
 	{
+		this.savedValues = this.GetInputData();
 		let input = this.GetInputData();
 		let demographic = log.Demographics;
 		
