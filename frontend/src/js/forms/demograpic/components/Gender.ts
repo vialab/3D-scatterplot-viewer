@@ -25,7 +25,7 @@ export class Gender implements FormElement
 			<input type="text" id="gender-sd" name="gender-sd" />
 			<br />
 			<input type="radio" name="gender" id="gender-5" value="Prefer not to disclose">
-			<label for="gender-5">Prefer not to diclose</label>
+			<label for="gender-5">Prefer not to disclose</label>
 		</div>`
 		);
 	}
