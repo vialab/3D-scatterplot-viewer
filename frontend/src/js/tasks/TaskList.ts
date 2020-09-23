@@ -53,9 +53,9 @@ export class TaskList
 	{
 		// let list = new TaskList(serialization.serializedTasks);
 		let tasks : (Task | TaskLoader)[] = [];
-		for (let i = 0; i < serialization.tests.length; i++)
+		for (let i = 0; i < serialization.tasks.length; i++)
 		{
-			tasks.push(factory.Create(serialization.tests[i]));
+			tasks.push(factory.Create(serialization.tasks[i]));
 		}
 
 		let list = new TaskList(tasks);

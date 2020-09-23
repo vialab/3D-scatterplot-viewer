@@ -7,7 +7,7 @@ import { TaskLoader } from "./tasks/TaskLoader";
 import { ConfidenceWindow } from "./io/ConfidenceWindow";
 import { ResultLog } from "./metrics/ResultLog";
 import { BrowserDetails } from "./BrowserDetails";
-import { SavedSession, NewSession } from "./TaskListLoader";
+import { SavedSession, NewSession, TestSessionStorage } from "./TestSessionStorage";
 import { TaskFactory } from "./tasks";
 
 let UI : UserInterface;
@@ -16,6 +16,7 @@ let backend = new Backend();
 
 let Results : ResultLog = new ResultLog();
 
+let SessionLoader : TestSessionStorage;
 let testList : TaskList;
 let CurrentTask : Task;
 let ResolveLoading : (task : Task) => void;
@@ -43,14 +44,14 @@ $(async function Main()
 
 async function LoadSession()
 {
-	let sessionLoader = SavedSession.IsLocalSessionSaved()?
+	SessionLoader = SavedSession.IsLocalSessionSaved()?
 		new SavedSession(new TaskFactory(backend, Results))
 		:
 		new NewSession(backend, Results);
 	
 	let [taskList, results] = await Promise.all([
-		sessionLoader.LoadList(),
-		sessionLoader.LoadResults()
+		SessionLoader.LoadList(),
+		SessionLoader.LoadResults()
 	]);
 
 	testList = taskList;
@@ -72,7 +73,23 @@ async function NextTask()
 		AllTestsCompleted();
 		return;
 	}
-	
+
+	if (CurrentTask && CurrentTask.IsConfidenceTracked())
+	{
+		LoadingScreen.ShowConfidenceBar();
+
+		LoadingScreen.OnSubmit = () =>
+		{
+			let confidence = LoadingScreen.ConfidenceValue();
+			CurrentTask.SetConfidence(confidence);
+			LoadingScreen.Hide();
+		};
+	}
+	else
+	{
+		LoadingScreen.HideConfidenceBar();
+	}
+
 	let nextTask = testList.Next();
 
 	if (
@@ -89,26 +106,13 @@ async function NextTask()
 	else
 	{
 		CurrentTask = nextTask;
-	}	
+	}
 
 	await BeginInitialize(CurrentTask);
 	await PerformTask(CurrentTask);
 
-	if (CurrentTask.IsConfidenceTracked())
-	{
-		LoadingScreen.ShowConfidenceBar();
-
-		LoadingScreen.OnSubmit = () =>
-		{
-			let confidence = LoadingScreen.ConfidenceValue();
-			CurrentTask.SetConfidence(confidence);
-			LoadingScreen.Hide();
-		};
-	}
-	else
-	{
-		LoadingScreen.HideConfidenceBar();
-	}
+	SessionLoader.Save(testList);
+	SessionLoader.Save(Results);
 
 	NextTask();
 }

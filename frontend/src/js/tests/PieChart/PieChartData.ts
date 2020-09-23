@@ -4,12 +4,12 @@ export class PieChartData
 {
 	public Label : string;
 	public Value : number;
-	public Colour : Color;
+	public Color : Color;
 
-	constructor(label : string, value : number, colour : Color)
+	constructor(label : string, value : number, color : Color)
 	{
 		this.Label = label;
 		this.Value = value;
-		this.Colour = colour;
+		this.Color = color;
 	}
 }

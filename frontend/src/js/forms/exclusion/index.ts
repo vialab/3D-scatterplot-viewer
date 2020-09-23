@@ -7,6 +7,7 @@ import { DemographicTask } from "../demograpic";
 import { Backend } from "../../Backend";
 import { IshiharaTask } from "../ishihara";
 import { ResultLog } from "../../metrics/ResultLog";
+import { SerializedTask } from "../../tasks/SerializedTask";
 
 export class DemographicExclusion extends Task
 {
@@ -52,5 +53,21 @@ export class DemographicExclusion extends Task
 
 	public LogResults(log : ResultLog) : void
 	{
+	}
+
+	public Serialize() : SerializedTask
+	{
+		return {
+			Name : DemographicExclusion.name,
+			DatasetName : "",
+			Metadata : {
+				isExcluded: this.isExcluded
+			}
+		};
+	}
+
+	public SetValues(serialization : SerializedTask)
+	{
+		this.isExcluded = serialization.Metadata.isExcluded;
 	}
 }

@@ -3,6 +3,7 @@ import { ResultLog } from "../../metrics/ResultLog";
 import { TaskDisplay, UserInterface } from "../../io";
 import { EmptyTaskcontroller } from "../../tasks/EmptyTaskController";
 import { RotationImageSrc } from "./RotationImageSrc";
+import { SerializedTask } from "../../tasks/SerializedTask";
 
 export class RotationTutorial extends Task
 {
@@ -15,6 +16,15 @@ export class RotationTutorial extends Task
 
 	public LogResults(log: ResultLog): void
 	{
+	}
+
+	public Serialize() : SerializedTask
+	{
+		return {
+			Name : RotationTutorial.name,
+			DatasetName: "",
+			Metadata : {}
+		};
 	}
 }
 

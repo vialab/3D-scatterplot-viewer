@@ -2,6 +2,7 @@ import { Task } from "../../tasks";
 import { ResultLog } from "../../metrics/ResultLog";
 import { PieChartTutorialDisplay } from "./PieChartTutorialDisplay";
 import { EmptyTaskcontroller } from "../../tasks/EmptyTaskController";
+import { SerializedTask } from "../../tasks/SerializedTask";
 
 export class PieChartTutorial extends Task
 {
@@ -14,5 +15,14 @@ export class PieChartTutorial extends Task
 
 	public LogResults(log: ResultLog): void
 	{
+	}
+
+	public Serialize() : SerializedTask
+	{
+		return {
+			Name : PieChartTutorial.name,
+			DatasetName: "",
+			Metadata : {}
+		};
 	}
 }

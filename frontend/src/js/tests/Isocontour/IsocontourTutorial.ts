@@ -3,6 +3,7 @@ import { TaskDisplay, UserInterface } from "../../io";
 import { WaveGraphContourComparison } from "./Displays/WaveGraphContourComparison";
 import { ResultLog } from "../../metrics/ResultLog";
 import { EmptyTaskcontroller } from "../../tasks/EmptyTaskController";
+import { SerializedTask } from "../../tasks/SerializedTask";
 
 export class IsocontourTutorial extends Task
 {
@@ -15,6 +16,15 @@ export class IsocontourTutorial extends Task
 
 	public LogResults(log : ResultLog) : void
 	{
+	}
+
+	public Serialize() : SerializedTask
+	{
+		return {
+			Name: IsocontourTutorial.name,
+			DatasetName: "",
+			Metadata: {}
+		};	
 	}
 }
 

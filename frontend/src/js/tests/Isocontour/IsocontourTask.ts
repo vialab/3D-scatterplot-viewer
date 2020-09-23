@@ -1,6 +1,7 @@
 import { Task, TaskController } from "../../tasks";
 import { ResultLog } from "../../metrics/ResultLog";
 import { TaskDisplay } from "../../io";
+import { SerializedTask } from "../../tasks/SerializedTask";
 
 export class IsocontourTask extends Task
 {
@@ -13,5 +14,19 @@ export class IsocontourTask extends Task
 	public LogResults(log : ResultLog) : void
 	{
 		
+	}
+
+	public Serialize() : SerializedTask
+	{
+		return {
+			Name: IsocontourTask.name,
+			DatasetName: "",
+			Metadata: {}
+		};	
+	}
+
+	public SetValues(serialization : SerializedTask)
+	{
+
 	}
 }

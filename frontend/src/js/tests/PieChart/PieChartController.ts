@@ -11,11 +11,6 @@ export class PieChartController extends TaskController
 
 	constructor(originalData : PieChartData[], compareData : PieChartData[])
 	{
-		if (originalData.length == 0 || compareData.length == 0)
-		{
-			throw new Error("Cannot pass empty pie chart data");
-		}
-
 		super();
 		
 		this.originalData = originalData;

@@ -2,6 +2,7 @@ import { Task } from "../../tasks";
 import { ResultLog } from "../../metrics/ResultLog";
 import { RotationView } from "./RotationView";
 import { EmptyTaskcontroller } from "../../tasks/EmptyTaskController";
+import { SerializedTask } from "../../tasks/SerializedTask";
 
 export class RotationTask extends Task
 {
@@ -17,5 +18,20 @@ export class RotationTask extends Task
 
 	public LogResults(log: ResultLog): void
 	{
+	}
+
+	public Serialize() : SerializedTask
+	{
+		return {
+			Name : RotationTask.name,
+			DatasetName: "",
+			Metadata : {PageNumber: this.pageNumber}
+		};
+	}
+
+	public SetValues(task : SerializedTask)
+	{
+		this.pageNumber = task.Metadata.PageNumber;
+		this.Display = new RotationView(this.pageNumber);
 	}
 }

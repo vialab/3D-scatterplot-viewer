@@ -8,6 +8,18 @@ import { DemographicTask } from "../forms/demograpic";
 import { IshiharaTask } from "../forms/ishihara";
 import { TestingComplete } from "../forms/TestingComplete";
 import { ResultLog } from "../metrics/ResultLog";
+import { DemographicExclusion } from "../forms/exclusion";
+import { ScatterPlotTutorial } from "../tests/ScatterPlot/ScatterPlotTutorial";
+import { IsocontourTutorial } from "../tests/Isocontour/IsocontourTutorial";
+import { IsocontourTask } from "../tests/Isocontour/IsocontourTask";
+import { PieChart } from "../tests/PieChart/PieChart";
+import { PieChartTutorial } from "../tests/PieChart/PieChartTutorial";
+import { RotationTask } from "../tests/Rotation/RotationTask";
+import { RotationTutorial } from "../tests/Rotation/RotationTutorial";
+import { IsocontourDatasetLoader } from "../tests/Isocontour/IsocontourDatasetLoader";
+
+//TODO get this from a factory that makes it proportionate to window size
+const AXIS_LENGTH = 400;
 
 export class TaskFactory
 {
@@ -34,6 +46,33 @@ export class TaskFactory
 			result = new IshiharaTask();
 			result.SetValues(task);
 		}
+		else if (task.Name == DemographicExclusion.name)
+		{
+			result = new DemographicExclusion(this.backend, new DemographicTask(), new IshiharaTask());
+			result.SetValues(task);
+		}
+		else if (task.Name == RotationTutorial.name)
+		{
+			result = new RotationTutorial();
+		}
+		else if (task.Name == RotationTask.name)
+		{
+			result = new RotationTask(0);
+			result.SetValues(task);
+		}
+		else if (task.Name == PieChartTutorial.name)
+		{
+			result = new PieChartTutorial();
+		}
+		else if (task.Name == PieChart.name)
+		{
+			result = new PieChart([], []);
+			result.SetValues(task);
+		}
+		else if (task.Name == ScatterPlotTutorial.name)
+		{
+			result = new ScatterPlotTutorial();
+		}
 		else if (task.Name == ScatterPlotDatasetLoader.name)
 		{
 			result = new ScatterPlotDatasetLoader(
@@ -42,8 +81,16 @@ export class TaskFactory
 					new IndependentAxisNormalizer()
 				),
 				task.DatasetName,
-				task.Metadata.AxisLength
+				AXIS_LENGTH
 			);
+		}
+		else if (task.Name == IsocontourTutorial.name)
+		{
+			result = new IsocontourTutorial();
+		}
+		else if (task.Name == IsocontourDatasetLoader.name)
+		{
+			result = new IsocontourDatasetLoader(this.backend, task.DatasetName, AXIS_LENGTH);
 		}
 		else if (task.Name == TestingComplete.name)
 		{

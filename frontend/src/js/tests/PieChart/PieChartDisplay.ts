@@ -62,7 +62,7 @@ export class PieChartDisplay extends TaskDisplay
 			.attr('fill',
 				function(d : any, i : number)
 				{
-					return drawData[i].Colour.HtmlColour();
+					return drawData[i].Color.HtmlColour();
 				}
 			)
 			.attr("stroke", "white")

@@ -9,6 +9,7 @@ import { Vector2 } from "three";
 import { Graph } from "../../ui/components/Graph";
 import { EmptyTaskcontroller } from "../../tasks/EmptyTaskController";
 import { PlaneSelector } from "../../ui/components/PlaneSelector";
+import { SerializedTask } from "../../tasks/SerializedTask";
 
 export class ScatterPlotTutorial extends Task
 {
@@ -21,6 +22,15 @@ export class ScatterPlotTutorial extends Task
 
 	public LogResults(log: ResultLog): void
 	{
+	}
+
+	public Serialize() : SerializedTask
+	{
+		return {
+			Name: ScatterPlotTutorial.name,
+			DatasetName: "",
+			Metadata: {}
+		};
 	}
 }
 

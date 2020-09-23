@@ -42,6 +42,10 @@ export class IsocontourDatasetLoader extends TaskLoader
 
 	Serialize() : SerializedTask
 	{
-		throw new Error("Not yet implemented");
+		return {
+			Name : IsocontourDatasetLoader.name,
+			DatasetName: this.dataset,
+			Metadata: {}
+		};
 	}
 }
