@@ -21,35 +21,45 @@ export class PlaneHighlights
 		var highlightPlaneGeometry = new Three.PlaneGeometry(edgeLength, edgeLength);
 		
 		this.highlightMaterial.transparent = true;
+		this.highlightMaterial.depthWrite = false;
 		this.highlightMaterial.opacity = 0.5;
 
+		const DEPTH_PADDING = 0;
+		const HALF_LENGTH = edgeLength/2;
+
 		var top = new Three.Mesh(highlightPlaneGeometry, this.highlightMaterial);
-		top.position.set(0, edgeLength/2, 0);
+		top.position.set(0, HALF_LENGTH + DEPTH_PADDING, 0);
 		top.rotation.x = 1.5708;
 		this.topHighlight = top;
+		top.renderOrder = 10;
 
 		var back = new Three.Mesh(highlightPlaneGeometry, this.highlightMaterial);
-		back.position.set(0, 0, -edgeLength/2);
+		back.position.set(0, 0, -HALF_LENGTH - DEPTH_PADDING);
 		this.backHighlight = back;
+		back.renderOrder = 10;
 
 		var bottom = new Three.Mesh(highlightPlaneGeometry, this.highlightMaterial);
-		bottom.position.set(0, -edgeLength/2, 0);
+		bottom.position.set(0, -HALF_LENGTH - DEPTH_PADDING, 0);
 		bottom.rotation.x = 1.5708;
 		this.bottomHighlight = bottom;
+		bottom.renderOrder = 10;
 
 		var front = new Three.Mesh(highlightPlaneGeometry, this.highlightMaterial);
-		front.position.set(0, 0, edgeLength/2);
+		front.position.set(0, 0, HALF_LENGTH + DEPTH_PADDING);
 		this.frontHighlight = front;
+		front.renderOrder = 10;
 
 		var left = new Three.Mesh(highlightPlaneGeometry, this.highlightMaterial);
-		left.position.set(-edgeLength/2, 0, 0);
+		left.position.set(-HALF_LENGTH - DEPTH_PADDING, 0, 0);
 		left.rotation.y = 1.5708;
 		this.leftHighlight = left;
+		left.renderOrder = 10;
 
 		var right = new Three.Mesh(highlightPlaneGeometry, this.highlightMaterial);
-		right.position.set(edgeLength/2, 0, 0);
+		right.position.set(HALF_LENGTH + DEPTH_PADDING, 0, 0);
 		right.rotation.y = 1.5708;
 		this.rightHighlight = right;
+		right.renderOrder = 10;
 
 		this.highlightDirections = [
 			{Normal: GraphPlaneNormals.UP, Highlight: this.topHighlight},

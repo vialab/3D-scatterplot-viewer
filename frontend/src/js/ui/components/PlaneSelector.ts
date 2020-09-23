@@ -10,7 +10,7 @@ export class PlaneSelector
 
 	selectedCell : JQuery<HTMLElement> | null;
 
-	public HighlightColour : string = "rgba(0,0,255,1)";
+	public HighlightColour : string = "rgba(255,255,0,1)";
 
 	public OnPlaneHighlighted : (planeNormal : Three.Vector3) => void = ()  => {};
 	public OnPlaneUnHilighted : (planeNormal : Three.Vector3) => void = () => {};
