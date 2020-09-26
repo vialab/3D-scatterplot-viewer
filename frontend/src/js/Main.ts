@@ -7,7 +7,7 @@ import { TaskLoader } from "./tasks/TaskLoader";
 import { ConfidenceWindow } from "./io/ConfidenceWindow";
 import { ResultLog } from "./metrics/ResultLog";
 import { BrowserDetails } from "./BrowserDetails";
-import { SavedSession, NewSession, TestSessionStorage } from "./TestSessionStorage";
+import { SavedSession, NewSession, TestSessionStorage, ResultStorage, SavedResult, NewResult } from "./TestSessionStorage";
 import { TaskFactory } from "./tasks";
 
 let UI : UserInterface;
@@ -16,7 +16,8 @@ let backend = new Backend();
 
 let Results : ResultLog = new ResultLog();
 
-let SessionLoader : TestSessionStorage;
+let SessionStorage : TestSessionStorage;
+let ResultsStorage : ResultStorage;
 let testList : TaskList;
 let CurrentTask : Task;
 let ResolveLoading : (task : Task) => void;
@@ -44,18 +45,19 @@ $(async function Main()
 
 async function LoadSession()
 {
-	SessionLoader = SavedSession.IsLocalSessionSaved()?
-		new SavedSession(new TaskFactory(backend, Results))
-		:
-		new NewSession(backend, Results);
+	ResultsStorage = SavedResult.IsLocalResultSaved()?
+		new SavedResult() : new NewResult();
 	
-	let [taskList, results] = await Promise.all([
-		SessionLoader.LoadList(),
-		SessionLoader.LoadResults()
-	]);
+	Results = await ResultsStorage.Load();
 
-	testList = taskList;
-	Results = results;
+	let factory = new TaskFactory(backend, Results);
+
+	SessionStorage = SavedSession.IsLocalSessionSaved()?
+		new SavedSession(factory)
+		:
+		new NewSession(factory, backend, Results);
+	
+	testList = await SessionStorage.Load();
 }
 
 function ApplyPageEventHandlers()
@@ -111,8 +113,8 @@ async function NextTask()
 	await BeginInitialize(CurrentTask);
 	await PerformTask(CurrentTask);
 
-	SessionLoader.Save(testList);
-	SessionLoader.Save(Results);
+	SessionStorage.Save(testList);
+	ResultsStorage.Save(Results);
 
 	NextTask();
 }

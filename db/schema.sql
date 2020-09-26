@@ -27,7 +27,11 @@ CREATE TABLE ClaimedIds(
 
 CREATE TABLE TestSessions
 (
-	Id INTEGER PRIMARY KEY
+	Id INTEGER PRIMARY KEY,
+	TaskOrderName VARCHAR(150) NOT NULL,
+	ScreenWidth INTEGER NOT NULL,
+	ScreenHeight INTEGER NOT NULL,
+	ScreenDpi DECIMAL NOT NULL
 );
 
 CREATE TABLE DemographicInformation

@@ -26,6 +26,7 @@ async function Submit(req, res, next)
 		}
 		catch (err)
 		{
+			console.error(err);
 			errorsOccurred = true;
 		}
 	}
@@ -49,6 +50,7 @@ async function DumpErronousSession(session, errors)
 	}
 	catch (err)
 	{
+		console.error(err);
 		await DumpToFile(session, errors);
 	}
 

@@ -9,6 +9,7 @@ let ValidationMiddleware = require("./src/Middleware/ValidationMiddleware");
 let DatasetServer = require("./src/Controllers/DatasetServer");
 let SubmissionController = require("./src/Controllers/Submission");
 let ValidationController = require("./src/Controllers/Validation");
+let TestOrderController = require("./src/Controllers/TestOrder");
 
 let app = express();
 
@@ -26,6 +27,10 @@ app.get("/api/IsFieldFull/:field",
 
 app.get("/api/ping",
 	(req, res) => res.send("pong")
+);
+
+app.get("/api/testorder",
+	TestOrderController.GetTaskOrder
 );
 
 app.listen(PORT, () =>

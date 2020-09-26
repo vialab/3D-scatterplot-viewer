@@ -2,6 +2,7 @@ import { Dataset } from "./plotData/Dataset";
 import { ResultLog } from "./metrics/ResultLog";
 import { PieChartData } from "./tests/PieChart/PieChartData";
 import { Color } from "./ui/Color";
+import {TestOrder} from "./TestOrder";
 
 export class Backend
 {
@@ -45,5 +46,10 @@ export class Backend
 			dataType: 'json',
 			processData: false,
 		});
+	}
+
+	public async GetTestOrder() : Promise<TestOrder>
+	{
+		return await $.get("/api/testorder");
 	}
 }

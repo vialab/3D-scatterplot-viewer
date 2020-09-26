@@ -1,110 +1,131 @@
 import { TaskList, TaskFactory, Task } from "./tasks";
 import { ResultLog } from "./metrics/ResultLog";
 import { Backend } from "./Backend";
-import { SerializedTask } from "./tasks/SerializedTask";
 import { TaskLoader } from "./tasks/TaskLoader";
-import { IndependentAxisNormalizer } from "./plotData/normalization/IndependentAxisNormalizer";
 import { DemographicTask } from "./forms/demograpic";
-import { DatasetParser } from "./plotData/DatasetParser";
 import { IshiharaTask } from "./forms/ishihara";
 import { DemographicExclusion } from "./forms/exclusion";
-import { ScatterPlotDatasetLoader } from "./tests/ScatterPlot/ScatterPlotDatasetLoader";
 import { TestingComplete } from "./forms/TestingComplete";
-import { PieChartTutorial } from "./tests/PieChart/PieChartTutorial";
-import { PieChart } from "./tests/PieChart/PieChart";
-import { PieChartData } from "./tests/PieChart/PieChartData";
-import { IsocontourDatasetLoader } from "./tests/Isocontour/IsocontourDatasetLoader";
-import { IsocontourTutorial } from "./tests/Isocontour/IsocontourTutorial";
-import { ScatterPlotTutorial } from "./tests/ScatterPlot/ScatterPlotTutorial";
-import { RotationTask } from "./tests/Rotation/RotationTask";
-import { RotationTutorial } from "./tests/Rotation/RotationTutorial";
 
 export abstract class TestSessionStorage
 {
-	abstract LoadList() : Promise<TaskList>;
-	abstract LoadResults() : Promise<ResultLog>;
-	abstract Save(list : TaskList) : void;
+	abstract Load() : Promise<TaskList>;
+	abstract Save(list : TaskList) : void;	
+	abstract Clear() : void;
+}
+
+export abstract class ResultStorage
+{
+	abstract Load() : Promise<ResultLog>;
 	abstract Save(list : ResultLog) : void;
 	abstract Clear() : void;
 }
 
-let GRAPH_AXIS_LENGTH = 450;
 const TASK_LIST_KEY = "tasklist";
 const RESULT_KEY = "results";
 
+export class NewResult extends ResultStorage
+{
+	async Load(): Promise<ResultLog>
+	{
+		let log = new ResultLog();
+
+		log.Screen.Width = window.screen.width;
+		log.Screen.Height = window.screen.height;
+		log.Screen.Dpi = 0;
+
+		console.log("Screen settings loaded into results (DPI unreadable): ", log.Screen);
+
+		return log;
+	}
+
+	Save(list: ResultLog): void
+	{
+		SaveLocal(list);
+	}
+
+	Clear(): void
+	{
+		clearResult();
+	}
+	
+}
+
+export class SavedResult extends ResultStorage
+{
+	async Load(): Promise<ResultLog>
+	{
+		return JSON.parse(<string>window.localStorage.getItem(RESULT_KEY));
+	}
+
+	Save(list: ResultLog): void
+	{
+		SaveLocal(list);
+	}
+
+	Clear(): void
+	{
+		clearResult();
+	}
+
+	static IsLocalResultSaved()
+	{
+		return window.localStorage.getItem(RESULT_KEY) != null;
+	}
+}
+
 export class NewSession extends TestSessionStorage
 {
+	taskFactory : TaskFactory;
 	backend : Backend;
 	resultLog : ResultLog;
 
-	constructor(backend : Backend, resultLog : ResultLog)
+	constructor(factory : TaskFactory, backend : Backend, resultLog : ResultLog)
 	{
 		super();
+		this.taskFactory = factory;
 		this.backend = backend;
 		this.resultLog = resultLog;
 	}
 
-	async LoadList(): Promise<TaskList>
+	async Load(): Promise<TaskList>
 	{
-		let defaultParser = new DatasetParser(new IndependentAxisNormalizer());
-
 		let demographicSurvey = new DemographicTask();
 		let ishiharaTest = new IshiharaTask();
 		let demographicEvaluation = new DemographicExclusion(this.backend, demographicSurvey, ishiharaTest);
 
-		let contour = new IsocontourDatasetLoader(this.backend, "", GRAPH_AXIS_LENGTH);
-		let ScatterPlot = new ScatterPlotDatasetLoader(this.backend, defaultParser, "iris", GRAPH_AXIS_LENGTH);
+		let taskOrder = await this.backend.GetTestOrder();
 
-		let pie1 = await this.backend.GetPieChartDataset("");
-		let pie2 = this.shufflePie(pie1);
-
-		let tasks = new TaskList([
+		let tasks : (Task | TaskLoader)[] = [
 			demographicSurvey,
 			ishiharaTest,
-			demographicEvaluation,
+			demographicEvaluation
+		];
 
-			new RotationTutorial(),
-			new RotationTask(15),
+		for (let i = 0; i < taskOrder.Tests.length; i++)
+		{
+			let serialization = taskOrder.Tests[i];
+			let task = this.taskFactory.Create(serialization);
+			tasks.push(task);
+		}
 
-			new PieChartTutorial(),
-			new PieChart(pie1, pie2),
+		this.resultLog.TaskOrderName = taskOrder.Name;
+		tasks.push(new TestingComplete(this.backend, this.resultLog));
 
-			new IsocontourTutorial(),
-			contour,
+		console.log("Loaded tasks. Order schema: " + taskOrder.Name);
 
-			new ScatterPlotTutorial(),
-			ScatterPlot,
-
-			new TestingComplete(this.backend, this.resultLog)
-		]);
-
-		return tasks
+		let taskList = new TaskList(tasks);
+		return taskList;
 	}
 
-	private shufflePie(pie : PieChartData[]) : PieChartData[]
-	{
-		let data : PieChartData[] = [];
-		for (let i = 0; i < pie.length; i++) data.push(pie[i]);
-		data.sort( () => Math.random() - 0.5 );
-		return data;
-	}
-
-
-	async LoadResults(): Promise<ResultLog>
-	{
-		return new ResultLog();
-	}
-
-	Save(list: TaskList): void;
-	Save(list: ResultLog): void;
-	Save(list: any)
+	Save(list: TaskList)
 	{
 		SaveLocal(list);
 	}
 
 	Clear() : void
 	{
-		window.localStorage.clear();
+		clearTasks();
 	}
 }
 
@@ -118,7 +139,7 @@ export class SavedSession extends TestSessionStorage
 		this.factory = factory;
 	}
 
-	async LoadList(): Promise<TaskList>
+	async Load(): Promise<TaskList>
 	{
 		let serializedListJson = window.localStorage.getItem(TASK_LIST_KEY);
 
@@ -131,28 +152,19 @@ export class SavedSession extends TestSessionStorage
 		return taskList;
 	}
 
-	async LoadResults(): Promise<ResultLog>
-	{
-		return JSON.parse(<string>window.localStorage.getItem(RESULT_KEY));
-	}
-
-	Save(list: TaskList): void;
-	Save(list: ResultLog): void;
-	Save(list: any)
+	Save(list: TaskList)
 	{
 		SaveLocal(list);
 	}
 
 	Clear() : void
 	{
-		window.localStorage.clear();
+		clearTasks();
 	}
 
 	static IsLocalSessionSaved() : boolean
 	{
-		return window.localStorage.getItem(TASK_LIST_KEY) != null
-			&& window.localStorage.getItem(RESULT_KEY) != null
-			;
+		return window.localStorage.getItem(TASK_LIST_KEY) != null;
 	}
 }
 
@@ -167,4 +179,14 @@ function SaveLocal(obj : TaskList | ResultLog)
 	{
 		window.localStorage.setItem(RESULT_KEY, JSON.stringify(obj));
 	}
+}
+
+function clearTasks()
+{
+	window.localStorage.removeItem(TASK_LIST_KEY);
+}
+
+function clearResult()
+{
+	window.localStorage.removeItem(RESULT_KEY);
 }

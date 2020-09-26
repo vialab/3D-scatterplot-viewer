@@ -4,6 +4,8 @@ let {
 	EmptyStringError
 } = require("./ValidationError");
 
+let {Validate : ValidateScreen} = require("./Screen");
+
 let {Validate: ValidateDemographic} = require("./Demographics");
 let {Validate: ValidateEducation} = require("./Demographics/Education");
 let {Validate: ValidateVideoGames} = require("./Demographics/VideoGames");
@@ -19,16 +21,48 @@ let {Validate: ValidateRotationInstance} = require("./Tests/RotationInstance");
 let {Validate: ValidateCompensation} = require("./Compensation");
 
 let {ContainsProperty, IsArray, IsObject} = require("./TypeValidation");
+let {IsEmptyString} = require("./GeneralValidation");
 
 let Errors = {
 	MISSING_DEMOGRAPHICS: new KeyMissingOrInvalidTypeError(110, "Demographics"),
 	MISSING_TESTS: new KeyMissingOrInvalidTypeError(111, "Tests"),
-	MISSING_COMPENSATION: new KeyMissingOrInvalidTypeError(112, "Compensation")
+	MISSING_COMPENSATION: new KeyMissingOrInvalidTypeError(112, "Compensation"),
+	EMPTY_TASK_ORDER_NAME: new EmptyStringError(113, "TaskOrderName"),
+	MISSING_TASK_ORDER_NAME: new KeyMissingOrInvalidTypeError(114, "TaskOrderName"),
+	MISSING_SCREEN: new KeyMissingOrInvalidTypeError(115, "Screen"),
+};
+
+module.exports = {
+	Validate,
+	Errors
 };
 
 function Validate(model)
 {
 	let errors = [];
+
+	if (ContainsProperty(model, "TaskOrderName", String))
+	{
+		if (IsEmptyString(model.TaskOrderName))
+		{
+			errors.push(Errors.EMPTY_TASK_ORDER_NAME);
+		}
+	}
+	else
+	{
+		errors.push(Errors.MISSING_TASK_ORDER_NAME);
+	}
+
+	if (IsObject(model.Screen))
+	{
+		let screenErrors = ValidateScreen(model.Screen);
+		screenErrors = ErrorMessagePrepend(screenErrors, "(Screen) ");
+		errors = errors.concat(screenErrors);
+	}
+	else
+	{
+		errors.push(Errors.MISSING_SCREEN);
+	}
 	
 	if (IsObject(model.Demographics))
 	{
@@ -151,7 +185,3 @@ function ErrorMessagePrepend(errors, string)
 
 	return newErrors;
 }
-
-module.exports = {
-	Validate
-};

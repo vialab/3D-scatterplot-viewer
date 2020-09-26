@@ -1,8 +1,17 @@
 export class ResultLog
 {
+	TaskOrderName : string = "";
+	Screen : ScreenLog = new ScreenLog();
 	Demographics : DemographicsLog = new DemographicsLog();
 	Tests : TestLog[] = [];
 	Compensation : CompensationLog = new CompensationLog();
+}
+
+export class ScreenLog
+{
+	Width : number = 0;
+	Height : number = 0;
+	Dpi : number = 0;
 }
 
 export class DemographicsLog

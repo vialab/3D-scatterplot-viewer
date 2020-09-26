@@ -40,7 +40,17 @@ async function Insert(session)
 
 		let concurrentInserts = [];
 
-		await connection.query("INSERT INTO TestSessions(Id) VALUES ($1)", [sessionId]);
+		await connection.query(
+			"INSERT INTO TestSessions(Id, TaskOrderName, ScreenWidth, ScreenHeight, ScreenDpi) "
+			+"VALUES ($1, $2, $3, $4, $5);",
+			[
+				sessionId,
+				session.TaskOrderName,
+				session.Screen.Width,
+				session.Screen.Height,
+				session.Screen.Dpi
+			]
+		);
 
 		// concurrentInserts.push(
 			await connection.query(
@@ -230,6 +240,7 @@ function TestToTable(test)
 function OptionToTable(option)
 {
 	return {
+		Name: option.Name,
 		SelectedState: option.SelectedState,
 		CorrectState: option.CorrectState
 	};

@@ -1,6 +1,12 @@
 module.exports = () =>
 {
 	return {
+		TaskOrderName: "Sample",
+		Screen: {
+			Width: 10,
+			Height: 10,
+			Dpi: 10
+		},
 		Demographics: {
 			Education: [
 				{
