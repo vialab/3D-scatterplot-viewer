@@ -61,8 +61,13 @@ export class ConfidenceWindow
 		$("#loading-failed").show();
 	}
 
+	public ResetConfidence()
+	{
+		$("#confidence").val(50);
+	}
+
 	public ConfidenceValue() : number
 	{
-		return <number>$("").val();
+		return <number>$("#confidence").val();
 	}
 }
