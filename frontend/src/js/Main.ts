@@ -78,6 +78,7 @@ async function NextTask()
 
 	if (CurrentTask && CurrentTask.IsConfidenceTracked())
 	{
+		LoadingScreen.ResetConfidence();
 		LoadingScreen.ShowConfidenceBar();
 
 		LoadingScreen.OnSubmit = () =>
@@ -103,14 +104,14 @@ async function NextTask()
 	//Possible load error 1: load from provider
 	if (nextTask instanceof TaskLoader)
 	{
-		CurrentTask = await BeginLoadingProvider(nextTask);
+		CurrentTask = await BeginLoadingTask(nextTask);
 	}
 	else
 	{
 		CurrentTask = nextTask;
 	}
 
-	await BeginInitialize(CurrentTask);
+	await BeginTaskInitialize(CurrentTask);
 	await PerformTask(CurrentTask);
 
 	SessionStorage.Save(testList);
@@ -119,21 +120,21 @@ async function NextTask()
 	NextTask();
 }
 
-async function BeginLoadingProvider(provider : TaskLoader) : Promise<Task>
+async function BeginLoadingTask(provider : TaskLoader) : Promise<Task>
 {
 	LoadingScreen.OnRetryLoading = async () =>
 	{
-		TryLoadProvider(provider);
+		TryLoadTask(provider);
 	};
 
 	return new Promise(async (resolve, reject) =>
 	{
 		ResolveLoading = resolve;
-		TryLoadProvider(provider);
+		TryLoadTask(provider);
 	});
 }
 
-async function TryLoadProvider(provider : TaskLoader)
+async function TryLoadTask(provider : TaskLoader)
 {
 	LoadingScreen.ShowLoading();
 
@@ -149,37 +150,28 @@ async function TryLoadProvider(provider : TaskLoader)
 	}
 }
 
-async function BeginInitialize(task : Task)
+async function BeginTaskInitialize(task : Task)
 {
 	return new Promise((resolve, reject) =>
 	{
 		ResolveLoading = resolve;
-		TryInitialize(task);
+		TryTaskInitialize(task);
 	});
 }
 
-async function TryInitialize(task : Task)
+async function TryTaskInitialize(task : Task)
 {
 	LoadingScreen.ShowLoading();
 
 	LoadingScreen.OnRetryLoading = async () =>
 	{
-		TryInitialize(task);
+		TryTaskInitialize(task);
 	};
 
 	try
 	{
-		//Possible load error 2: in Initialize
 		await task.Initialize();
-
-		//Possible load error 2: in display
 		DisplayTask(task);
-
-		//Possible load error 3: Images not loaded
-
-		//Catch-all for load errors; notify the server if possbile
-		// If cannot contact server, internet is likely down
-
 		LoadingScreen.ShowNextTestReady();
 		ResolveLoading(task);
 	}
