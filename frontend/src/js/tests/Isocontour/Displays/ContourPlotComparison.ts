@@ -6,7 +6,6 @@ import { Point } from "../../../plotData/Point";
 import { Vector2, DirectionalLight, AmbientLight } from "three";
 import { GraphPlane } from "../../../ui/threejs/GraphPlane";
 import { InteractableGraph } from "../../../ui/components/InteractableGraph";
-import { FixedRotationGraph } from "../../../ui/components/FixedRotationGraph";
 import { Isolines } from "../../../ui/threejs/Isolines";
 import { AxisLabel } from "../../../ui/threejs/AxisLabel";
 import { Graph } from "../../../ui/components/Graph";
@@ -38,7 +37,7 @@ export class ContourPlotComparison extends TaskDisplay
 		this.interactableGraph.SetCameraLightStrength(0);
 		
 		let orthoAxisLabel = new AxisLabel(axisLength);
-		this.orthoGraph = new FixedRotationGraph(orthoAxisLabel, orthoPlane, axisLength, new Vector2(0,0));
+		this.orthoGraph = new Graph(orthoAxisLabel, orthoPlane, axisLength);
 		this.orthoGraph.UseOrthographicCamera();
 
 		this.RotationMetrics = new GraphRotationTracker(

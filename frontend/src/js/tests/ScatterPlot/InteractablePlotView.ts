@@ -10,7 +10,6 @@ import { Vector3, Vector2 } from "three";
 import { RandomPlane } from "./RandomPlane";
 import { Graph } from "../../ui/components/Graph";
 import { PlaneSelector } from "../../ui/components/PlaneSelector";
-import { FixedRotationGraph } from "../../ui/components/FixedRotationGraph";
 import { InteractableGraph } from "../../ui/components/InteractableGraph";
 import { ScatterPlotPoints } from "../../ui/threejs/ScatterPlotPoints";
 import { WireframeCube } from "../../ui/threejs/WireFrameCube";
@@ -34,7 +33,8 @@ export class InteractablePlotView extends TaskDisplay
 		let planeSelection = RandomPlane.Select();
 		this.CorrectPlane = planeSelection.Normal;
 		let planeViewRotation = planeSelection.Rotation;
-		this.planeView = new FixedRotationGraph(planeViewBorder, planeViewPoints, axisLength, planeViewRotation);
+		this.planeView = new Graph(planeViewBorder, planeViewPoints, axisLength);
+		this.planeView.SetRotation(planeViewRotation);
 		this.planeView.UseOrthographicCamera();
 
 		let maxRotation = 45;

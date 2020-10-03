@@ -69,6 +69,17 @@ export class Graph implements UiElement
 		this.RenderContinuously = this.RenderContinuously.bind(this);
 	}
 
+	public SetRotation(rotation : Three.Vector2) : void
+	{
+		this.scene.setRotationFromEuler(
+			new Three.Euler(
+				this.toRadians(rotation.x),
+				this.toRadians(rotation.y),
+				0
+			)
+		);
+	}
+
 	public GetRotation() : {x:number, y:number}
 	{
 		let rotation = {
