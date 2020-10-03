@@ -1,13 +1,12 @@
 import { UiElement } from "../../../ui/UiElement";
 import { FormElement } from "../../../ui/FormElement";
+import { DemographicFormComponent } from "./DemographicFormComponent";
 
-export class Age implements FormElement
+export class Age extends DemographicFormComponent
 {
-	element : JQuery<HTMLElement>;
-
 	constructor()
 	{
-		this.element = $(
+		super(
 		`<div>
 			<p>What is your age?</p>
 			<input type="text" name="age" />
@@ -17,11 +16,6 @@ export class Age implements FormElement
 
 	public Value() : any
 	{
-		return $("input[name=age]").val();
-	}
-
-	public Element(): JQuery<HTMLElement>
-	{
-		return this.element;
+		return $("input[name=age]").val()?.toString().trim();
 	}
 }

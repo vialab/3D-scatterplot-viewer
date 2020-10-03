@@ -1,13 +1,12 @@
 import { UiElement } from "../../../ui/UiElement";
 import { FormElement } from "../../../ui/FormElement";
+import { DemographicFormComponent } from "./DemographicFormComponent";
 
-export class VideoGameTime implements FormElement
+export class VideoGameTime extends DemographicFormComponent
 {
-	element : JQuery<HTMLElement>;
-
 	constructor()
 	{
-		this.element = $(
+		super(
 		`<div>
 			<p>
 				On average, how much time (hours/week) do you spend playing video games?
@@ -33,10 +32,5 @@ export class VideoGameTime implements FormElement
 	public Value() : any
 	{
 		return $("input[name=videogames]:checked").val();
-	}
-
-	public Element(): JQuery<HTMLElement>
-	{
-		return this.element;
 	}
 }

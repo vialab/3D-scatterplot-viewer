@@ -1,12 +1,11 @@
 import { FormElement } from "../../../ui/FormElement";
+import { DemographicFormComponent } from "./DemographicFormComponent";
 
-export class EducationAtLeastBachelors implements FormElement
+export class EducationAtLeastBachelors extends DemographicFormComponent
 {
-	element : JQuery<HTMLElement>;
-
 	constructor()
 	{
-		this.element = $(
+		super(
 		`<div>
 			<p>
 				Does your education history include the completion of a bachelors' degree or higher?
@@ -25,10 +24,5 @@ export class EducationAtLeastBachelors implements FormElement
 	public Value() : any
 	{
 		return $("input[name=bachelors]:checked").val() == "1";
-	}
-
-	public Element(): JQuery<HTMLElement>
-	{
-		return this.element;
 	}
 }

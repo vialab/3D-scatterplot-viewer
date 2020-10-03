@@ -12,6 +12,7 @@ import { VideoGameTime } from "./components/VideoGameTime";
 import { VideoGameTypes } from "./components/VideoGameTypes";
 import { Age } from "./components/Age";
 import { Gender } from "./components/Gender";
+import { DemographicFormComponent } from "./components/DemographicFormComponent";
 
 export class DemographicForm extends TaskDisplay
 {
@@ -31,10 +32,28 @@ export class DemographicForm extends TaskDisplay
 
 	private submit : () => void;
 
+	private missingRequiredFieldsNotification : JQuery<HTMLElement>;
+
 	constructor(submit : () => void)
 	{
 		super();
 		this.submit = submit;
+		this.missingRequiredFieldsNotification = $(
+			`<div style="color: red">Missing required fields. Please look over the form and answer any question marked as required.</div>`
+		);
+		this.missingRequiredFieldsNotification.hide();
+
+		this.fieldOfStudy.SetRequired(true);
+		this.educationHistory.SetRequired(true);
+		this.educationAtLeastBachelors.SetRequired(true);
+		this.fieldOfStudy.SetRequired(true);
+		this.educationHistory.SetRequired(true);
+		this.workplaceGraphics.SetRequired(true);
+		this.workplaceDrawings.SetRequired(true);
+		this.visualArt.SetRequired(true);
+		this.videoGames.SetRequired(true);
+		this.age.SetRequired(true);
+		this.gender.SetRequired(true);
 	}
 	
 	public Display(screen: UserInterface): void
@@ -74,12 +93,46 @@ export class DemographicForm extends TaskDisplay
 		form.append("<hr/>");
 		form.append(this.gender.Element());
 		form.append("<hr/>");
+		form.append(this.missingRequiredFieldsNotification);
 
 		let submitButton = $(`<div id="submit-test" class="submit">Submit &raquo;</div>`);
 		submitButton.click(() =>
 		{
-			this.submit();
-		})
+			let erroronous = false;
+			let keys = Object.keys(this);
+
+			for (let i = 0; i < keys.length; i++)
+			{
+				let propertyKey : string = keys[i];
+				let formField : any = (<any>this)[propertyKey];
+
+				if (formField instanceof DemographicFormComponent)
+				{
+					erroronous = formField.IsRequired() && !formField.Value()
+						|| Array.isArray(formField.Value()) && formField.Value().length == 0
+
+					if (erroronous)
+					{
+						formField.ShowRequiredFieldError();
+					}
+					else
+					{
+						formField.HideRequiredFieldError();
+					}
+				}
+			}
+
+			if (!erroronous)
+			{
+				this.missingRequiredFieldsNotification.hide();
+				this.submit();
+			}
+			else
+			{
+				this.missingRequiredFieldsNotification.show();
+			}
+		});
+
 		form.append(submitButton);
 
 		screen.ViewModeContent();

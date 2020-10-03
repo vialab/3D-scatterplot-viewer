@@ -1,13 +1,12 @@
 import { UiElement } from "../../../ui/UiElement";
 import { FormElement } from "../../../ui/FormElement";
+import { DemographicFormComponent } from "./DemographicFormComponent";
 
-export class WorkplaceGraphicsDescription implements FormElement
+export class WorkplaceGraphicsDescription extends DemographicFormComponent
 {
-	element : JQuery<HTMLElement>;
-
 	constructor()
 	{
-		this.element = $(
+		super(
 		`<div>
 			<p>Please describe what graphical representations of information you use for your work.</p>
 			<textarea id="workplaceGraphicsDescription" rows="4" cols="50"></textarea>
@@ -18,10 +17,5 @@ export class WorkplaceGraphicsDescription implements FormElement
 	public Value() : any
 	{
 		return $("#workplaceGraphicsDescription").val();
-	}
-
-	public Element(): JQuery<HTMLElement>
-	{
-		return this.element;
 	}
 }

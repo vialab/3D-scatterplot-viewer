@@ -1,13 +1,12 @@
 import { UiElement } from "../../../ui/UiElement";
 import { FormElement } from "../../../ui/FormElement";
+import { DemographicFormComponent } from "./DemographicFormComponent";
 
-export class WorkplaceGraphicsLikert implements FormElement
+export class WorkplaceGraphicsLikert extends DemographicFormComponent
 {
-	element : JQuery<HTMLElement>;
-
 	constructor()
 	{
-		this.element = $(
+		super(
 		`<div>
 			<p>
 				How would you rank the importance of graphical representations of information to your work?
@@ -43,10 +42,5 @@ export class WorkplaceGraphicsLikert implements FormElement
 	public Value() : any
 	{
 		return $("#input[name=workgraphics]:checked").val();
-	}
-
-	public Element(): JQuery<HTMLElement>
-	{
-		return this.element;
 	}
 }

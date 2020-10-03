@@ -1,13 +1,12 @@
 import { UiElement } from "../../../ui/UiElement";
 import { FormElement } from "../../../ui/FormElement";
+import { DemographicFormComponent } from "./DemographicFormComponent";
 
-export class WorkplaceDrawingImportance implements FormElement
+export class WorkplaceDrawingImportance extends DemographicFormComponent
 {
-	element : JQuery<HTMLElement>;
-
 	constructor()
 	{
-		this.element = $(
+		super(
 		`<div>
 			<p>If so, how important are these drawings and sketches to your work?</p>
 			<table class="w3-table" style="width: 100%;">
@@ -41,10 +40,5 @@ export class WorkplaceDrawingImportance implements FormElement
 	public Value() : any
 	{
 		return $("input[name=drawingimportance]:checked").val();
-	}
-
-	public Element(): JQuery<HTMLElement>
-	{
-		return this.element;
 	}
 }

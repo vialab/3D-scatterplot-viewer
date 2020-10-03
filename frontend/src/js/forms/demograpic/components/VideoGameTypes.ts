@@ -1,13 +1,12 @@
 import { UiElement } from "../../../ui/UiElement";
 import { FormElement } from "../../../ui/FormElement";
+import { DemographicFormComponent } from "./DemographicFormComponent";
 
-export class VideoGameTypes implements FormElement
+export class VideoGameTypes extends DemographicFormComponent
 {
-	element : JQuery<HTMLElement>;
-
 	constructor()
 	{
-		this.element = $(
+		super(
 		`<div style="padding-top: 20px;">
 			<p>
 				What types of video games do you play?<br />
@@ -21,10 +20,5 @@ export class VideoGameTypes implements FormElement
 	public Value() : any
 	{
 		return $("#videogamesdesc").val();
-	}
-
-	public Element(): JQuery<HTMLElement>
-	{
-		return this.element;
 	}
 }

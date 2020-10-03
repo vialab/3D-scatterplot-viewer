@@ -1,13 +1,12 @@
 import { UiElement } from "../../../ui/UiElement";
 import { FormElement } from "../../../ui/FormElement";
+import { DemographicFormComponent } from "./DemographicFormComponent";
 
-export class VisualArtTimeSpent implements FormElement
+export class VisualArtTimeSpent extends DemographicFormComponent
 {
-	element : JQuery<HTMLElement>;
-
 	constructor()
 	{
-		this.element = $(
+		super(
 		`<div>
 			<p>
 				On average, how much time (hours/week) do you spend making visual art?
@@ -33,10 +32,5 @@ export class VisualArtTimeSpent implements FormElement
 	public Value() : any
 	{
 		return $("input[name=visualart]:checked").val();
-	}
-
-	public Element(): JQuery<HTMLElement>
-	{
-		return this.element;
 	}
 }

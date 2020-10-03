@@ -1,13 +1,12 @@
 import { UiElement } from "../../../ui/UiElement";
 import { FormElement } from "../../../ui/FormElement";
+import { DemographicFormComponent } from "./DemographicFormComponent";
 
-export class WorkplaceDrawingUsed implements FormElement
+export class WorkplaceDrawingUsed extends DemographicFormComponent
 {
-	element : JQuery<HTMLElement>;
-
 	constructor()
 	{
-		this.element = $(
+		super(
 		`<div>
 			<p>Do you make drawings or sketches for your work?</p>
 			<input type="radio" name="drawing" id="drawing-1" value="1">
@@ -22,10 +21,5 @@ export class WorkplaceDrawingUsed implements FormElement
 	public Value() : any
 	{
 		return $("input[name=drawing]").val() == "1";
-	}
-
-	public Element(): JQuery<HTMLElement>
-	{
-		return this.element;
 	}
 }

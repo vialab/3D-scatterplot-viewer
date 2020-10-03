@@ -1,16 +1,16 @@
 import { UiElement } from "../../../ui/UiElement";
 import { FormElement } from "../../../ui/FormElement";
+import { DemographicFormComponent } from "./DemographicFormComponent";
 
-export class FieldOfStudy implements FormElement
+export class FieldOfStudy extends DemographicFormComponent
 {
-	element : JQuery<HTMLElement>;
-
 	constructor()
 	{
-		this.element = $(
+		super(
 		`<div>
 			<p>Select your primary field of study:</p>
 			<select id="field">
+				<option value=""></option>
 				<option value="1">Computer Science</option>
 				<option value="2">Chemistry</option>
 				<option value="3">Education</option>
@@ -23,10 +23,5 @@ export class FieldOfStudy implements FormElement
 	public Value() : any
 	{
 		return $("#field option:selected").val();
-	}
-
-	public Element(): JQuery<HTMLElement>
-	{
-		return this.element;
 	}
 }

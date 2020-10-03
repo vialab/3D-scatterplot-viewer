@@ -1,9 +1,9 @@
 import { UiElement } from "../../../ui/UiElement";
 import { FormElement } from "../../../ui/FormElement";
+import { DemographicFormComponent } from "./DemographicFormComponent";
 
-export class EducationHistory implements FormElement
+export class EducationHistory extends DemographicFormComponent
 {
-	element : JQuery<HTMLElement>;
 	entries : EducationEntry[] = [];
 
 	degreeInput : JQuery<HTMLElement>;
@@ -13,7 +13,7 @@ export class EducationHistory implements FormElement
 
 	constructor()
 	{
-		this.element = $(
+		super(
 		`<div>
 			<p>Please list all of your post-secondary degrees in the following table:</p>
 			<table class="w3-table w3-border w3-striped" style="width: 100%">
@@ -133,14 +133,14 @@ export class EducationHistory implements FormElement
 		this.ShowErrorMessage("");
 	}
 
+	public ShowRequiredFieldError()
+	{
+		super.ShowRequiredFieldError();
+	}
+
 	public Value() : any
 	{
 		return this.entries;
-	}
-
-	public Element(): JQuery<HTMLElement>
-	{
-		return this.element;
 	}
 }
 

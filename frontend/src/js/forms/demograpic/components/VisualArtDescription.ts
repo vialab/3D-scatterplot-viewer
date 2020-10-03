@@ -1,13 +1,12 @@
 import { UiElement } from "../../../ui/UiElement";
 import { FormElement } from "../../../ui/FormElement";
+import { DemographicFormComponent } from "./DemographicFormComponent";
 
-export class VisualArtDescription implements FormElement
+export class VisualArtDescription extends DemographicFormComponent
 {
-	element : JQuery<HTMLElement>;
-
 	constructor()
 	{
-		this.element = $(
+		super(
 		`<div style="padding-top: 20px;">
 			<p>
 				What type of visual art do you make?<br />
@@ -21,10 +20,5 @@ export class VisualArtDescription implements FormElement
 	public Value() : any
 	{
 		return $("#visualartdesc").val();
-	}
-
-	public Element(): JQuery<HTMLElement>
-	{
-		return this.element;
 	}
 }

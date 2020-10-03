@@ -1,13 +1,12 @@
 import { UiElement } from "../../../ui/UiElement";
 import { FormElement } from "../../../ui/FormElement";
+import { DemographicFormComponent } from "./DemographicFormComponent";
 
-export class Gender implements FormElement
+export class Gender extends DemographicFormComponent
 {
-	element : JQuery<HTMLElement>;
-
 	constructor()
 	{
-		this.element = $(
+		super(
 		`<div>
 			<p>What is your gender?</p> 
 
@@ -33,11 +32,6 @@ export class Gender implements FormElement
 	public Value() : any
 	{
 		let value = $("input[name=gender]:checked").val();
-		return (value == "sd")? $("#gender-sd").val() : value;
-	}
-
-	public Element(): JQuery<HTMLElement>
-	{
-		return this.element;
+		return (value == "sd")? $("#gender-sd").val()?.toString().trim() : value;
 	}
 }
