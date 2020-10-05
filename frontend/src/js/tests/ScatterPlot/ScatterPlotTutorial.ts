@@ -5,7 +5,7 @@ import { RandomPoints } from "../../util/RandomPoints";
 import { InteractableGraph } from "../../ui/components/InteractableGraph";
 import { WireframeCube } from "../../ui/threejs/WireFrameCube";
 import { ScatterPlotPoints } from "../../ui/threejs/ScatterPlotPoints";
-import { Vector2 } from "three";
+import { Vector2, Plane } from "three";
 import { Graph } from "../../ui/components/Graph";
 import { EmptyTaskcontroller } from "../../tasks/EmptyTaskController";
 import { PlaneSelector } from "../../ui/components/PlaneSelector";
@@ -57,9 +57,13 @@ class ScatterPlotTutorialDisplay extends TaskDisplay
 		);
 		orthographic.UseOrthographicCamera();
 
+		let planeSelector = new PlaneSelector();
+		planeSelector.Bind(interactablePlot);
+
 		let graphContainer = $(`<div style="display: flex;"></div>`);
 		let ortho = $(`<div></div>`);
 		let interactable = $(`<div></div>`);
+		let interactionGrid = $(`<div style="width: 50%; margin-left: 50%"></div>`);
 
 		let template = $(
 		`<div style="text-align: center;">
@@ -72,10 +76,12 @@ class ScatterPlotTutorialDisplay extends TaskDisplay
 
 		ortho.append(orthographic.Element());
 		interactable.append(interactablePlot.Element());
+		interactionGrid.append(planeSelector.Element());
 
 		graphContainer.append(ortho);
 		graphContainer.append(interactable);
 		
+		template.prepend(interactionGrid);
 		template.prepend(graphContainer);
 
 		orthographic.RenderOnce();

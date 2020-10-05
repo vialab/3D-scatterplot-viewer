@@ -49,7 +49,7 @@ export class MultiPlotView extends TaskDisplay
 
 		this.toggleOrthoButton = new ToggleOrthographicButton([this.firstAngleView, this.secondAngleView], false);
 
-		this.inputGrid = new PlaneSelector(this.firstAngleView.CameraNormal());
+		this.inputGrid = new PlaneSelector();
 		this.inputGrid.OnPlaneHighlighted = (planeNormal : Three.Vector3) =>
 		{
 			this.toggleHighlight(planeNormal);

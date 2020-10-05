@@ -121,7 +121,7 @@ export class NewSession extends TestSessionStorage
 
 	Save(list: TaskList)
 	{
-		// SaveLocal(list);
+		SaveLocal(list);
 	}
 
 	Clear() : void

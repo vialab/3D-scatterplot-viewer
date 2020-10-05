@@ -46,22 +46,9 @@ export class InteractablePlotView extends TaskDisplay
 		this.fullView = new InteractableGraph(fullViewBorder, fullViewPoints, axisLength, initialRotation, rotationRange);
 		this.fullView.UsePerspectiveCamera();
 
-		this.inputGrid = new PlaneSelector(this.fullView.CameraNormal());
+		this.inputGrid = new PlaneSelector();
 
-		this.inputGrid.OnPlaneHighlighted = (planeNormal : Three.Vector3) =>
-		{
-			this.toggleHighlight(planeNormal);
-		}
-
-		this.inputGrid.OnPlaneUnHilighted = (planeNormal : Three.Vector3) =>
-		{
-			this.toggleHighlight(planeNormal);
-		}
-	}
-
-	protected toggleHighlight(planeNormal : Three.Vector3)
-	{
-		this.fullView.TogglePlaneHighlight(planeNormal);
+		this.inputGrid.Bind(this.fullView);
 	}
 
 	Display(screen: UserInterface): void
