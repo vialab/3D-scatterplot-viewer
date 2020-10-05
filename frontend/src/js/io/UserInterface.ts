@@ -103,6 +103,11 @@ export class UserInterface
 		return this.promptContainer;
 	}
 
+	SubmitButton() : JQuery<HTMLElement>
+	{
+		return this.submitButton;
+	}
+
 	ViewModeComparison()
 	{
 		this.contentContainer.hide();

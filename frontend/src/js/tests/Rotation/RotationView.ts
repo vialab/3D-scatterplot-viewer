@@ -41,7 +41,7 @@ export class RotationView extends TaskDisplay
 				</td>
 			</tr>
 		</table>
-		`);
+		`);	
 
 		template.find("#imgContainer").append(image);
 

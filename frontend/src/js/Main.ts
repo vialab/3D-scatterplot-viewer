@@ -9,6 +9,7 @@ import { ResultLog } from "./metrics/ResultLog";
 import { BrowserDetails } from "./BrowserDetails";
 import { SavedSession, NewSession, TestSessionStorage, ResultStorage, SavedResult, NewResult } from "./TestSessionStorage";
 import { TaskFactory } from "./tasks";
+import { DefaultElementSizeSettings } from "./ui/ElementSizeSettings";
 
 let UI : UserInterface;
 let LoadingScreen : ConfidenceWindow;
@@ -50,7 +51,11 @@ async function LoadSession()
 	
 	Results = await ResultsStorage.Load();
 
-	let factory = new TaskFactory(backend, Results);
+	let factory = new TaskFactory(
+		backend,
+		Results,
+		new DefaultElementSizeSettings()
+	);
 
 	SessionStorage = SavedSession.IsLocalSessionSaved()?
 		new SavedSession(factory)
@@ -201,9 +206,18 @@ function DisplayTask(task : Task)
 	UI.SetTitle(task.GetTitle());
 	UI.SetPrompt(task.GetPrompt());
 	UI.ShowOptions(task);
+
+	UI.SubmitButton().html("Submit &raquo;");
 	
 	if (task.IsExplicitSubmissionRequired())
+	{
 		UI.ShowSubmitButton();
+
+		// if (task is Tutorial)
+		// {
+			// UI.ShowNextButton();
+		// }
+	}
 	else
 		UI.HideSubmitButton();
 	

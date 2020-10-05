@@ -42,7 +42,7 @@ export class PieChartTutorialDisplay extends PieChartDisplay
 		page.prepend(pieComparison);
 
 		ui.ContentContainer().append(page);
-
+		ui.SubmitButton().html("Begin");
 		this.displayPie(firstPieContainer, this.originalData);
 		this.displayPie(secondPieContainer, this.comparedata);
 	}

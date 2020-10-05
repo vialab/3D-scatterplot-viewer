@@ -16,6 +16,7 @@ export class ScatterPlotTutorial extends Task
 	constructor()
 	{
 		super(new ScatterPlotTutorialDisplay(), new EmptyTaskcontroller());
+		this.SetTitle("Instructions");
 		this.SetCofidenceTracked(false);
 		this.SetExplicitSubmissionRequired(true);
 	}
@@ -80,6 +81,7 @@ class ScatterPlotTutorialDisplay extends TaskDisplay
 		orthographic.RenderOnce();
 		interactablePlot.RenderContinuously();
 
+		screen.SubmitButton().html("Begin");
 		screen.ViewModeContent();
 		screen.ContentContainer().append(template);
 	}

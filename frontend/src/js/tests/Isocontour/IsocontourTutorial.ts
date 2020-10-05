@@ -10,6 +10,7 @@ export class IsocontourTutorial extends Task
 	constructor()
 	{
 		super (new IsoTutorialDisplay(), new EmptyTaskcontroller());
+		this.SetTitle("Instructions");
 		this.SetExplicitSubmissionRequired(true);
 		this.SetCofidenceTracked(false);
 	}
@@ -65,6 +66,7 @@ class IsoTutorialDisplay extends TaskDisplay
 		graph.GetInteractableGraph().RenderContinuously();
 
 		screen.ViewModeContent();
+		screen.SubmitButton().html("Begin");
 		screen.ContentContainer().append(template);
 	}
 

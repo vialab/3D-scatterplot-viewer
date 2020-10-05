@@ -6,6 +6,7 @@ import { DemographicTask } from "./forms/demograpic";
 import { IshiharaTask } from "./forms/ishihara";
 import { DemographicExclusion } from "./forms/exclusion";
 import { TestingComplete } from "./forms/TestingComplete";
+import { RotationTask } from "./tests/Rotation/RotationTask";
 
 export abstract class TestSessionStorage
 {
@@ -97,9 +98,9 @@ export class NewSession extends TestSessionStorage
 		let taskOrder = await this.backend.GetTestOrder();
 
 		let tasks : (Task | TaskLoader)[] = [
-			demographicSurvey,
-			ishiharaTest,
-			demographicEvaluation
+			// demographicSurvey,
+			// ishiharaTest,
+			// demographicEvaluation
 		];
 
 		for (let i = 0; i < taskOrder.Tests.length; i++)
@@ -120,7 +121,7 @@ export class NewSession extends TestSessionStorage
 
 	Save(list: TaskList)
 	{
-		SaveLocal(list);
+		// SaveLocal(list);
 	}
 
 	Clear() : void

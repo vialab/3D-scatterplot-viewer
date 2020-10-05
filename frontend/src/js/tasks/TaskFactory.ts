@@ -17,19 +17,19 @@ import { PieChartTutorial } from "../tests/PieChart/PieChartTutorial";
 import { RotationTask } from "../tests/Rotation/RotationTask";
 import { RotationTutorial } from "../tests/Rotation/RotationTutorial";
 import { IsocontourDatasetLoader } from "../tests/Isocontour/IsocontourDatasetLoader";
-
-//TODO get this from a factory that makes it proportionate to window size
-const AXIS_LENGTH = 400;
+import { ElementSizeSettings } from "../ui/ElementSizeSettings";
 
 export class TaskFactory
 {
 	backend : Backend;
 	resultLog : ResultLog;
+	elementSizing : ElementSizeSettings;
 
-	constructor(backend : Backend, resultLog : ResultLog)
+	constructor(backend : Backend, resultLog : ResultLog, elementSizing : ElementSizeSettings)
 	{
 		this.backend = backend;
 		this.resultLog = resultLog;
+		this.elementSizing = elementSizing;
 	}
 
 	Create(task : SerializedTask) : Task | TaskLoader
@@ -81,7 +81,7 @@ export class TaskFactory
 					new IndependentAxisNormalizer()
 				),
 				task.DatasetName,
-				AXIS_LENGTH
+				this.elementSizing.CanvasSideLength()
 			);
 		}
 		else if (task.Name == IsocontourTutorial.name)
@@ -90,7 +90,11 @@ export class TaskFactory
 		}
 		else if (task.Name == IsocontourDatasetLoader.name)
 		{
-			result = new IsocontourDatasetLoader(this.backend, task.DatasetName, AXIS_LENGTH);
+			result = new IsocontourDatasetLoader(
+				this.backend,
+				task.DatasetName,
+				this.elementSizing.CanvasSideLength()
+			);
 		}
 		else if (task.Name == TestingComplete.name)
 		{

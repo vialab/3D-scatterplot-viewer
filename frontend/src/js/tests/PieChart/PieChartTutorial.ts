@@ -9,6 +9,7 @@ export class PieChartTutorial extends Task
 	constructor()
 	{
 		super(new PieChartTutorialDisplay(), new EmptyTaskcontroller());
+		this.SetTitle("Instructions");
 		this.SetExplicitSubmissionRequired(true);
 		this.SetCofidenceTracked(false);
 	}
