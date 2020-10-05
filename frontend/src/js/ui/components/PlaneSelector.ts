@@ -2,11 +2,11 @@ import * as Three from "three";
 import { IdGenerator } from "../../util/IdGenerator";
 import { timeHours } from "d3";
 import GraphPlaneNormals from "./PlaneNormals";
+import { Graph } from "./Graph";
 
 export class PlaneSelector
 {
 	element : JQuery<HTMLElement>;
-	viewDirection : Three.Vector3;
 
 	selectedCell : JQuery<HTMLElement> | null;
 
@@ -16,9 +16,8 @@ export class PlaneSelector
 	public OnPlaneUnHilighted : (planeNormal : Three.Vector3) => void = () => {};
 	public OnPlaneSelected : (planeNormal : Three.Vector3) => void = () => {};
 
-	constructor(viewDirection : Three.Vector3)
+	constructor()
 	{
-		this.viewDirection = viewDirection;
 		this.selectedCell = null;
 
 		let gridContainerId = IdGenerator.Generate();
@@ -29,6 +28,19 @@ export class PlaneSelector
 		gridContainer.append(this.buildGrid());
 
 		this.element = element;
+	}
+
+	public Bind(graph : Graph)
+	{
+		this.OnPlaneHighlighted = (planeNormal : Three.Vector3) =>
+		{
+			graph.TogglePlaneHighlight(planeNormal);
+		}
+
+		this.OnPlaneUnHilighted = (planeNormal : Three.Vector3) =>
+		{
+			graph.TogglePlaneHighlight(planeNormal);
+		}
 	}
 	
 	private buildGrid() : JQuery<HTMLElement>
