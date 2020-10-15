@@ -51,12 +51,21 @@ gulp.task("copy-images", function CopyImages()
 	;
 });
 
+gulp.task("copy-dependencies", function CopyDependencies()
+{
+	return gulp.src("src/external/**/*.*")
+		.pipe(gulp.dest("build/external"))
+		.pipe(browserSync.stream())
+		;
+});
+
 gulp.task(
 	"default",
 	gulp.parallel([
 		"copy-html",
 		"copy-css",
 		"copy-images",
+		"copy-dependencies",
 		"build-js"
 	])
 );
