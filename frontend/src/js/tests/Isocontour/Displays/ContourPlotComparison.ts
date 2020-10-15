@@ -41,6 +41,7 @@ export class ContourPlotComparison extends TaskDisplay
 		
 		let orthoAxisLabel = new AxisLabel(axisLength);
 		this.orthoGraph = new Graph(orthoAxisLabel, orthoPlane, axisLength);
+		this.orthoGraph.SetRotation(new Vector2(90, 0));
 		this.orthoGraph.UseOrthographicCamera();
 
 		this.RotationMetrics = new GraphRotationTracker(
@@ -68,7 +69,7 @@ export class ContourPlotComparison extends TaskDisplay
 	public Display(screen: UserInterface): void
 	{
 		this.GetInteractableGraph().RenderContinuously();
-		this.GetPlaneView().RenderOnce();
+		this.GetPlaneView().RenderContinuously();
 
 		screen.ViewModeComparison();
 
