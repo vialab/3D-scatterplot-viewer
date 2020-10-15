@@ -22,6 +22,6 @@ export class UnlimitedTimer extends Timer
 
 	ElapsedTime()
 	{
-		return 0;
+		return Date.now() - this.startTime;
 	}
 }
