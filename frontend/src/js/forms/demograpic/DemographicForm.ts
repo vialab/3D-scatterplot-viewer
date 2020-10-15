@@ -50,6 +50,7 @@ export class DemographicForm extends TaskDisplay
 		this.educationHistory.SetRequired(true);
 		this.workplaceGraphics.SetRequired(true);
 		this.workplaceDrawings.SetRequired(true);
+		this.workplaceDrawingsImportance.SetRequired(true);
 		this.visualArt.SetRequired(true);
 		this.videoGames.SetRequired(true);
 		this.age.SetRequired(true);
