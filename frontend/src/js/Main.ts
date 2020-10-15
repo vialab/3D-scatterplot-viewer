@@ -103,8 +103,9 @@ async function NextTask()
 	let nextTask = testList.Next();
 
 	if (
-		CurrentTask && CurrentTask.IsConfidenceTracked()
-		|| nextTask && nextTask instanceof TaskLoader
+		CurrentTask
+		// && CurrentTask.IsConfidenceTracked()
+		// || nextTask && nextTask instanceof TaskLoader
 	)
 	{
 		isUsingLoadingScreen = true;
