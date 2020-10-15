@@ -12,7 +12,7 @@ export class IshiharaForm extends TaskDisplay
 		`<div>
 			<div style="text-align: center;">
 				<h3>Input the numbers you see in each circle in the textbox below the circle, then click submit</h3>
-				<p>This screening task is to check that you can properly view the colors used in this study based on your viewing conditions, monitor, and vision, among other factors.</p>
+				
 			</div>
 			<div class="center-content" style="flex-direction: column;">
 				<div class="center-content" style="display: flex; width: 800px; flex-wrap: wrap">
@@ -42,6 +42,7 @@ export class IshiharaForm extends TaskDisplay
 				</div>
 				<p class="ishiharaError" style="color: red;"></p>
 			</div>
+			<p>This screening task is to check that you can properly view the colors used in this study based on your viewing conditions, monitor, and vision, among other factors.</p>
 		</div>`
 		);
 

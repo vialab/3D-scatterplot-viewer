@@ -1,18 +1,14 @@
 import * as Three from "three";
 
 import { TaskDisplay, UserInterface } from "../../io";
-import { Point } from "../../plotData/Point";
-import { IdGenerator } from "../../util/IdGenerator";
-import { OrbitControls } from 'three-orbitcontrols-ts';
-import GraphPlaneNormals from "../../ui/components/PlaneNormals";
-import { ToggleOrthographicButton } from "../../ui/components/ToggleOrthographicButton";
-import { Vector3, Vector2 } from "three";
 import { RandomPlane } from "./RandomPlane";
+import { Option } from "../../ui/Option";
 import { Graph } from "../../ui/components/Graph";
 import { PlaneSelector } from "../../ui/components/PlaneSelector";
 import { InteractableGraph } from "../../ui/components/InteractableGraph";
 import { ScatterPlotPoints } from "../../ui/threejs/ScatterPlotPoints";
 import { WireframeCube } from "../../ui/threejs/WireFrameCube";
+import { Point } from "../../plotData/Point";
 
 export class InteractablePlotView extends TaskDisplay
 {
@@ -49,6 +45,11 @@ export class InteractablePlotView extends TaskDisplay
 		this.inputGrid = new PlaneSelector();
 
 		this.inputGrid.Bind(this.fullView);
+	}
+
+	public GetOptions() : Option[]
+	{
+		return this.inputGrid.GetOptions();
 	}
 
 	Display(screen: UserInterface): void

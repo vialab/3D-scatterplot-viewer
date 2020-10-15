@@ -1,4 +1,4 @@
-import {Option} from "./Option";
+import {Option} from "../ui/Option";
 import {TaskDisplay, UserInterface} from "../io";
 import {Timer, UnlimitedTimer} from "../metrics";
 
@@ -36,7 +36,6 @@ export abstract class TaskController
 	}
 
 	public abstract Submit(selectedOptions : Option | Option[]) : void;
-	public abstract GetOptions() : Option[];
 }
 
 class NoDisplay extends TaskDisplay

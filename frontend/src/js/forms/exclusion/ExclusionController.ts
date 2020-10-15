@@ -9,9 +9,4 @@ export class ExclusionController extends TaskController
 	{
 		
 	}
-
-	public GetOptions(): Option[]
-	{
-		return [];
-	}
 }

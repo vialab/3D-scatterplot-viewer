@@ -69,12 +69,14 @@ function ApplyPageEventHandlers()
 {
 	$("#submit-test").click(() =>
 	{
-		CurrentTask.Controller.Submit([]);
+		CurrentTask.Submit();
 	});	
 }
 
 async function NextTask()
 {
+	var isUsingLoadingScreen = false;
+
 	if (testList.IsComplete())
 	{
 		AllTestsCompleted();
@@ -90,6 +92,7 @@ async function NextTask()
 		{
 			let confidence = LoadingScreen.ConfidenceValue();
 			CurrentTask.SetConfidence(confidence);
+			CurrentTask.GetTimer().Start();
 			LoadingScreen.Hide();
 		};
 	}
@@ -104,7 +107,10 @@ async function NextTask()
 		CurrentTask && CurrentTask.IsConfidenceTracked()
 		|| nextTask && nextTask instanceof TaskLoader
 	)
+	{
+		isUsingLoadingScreen = true;
 		LoadingScreen.Show();
+	}
 
 	//Possible load error 1: load from provider
 	if (nextTask instanceof TaskLoader)
@@ -116,11 +122,22 @@ async function NextTask()
 		CurrentTask = nextTask;
 	}
 
+	CurrentTask.GetTimer().TickCallback = () =>
+	{
+		UI.SetTimerProgress(CurrentTask.GetTimer().Progress())
+	};
+
 	await BeginTaskInitialize(CurrentTask);
+
+	if (!isUsingLoadingScreen)
+		CurrentTask.GetTimer().Start();
+
 	await PerformTask(CurrentTask);
 
-	SessionStorage.Save(testList);
-	ResultsStorage.Save(Results);
+	CurrentTask.GetTimer().Stop();
+
+	// SessionStorage.Save(testList);
+	// ResultsStorage.Save(Results);
 
 	NextTask();
 }

@@ -1,10 +1,11 @@
 import * as Three from "three";
 import { IdGenerator } from "../../util/IdGenerator";
-import { timeHours } from "d3";
 import GraphPlaneNormals from "./PlaneNormals";
 import { Graph } from "./Graph";
+import { UiElement } from "../UiElement";
+import { Option, NonDisplayOption } from "../Option";
 
-export class PlaneSelector
+export class PlaneSelector implements UiElement
 {
 	element : JQuery<HTMLElement>;
 
@@ -15,6 +16,8 @@ export class PlaneSelector
 	public OnPlaneHighlighted : (planeNormal : Three.Vector3) => void = ()  => {};
 	public OnPlaneUnHilighted : (planeNormal : Three.Vector3) => void = () => {};
 	public OnPlaneSelected : (planeNormal : Three.Vector3) => void = () => {};
+
+	private options : {[direction : string]: NonDisplayOption}
 
 	constructor()
 	{
@@ -28,6 +31,20 @@ export class PlaneSelector
 		gridContainer.append(this.buildGrid());
 
 		this.element = element;
+
+		this.options = {
+			"up": new NonDisplayOption(0, "top", 0),
+			"down": new NonDisplayOption(0, "bottom", 0),
+			"left": new NonDisplayOption(0, "left", 0),
+			"right": new NonDisplayOption(0, "right", 0),
+			"away": new NonDisplayOption(0, "away", 0),
+			"towards": new NonDisplayOption(0, "towards", 0),
+		};
+	}
+
+	public GetOptions() : Option[]
+	{
+		return Object.values(this.options);
 	}
 
 	public Bind(graph : Graph)
@@ -102,6 +119,9 @@ export class PlaneSelector
 			let plane = this.getCorrespondingPlaneNormal(cell);
 			this.selectedCell = cell;
 
+			let planeString = cell.data("plane");
+			this.options[planeString].SetCurrentState(1);
+
 			this.OnPlaneSelected(plane);
 		});
 
@@ -130,21 +150,8 @@ export class PlaneSelector
 		//TODO bind the grid's data-plane to a normal vector relative to view direction
 
 		let plane = gridCell.data("plane");
-		let direction : Three.Vector3 | null = null;
+		let direction = this.planeStringToNormal(plane);
 		let closestPlane : Three.Vector3;
-
-		if (plane == "up")
-			direction = GraphPlaneNormals.UP;
-		else if (plane == "down")
-			direction = GraphPlaneNormals.DOWN;
-		else if (plane == "away")
-			direction = GraphPlaneNormals.AWAY;
-		else if (plane == "towards")
-			direction = GraphPlaneNormals.TOWARDS;
-		else if (plane == "right")
-			direction = GraphPlaneNormals.RIGHT;
-		else if (plane == "left")
-			direction = GraphPlaneNormals.LEFT;
 
 		if (direction == null)
 		{
@@ -153,6 +160,24 @@ export class PlaneSelector
 
 		closestPlane = this.closestPlane(direction);
 		return closestPlane;
+	}
+
+	private planeStringToNormal(plane : string) : Three.Vector3 | null
+	{
+		if (plane == "up")
+			return GraphPlaneNormals.UP;
+		else if (plane == "down")
+			return GraphPlaneNormals.DOWN;
+		else if (plane == "away")
+			return GraphPlaneNormals.AWAY;
+		else if (plane == "towards")
+			return GraphPlaneNormals.TOWARDS;
+		else if (plane == "right")
+			return GraphPlaneNormals.RIGHT;
+		else if (plane == "left")
+			return GraphPlaneNormals.LEFT;
+		else
+			return null;
 	}
 
 	private closestPlane(normal : Three.Vector3) : Three.Vector3

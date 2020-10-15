@@ -1,22 +1,28 @@
 export abstract class Timer
 {
+	public TickCallback : () => void;
 	protected startTime : number;
 
 	constructor()
 	{
 		this.startTime = 0;
+		this.TickCallback = () => {};
 	}
 
-	Begin() : void
+	public Start() : void
 	{
 		this.startTime = Date.now();
 	}
 
-	ElapsedTime() : number
+	public Stop() : void
 	{
-		return Date.now() - this.startTime;
 	}
 
-	abstract Tick() : void;
+	public Tick() : void
+	{
+		this.TickCallback();
+	}
+
+	abstract ElapsedTime() : number
 	abstract Progress() : number;
 }

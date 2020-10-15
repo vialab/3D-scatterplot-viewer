@@ -101,7 +101,7 @@ export class EducationHistory extends DemographicFormComponent
 		`<tr id="educationHistory_${this.entries.length-1}">
 			<td>${entry.Degree}</td>
 			<td>${entry.Specialty}</td>
-			<td>${entry.IsCompleted? "In Progress" : "Complete"}${entry.Years? "<br />("+entry.Years+" years)" : ""}</td>
+			<td>${entry.IsCompleted? "Complete" : "In Progress"}${entry.Years? "<br />("+entry.Years+" years)" : ""}</td>
 			<td><button class="w3-button w3-deep-purple">- Remove</button></td>
 		</tr>`
 		);

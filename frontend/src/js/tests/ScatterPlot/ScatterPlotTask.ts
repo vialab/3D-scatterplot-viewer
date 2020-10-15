@@ -1,15 +1,15 @@
 import { TaskDisplay } from "../../io";
-import { TaskController, Task } from "../../tasks";
-import { Backend } from "../../Backend";
-import { DatasetParser } from "../../plotData/DatasetParser";
-import { ScatterPlotController } from "./ScatterPlotController";
+import { Option, Task } from "../../tasks";
 import { ResultLog } from "../../metrics/ResultLog";
 import { EmptyTaskcontroller } from "../../tasks/EmptyTaskController";
+import { Point } from "../../plotData/Point";
+import { InteractablePlotView } from "./InteractablePlotView";
 
 export class ScatterPlotTask extends Task
 {
-	constructor(display : TaskDisplay)
+	constructor(points : Point[], axisLength : number)
 	{
+		let display = new InteractablePlotView(points, axisLength-10);
 		super(display, new EmptyTaskcontroller());
 
 		this.SetExplicitSubmissionRequired(true);
@@ -18,5 +18,10 @@ export class ScatterPlotTask extends Task
 
 	public LogResults(log : ResultLog) : void
 	{
+	}
+
+	public Submit()
+	{
+		this.Controller.Submit((<InteractablePlotView>this.Display).GetOptions());
 	}
 }

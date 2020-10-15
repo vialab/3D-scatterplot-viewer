@@ -1,8 +1,9 @@
-import { Task } from "../../tasks";
+import { Task, Option } from "../../tasks";
 import { ResultLog } from "../../metrics/ResultLog";
 import { RotationView } from "./RotationView";
 import { EmptyTaskcontroller } from "../../tasks/EmptyTaskController";
 import { SerializedTask } from "../../tasks/SerializedTask";
+import { LimitedTimer } from "../../metrics";
 
 export class RotationTask extends Task
 {
@@ -16,6 +17,11 @@ export class RotationTask extends Task
 		this.SetExplicitSubmissionRequired(true);
 	}
 
+	public Submit()
+	{
+		this.Controller.Submit([]);
+	}
+	
 	public LogResults(log: ResultLog): void
 	{
 	}

@@ -1,3 +1,4 @@
+import {Option} from "."
 import {TaskDisplay} from "../io";
 import {TaskController} from "./TaskController";
 import { Timer, UnlimitedTimer } from "../metrics";
@@ -33,6 +34,8 @@ export abstract class Task
 		this.explicitSubmissionRequired = false;
 	}
 
+	
+	public abstract Submit() : void;
 	public abstract LogResults(log : ResultLog) : void;
 
 	public async Initialize() : Promise<void>

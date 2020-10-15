@@ -1,5 +1,4 @@
-import {Option} from "./Option";
-import {ImageOption} from "./ImageOption";
+import {Option} from "../ui/Option";
 import {Task} from "./Task";
 import {TaskController} from "./TaskController";
 import {TaskList} from "./TaskList";
@@ -8,7 +7,6 @@ import { TaskLoader } from "./TaskLoader";
 
 export {
 	Option,
-	ImageOption,
 	Task,
 	TaskController,
 	TaskList,

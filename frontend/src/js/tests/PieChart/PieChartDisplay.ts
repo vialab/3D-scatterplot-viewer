@@ -3,6 +3,7 @@ import { TaskDisplay, UserInterface } from "../../io";
 import { PieChartData } from "./PieChartData";
 import { PieChartController } from "./PieChartController";
 import { IdGenerator } from "../../util/IdGenerator";
+import { OptionButton } from "../../ui/components/OptionButton";
 
 export class PieChartDisplay extends TaskDisplay
 {
@@ -13,11 +14,14 @@ export class PieChartDisplay extends TaskDisplay
 	protected height = 450;
 	protected margin = 40;
 
-	constructor(data : PieChartData[], compareData : PieChartData[])
+	buttons : OptionButton[];
+
+	constructor(data : PieChartData[], compareData : PieChartData[], buttons : OptionButton[])
 	{
 		super();
 		this.originalData = data;
 		this.comparedata = compareData;
+		this.buttons = buttons;
 	}
 
 	Display(screen: UserInterface): void
@@ -25,6 +29,9 @@ export class PieChartDisplay extends TaskDisplay
 		screen.ViewModeComparison();
 		this.displayPie(screen.OriginalViewContainer(), this.originalData);
 		this.displayPie(screen.ComparisonViewContainer(), this.comparedata);
+		
+		for (let i = 0; i < this.buttons.length; i++)
+			screen.OptionsContainer().append(this.buttons[i].Element());
 	}
 
 	protected displayPie(container : JQuery<HTMLElement>, drawData : PieChartData[]) : void

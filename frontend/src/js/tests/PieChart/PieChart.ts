@@ -1,22 +1,47 @@
-import { Task } from "../../tasks";
+import { Task, Option } from "../../tasks";
 import { ResultLog } from "../../metrics/ResultLog";
 import { PieChartDisplay } from "./PieChartDisplay";
 import { PieChartData } from "./PieChartData";
 import { PieChartController } from "./PieChartController";
 import { SerializedTask } from "../../tasks/SerializedTask";
 import { Color } from "../../ui/Color";
+import { OptionButton } from "../../ui/components/OptionButton";
 
 export class PieChart extends Task
 {
 	pie1 : PieChartData[];
 	pie2 : PieChartData[];
+	options : OptionButton[];
 
 	constructor(pie1 : PieChartData[], pie2 : PieChartData[])
 	{
-		super(new PieChartDisplay(pie1, pie2), new PieChartController(pie1, pie2));
+		let options = [
+			new OptionButton(0, "Yes", 0),
+			new OptionButton(1, "No", 0)
+		];
+
+		for (let i = 0; i < options.length; i++)
+			options[i].OnStateChanged = () => this.Submit()
+
+		super(
+			new PieChartDisplay(
+				pie1,
+				pie2,
+				options
+			),
+			new PieChartController(pie1, pie2)
+		);
+
 		this.pie1 = pie1;
 		this.pie2 = pie2;
 		this.SetCofidenceTracked(true);
+
+		this.options = options;
+	}
+
+	public Submit()
+	{
+		this.Controller.Submit(this.options);
 	}
 
 	public LogResults(log: ResultLog): void
@@ -70,7 +95,11 @@ export class PieChart extends Task
 		this.pie1 = this.deserializeData(serialization.Metadata.pie1);
 		this.pie2 = this.deserializeData(serialization.Metadata.pie2);
 
-		this.Display = new PieChartDisplay(this.pie1, this.pie2);
+		this.Display = new PieChartDisplay(
+			this.pie1,
+			this.pie2,
+			this.options
+		);
 		this.Controller = new PieChartController(this.pie1, this.pie2);
 	}
 }

@@ -1,4 +1,4 @@
-import { Task, TaskController } from "../../tasks";
+import { Task, TaskController, Option } from "../../tasks";
 import { DemographicForm } from "../demograpic/DemographicForm";
 import { IshiharaForm } from "../ishihara/IshiharaForm";
 import { ExclusionForm } from "./ExclusionForm";
@@ -28,6 +28,11 @@ export class DemographicExclusion extends Task
 		this.SetCofidenceTracked(false);
 
 		this.isExcluded = null;
+	}
+
+	public Submit()
+	{
+		this.Controller.Submit([]);
 	}
 
 	public async Initialize() : Promise<void>

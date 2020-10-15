@@ -1,8 +1,9 @@
-import { Task } from "../../tasks";
+import { Task, Option } from "../../tasks";
 import { IshiharaController } from "./ishiharaController";
 import { IshiharaForm } from "./IshiharaForm";
 import { ResultLog } from "../../metrics/ResultLog";
 import { SerializedTask } from "../../tasks/SerializedTask";
+import { LimitedTimer } from "../../metrics";
 
 export class IshiharaTask extends Task
 {
@@ -15,6 +16,11 @@ export class IshiharaTask extends Task
 		this.SetTitle("Screening");
 		this.SetCofidenceTracked(true);
 		this.SetExplicitSubmissionRequired(true);
+	}
+
+	public Submit()
+	{
+		this.Controller.Submit([]);
 	}
 
 	public IsCorrect() : boolean

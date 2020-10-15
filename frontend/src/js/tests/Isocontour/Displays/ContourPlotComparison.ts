@@ -10,6 +10,7 @@ import { Isolines } from "../../../ui/threejs/Isolines";
 import { AxisLabel } from "../../../ui/threejs/AxisLabel";
 import { Graph } from "../../../ui/components/Graph";
 import { GraphRotationTracker } from "../../../metrics";
+import { OptionButton } from "../../../ui/components/OptionButton";
 
 export class ContourPlotComparison extends TaskDisplay
 {
@@ -18,7 +19,9 @@ export class ContourPlotComparison extends TaskDisplay
 	private interactableGraph : InteractableGraph;
 	private orthoGraph : Graph;
 
-	constructor(points : Point[], axisLength : number)
+	private buttons : OptionButton[];
+
+	constructor(points : Point[], buttons : OptionButton[], axisLength : number)
 	{
 		super();
 
@@ -48,6 +51,8 @@ export class ContourPlotComparison extends TaskDisplay
 				return this.interactableGraph.GetOrbitRotation();
 			}
 		);
+
+		this.buttons = buttons;
 	}
 
 	public GetInteractableGraph() : Graph
@@ -69,6 +74,8 @@ export class ContourPlotComparison extends TaskDisplay
 
 		screen.ComparisonViewContainer().append(this.GetInteractableGraph().Element());
 		screen.OriginalViewContainer().append(this.GetPlaneView().Element());
+
+		for (let i = 0; i < this.buttons.length; i++)
+			screen.OptionsContainer().append(this.buttons[i].Element());
 	}
-	
 }

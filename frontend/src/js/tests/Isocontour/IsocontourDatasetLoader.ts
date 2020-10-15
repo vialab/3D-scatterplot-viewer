@@ -7,6 +7,7 @@ import { WaveGraphPoints } from "../../util/WaveGraphPoints";
 import { Backend } from "../../Backend";
 import { IsocontourTask } from "./IsocontourTask";
 import { SerializedTask } from "../../tasks/SerializedTask";
+import { OptionButton } from "../../ui/components/OptionButton";
 
 export class IsocontourDatasetLoader extends TaskLoader
 {
@@ -24,18 +25,8 @@ export class IsocontourDatasetLoader extends TaskLoader
 
 	async Create(): Promise<Task>
 	{
-		// let points = this.backend.GetIsocontourDataset(datasetName);
-
-		let graphDisplay = new ContourPlotComparison(
-			WaveGraphPoints.GeneratePoints(40, 15),
-			// points,
-			this.axisLength
-		);
-		let graphTask = new IsocontourController();
-
-		let task = new IsocontourTask(graphDisplay, graphTask);
-		task.SetCofidenceTracked(true);
-		task.SetPrompt("Does the contour plot represent the graph shown?")
+		let points = WaveGraphPoints.GeneratePoints(40, 15);
+		let task = new IsocontourTask(points, this.axisLength);
 
 		return task;
 	}

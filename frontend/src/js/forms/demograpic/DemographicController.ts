@@ -27,9 +27,4 @@ export class DemographicController extends TaskController
 		//age (filled out, numeric, within range?)
 		//gender filled out
 	}
-
-	public GetOptions(): Option[]
-	{
-		return [];
-	}
 }

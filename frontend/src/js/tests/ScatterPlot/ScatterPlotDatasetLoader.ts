@@ -38,9 +38,7 @@ export class ScatterPlotDatasetLoader extends TaskLoader
 		let dataset = await this.backend.GetScatterPlotDataset(this.datasetName);
 		let points = this.dataParser.Parse(dataset);
 
-		let display = new InteractablePlotView(points, this.axisLength-10);
-
-		let task = new ScatterPlotTask(display);
+		let task = new ScatterPlotTask(points, this.axisLength-10);
 
 		return task;
 	}

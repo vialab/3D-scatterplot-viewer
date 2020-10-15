@@ -1,4 +1,4 @@
-import { Task } from "../../tasks";
+import { Task, Option } from "../../tasks";
 import { ResultLog } from "../../metrics/ResultLog";
 import { TaskDisplay, UserInterface } from "../../io";
 import { EmptyTaskcontroller } from "../../tasks/EmptyTaskController";
@@ -10,9 +10,14 @@ export class RotationTutorial extends Task
 	constructor()
 	{
 		super(new RotationTutorialDisplay(), new EmptyTaskcontroller());
-		this.SetTitle("Instructions");
+		this.SetTitle("3D Rotation Instructions");
 		this.SetExplicitSubmissionRequired(true);
 		this.SetCofidenceTracked(false);
+	}
+
+	public Submit()
+	{
+		this.Controller.Submit([]);
 	}
 
 	public LogResults(log: ResultLog): void

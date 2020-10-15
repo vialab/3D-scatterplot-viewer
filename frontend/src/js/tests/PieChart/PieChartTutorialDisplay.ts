@@ -16,7 +16,7 @@ export class PieChartTutorialDisplay extends PieChartDisplay
 			new PieChartData("F", 1, new Color(69, 117, 180, 1))
 		];
 
-		super(data, data);
+		super(data, data, []);
 
 		this.width = 250;
 		this.height = 250;

@@ -10,13 +10,18 @@ export class IsocontourTutorial extends Task
 	constructor()
 	{
 		super (new IsoTutorialDisplay(), new EmptyTaskcontroller());
-		this.SetTitle("Instructions");
+		this.SetTitle("Isocontour Instructions");
 		this.SetExplicitSubmissionRequired(true);
 		this.SetCofidenceTracked(false);
 	}
 
 	public LogResults(log : ResultLog) : void
 	{
+	}
+	
+	public Submit()
+	{
+		this.Controller.Submit([]);
 	}
 
 	public Serialize() : SerializedTask

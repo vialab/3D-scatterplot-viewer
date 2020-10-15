@@ -11,7 +11,6 @@ import { ResultLog } from "../metrics/ResultLog";
 import { DemographicExclusion } from "../forms/exclusion";
 import { ScatterPlotTutorial } from "../tests/ScatterPlot/ScatterPlotTutorial";
 import { IsocontourTutorial } from "../tests/Isocontour/IsocontourTutorial";
-import { IsocontourTask } from "../tests/Isocontour/IsocontourTask";
 import { PieChart } from "../tests/PieChart/PieChart";
 import { PieChartTutorial } from "../tests/PieChart/PieChartTutorial";
 import { RotationTask } from "../tests/Rotation/RotationTask";

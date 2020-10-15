@@ -1,4 +1,4 @@
-import {Task} from "../../tasks";
+import { Task, Option } from "../../tasks";
 import { DemographicForm, DemographicFormData } from "./DemographicForm";
 import { DemographicController } from "./DemographicController";
 import { ResultLog, EducationLog } from "../../metrics/ResultLog";
@@ -24,6 +24,11 @@ export class DemographicTask extends Task
 		this.SetExplicitSubmissionRequired(true);
 
 		this.savedValues = null;
+	}
+
+	public Submit()
+	{
+		this.Controller.Submit([]);
 	}
 
 	public async Initialize()

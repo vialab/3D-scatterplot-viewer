@@ -17,9 +17,4 @@ export class ScatterPlotController extends TaskController
 	{
 		
 	}
-
-	public GetOptions(): Option[]
-	{
-		return [];
-	}
 }

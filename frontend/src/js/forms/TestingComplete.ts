@@ -14,6 +14,11 @@ export class TestingComplete extends Task
 		let display = new TestingCompleteDisplay(controller);
 		super(display, controller);
 	}
+
+	public Submit()
+	{
+		this.Controller.Submit([]);
+	}
 	
 	public LogResults(log : ResultLog) : void
 	{
@@ -58,11 +63,6 @@ class TestingCompleteController extends TaskController
 			alert("An error occurred submitting the session");
 			console.log(err);
 		}
-	}
-
-	GetOptions(): Option[]
-	{
-		return [];
 	}
 }
 

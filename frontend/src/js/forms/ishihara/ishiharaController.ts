@@ -38,9 +38,4 @@ export class IshiharaController extends TaskController
 		this.IsCorrect = correct;
 		this.Complete();
 	}
-
-	public GetOptions(): Option[]
-	{
-		return [];
-	}
 }

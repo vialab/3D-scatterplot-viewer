@@ -58,29 +58,34 @@ export class UserInterface
 
 	SetTimerProgress(progress : number) : void
 	{
-		this.timerBar.css("width", progress + "%");
+		this.timerBar.attr("aria-valuenow", progress);
+		this.timerBar.css("width", Math.ceil(progress) + "%");
 	}
 
 	ShowOptions(task : Task) : void
 	{
 		this.optionsContainer.html("");
 
-		let options = task.Controller.GetOptions();
+		// let options = task.GetOptions();
 
-		for (let i = 0; i < options.length; i++)
-		{
-			let option = options[i];
-			let template = options[i].Template();
-			let element = $(template);
+		// for (let i = 0; i < options.length; i++)
+		// {
+		// 	let option = options[i];
+		// 	let element = options[i].Element();
 
-			element.prop("data-option-id", option.Id);
-			element.click(() =>
-			{
-				task.Controller.Submit(option);
-			});
+		// 	element.prop("data-option-id", option.Id);
+		// 	element.click(() =>
+		// 	{
+		// 		task.Controller.Submit(option);
+		// 	});
 
-			this.optionsContainer.append(element);
-		}
+		// 	this.optionsContainer.append(element);
+		// }
+	}
+	
+	OptionsContainer() : JQuery<HTMLElement>
+	{
+		return this.optionsContainer;
 	}
 
 	ContentContainer() : JQuery<HTMLElement>

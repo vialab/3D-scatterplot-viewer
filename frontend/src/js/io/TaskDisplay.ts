@@ -1,3 +1,4 @@
+import {Option} from "../tasks";
 import {UserInterface} from "./UserInterface";
 
 export abstract class TaskDisplay

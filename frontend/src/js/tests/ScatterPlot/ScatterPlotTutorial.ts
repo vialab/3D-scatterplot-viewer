@@ -1,4 +1,4 @@
-import { Task } from "../../tasks";
+import { Task, Option } from "../../tasks";
 import { ResultLog } from "../../metrics/ResultLog";
 import { TaskDisplay, UserInterface } from "../../io";
 import { RandomPoints } from "../../util/RandomPoints";
@@ -16,9 +16,14 @@ export class ScatterPlotTutorial extends Task
 	constructor()
 	{
 		super(new ScatterPlotTutorialDisplay(), new EmptyTaskcontroller());
-		this.SetTitle("Instructions");
+		this.SetTitle("Scatter Plot Instructions");
 		this.SetCofidenceTracked(false);
 		this.SetExplicitSubmissionRequired(true);
+	}
+
+	public Submit()
+	{
+		this.Controller.Submit([]);
 	}
 
 	public LogResults(log: ResultLog): void

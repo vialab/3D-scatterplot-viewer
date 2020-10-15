@@ -6,9 +6,4 @@ export class EmptyTaskcontroller extends TaskController
 	{
 		this.Complete();
 	}
-	public GetOptions(): Option[]
-	{
-		return [];
-	}
-	
 }

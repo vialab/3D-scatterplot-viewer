@@ -1,4 +1,4 @@
-import { Task } from "../../tasks";
+import { Task, Option } from "../../tasks";
 import { ResultLog } from "../../metrics/ResultLog";
 import { PieChartTutorialDisplay } from "./PieChartTutorialDisplay";
 import { EmptyTaskcontroller } from "../../tasks/EmptyTaskController";
@@ -9,7 +9,7 @@ export class PieChartTutorial extends Task
 	constructor()
 	{
 		super(new PieChartTutorialDisplay(), new EmptyTaskcontroller());
-		this.SetTitle("Instructions");
+		this.SetTitle("Pie Chart Instructions");
 		this.SetExplicitSubmissionRequired(true);
 		this.SetCofidenceTracked(false);
 	}
@@ -17,6 +17,12 @@ export class PieChartTutorial extends Task
 	public LogResults(log: ResultLog): void
 	{
 	}
+	
+	public Submit()
+	{
+		this.Controller.Submit([]);
+	}
+
 
 	public Serialize() : SerializedTask
 	{

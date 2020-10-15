@@ -21,10 +21,5 @@ export class PieChartController extends TaskController
 	{
 		this.Complete();
 	}
-
-	GetOptions(): Option[]
-	{
-		return [new Option(0, "Yes",), new Option(1, "No")];
-	}
 }
 
