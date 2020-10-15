@@ -38,8 +38,10 @@ export class PieChart extends Task
 		this.SetCofidenceTracked(true);
 
 		this.options = options;
-
+				
 		this.SetTimer(new LimitedTimer(this, 600000));
+
+		this.SetPrompt("Do these pie charts represent the same data?");
 	}
 
 	public Submit()

@@ -133,7 +133,7 @@ export abstract class Task
 		this.SetCofidenceTracked(false);
 		this.SetResultsTracked(false);
 		this.SetTimer(new UnlimitedTimer());
-		this.SetTitle("Practice");
-		this.SetPrompt("&#9888; This is a practice test<br />" + this.GetPrompt());
+		this.SetTitle("Sample Test");
+		this.SetPrompt("&#9888; This is an example of the test you are about to do. Results of this test are not tracked.<br />" + this.GetPrompt());
 	}
 }

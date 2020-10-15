@@ -47,8 +47,11 @@ class IsoTutorialDisplay extends TaskDisplay
 			
 			<hr />
 			<div style="text-align: center;">
-				<p>You will be shown a in isocontour in 2d and 3d.</p>
-				<p>Choose whether the 2d and 3d isocontours match.</p>
+				<p>
+					You will be provided with a 2D isocontour (topographical) plot of a 3D surface and a 3D plot (see examples below).
+					Chose whether the 2D and 3D plots match each other.
+					You can rotate the 3D view by clicking on it and dragging your mouse.
+				</p>
 			</div>
 			<hr />
 			<div>

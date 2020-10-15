@@ -9,6 +9,6 @@ export class ExclusionForm extends TaskDisplay
 		screen.ViewModeContent();
 		
 		if (this.IsExcluded)
-			screen.ContentContainer().append("<p>This is the exclusion screen</p>");
+			screen.ContentContainer().append("<p>Based on your responses, you are inegligible to complete this study. Thank you for your interest.</p>");
 	}
 }

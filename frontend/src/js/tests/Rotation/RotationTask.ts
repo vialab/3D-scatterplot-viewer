@@ -15,6 +15,7 @@ export class RotationTask extends Task
 		this.pageNumber = pageNumber;
 		this.SetCofidenceTracked(true);
 		this.SetExplicitSubmissionRequired(true);
+		this.SetPrompt("Select an option");
 	}
 
 	public Submit()

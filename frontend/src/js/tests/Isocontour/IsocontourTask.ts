@@ -30,7 +30,7 @@ export class IsocontourTask extends Task
 		
 		super(graphDisplay, new EmptyTaskcontroller());
 		this.SetCofidenceTracked(true);
-		this.SetPrompt("Does the contour plot represent the graph shown?");
+		this.SetPrompt("Does the 2D plot represent the 3D plot?");
 
 		this.options = options;
 

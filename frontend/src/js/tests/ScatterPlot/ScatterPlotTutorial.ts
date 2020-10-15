@@ -57,16 +57,23 @@ class ScatterPlotTutorialDisplay extends TaskDisplay
 		let planeSelector = new PlaneSelector();
 		planeSelector.Bind(interactablePlot);
 
-		let graphContainer = $(`<div style="display: flex;"></div>`);
+		let graphContainer = $(`<div style="display: flex;" class="center-content"></div>`);
 		let ortho = $(`<div></div>`);
 		let interactable = $(`<div></div>`);
 		let interactionGrid = $(`<div style="width: 50%; margin-left: 50%"></div>`);
 
 		let template = $(
-		`<div style="text-align: center;">
+		`<div style="text-align: center; width: 80%;">
 			<hr />
-			<p>You will be shown a single plane of a 3d scatter plot along with.</p>
-			<p>Select the plane from which the 2d view is looking at the plot.</p>
+			<p>
+				You will be shown a 2D view of a 3D scatter plot, and the corresponding 3D scatter plot.
+				Choose the side of the 3D scatter plot corresponding to the 2D view.
+				You can rotate the 3D view by clicking on it and dragging your mouse.
+			</p>
+			<p>
+				Hovering your mouse on a square of the unfolded cube will highlight the corresponding side in the 3D view.
+				Click that the unfolded square to select it.
+			</p>
 			<hr />
 		</div>`
 		);

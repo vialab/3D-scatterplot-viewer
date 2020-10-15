@@ -26,7 +26,7 @@ export class StrategySurveyForm extends TaskDisplay
 						<img style="width: 200px; height: 75px; margin-right: 10px;"
 							src="images/feedback/fold1.png"
 						/>
-						<p>Paper folding / punching</p>
+						<p>Paper Folding / Punching</p>
 						<textarea style="width: 500px;"></textarea>
 					</div>
 
@@ -36,7 +36,7 @@ export class StrategySurveyForm extends TaskDisplay
 						<img style="width: 200px; height: 75px; margin-right: 10px;"
 							src="images/feedback/rotationpreview.png"
 						/>
-						<p>3D rotation</p>
+						<p>3D Rotation</p>
 						<textarea style="width: 500px;"></textarea>
 					</div>
 
@@ -46,7 +46,7 @@ export class StrategySurveyForm extends TaskDisplay
 						<img style="width: 75px; height: 75px; margin-right: 10px;"
 							src="images/feedback/sample-piechart.png"
 						/>
-						<p>Pie chart comparison</p>
+						<p>Pie Chart Comparison</p>
 						<textarea style="width: 500px;"></textarea>
 					</div>
 

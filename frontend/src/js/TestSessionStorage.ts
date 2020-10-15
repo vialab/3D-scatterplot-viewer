@@ -100,8 +100,8 @@ export class NewSession extends TestSessionStorage
 		let taskOrder = await this.backend.GetTestOrder();
 
 		let tasks : (Task | TaskLoader)[] = [
-			// demographicSurvey,
-			// ishiharaTest,
+			demographicSurvey,
+			ishiharaTest,
 			// demographicEvaluation
 		];
 

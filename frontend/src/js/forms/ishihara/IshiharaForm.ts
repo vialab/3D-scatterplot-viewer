@@ -11,8 +11,7 @@ export class IshiharaForm extends TaskDisplay
 		this.element = $(
 		`<div>
 			<div style="text-align: center;">
-				<h3>Input the numbers you see in each circle in the textbox below the circle, then click submit</h3>
-				
+				<p>Input the numbers you see in each circle in the corresponding textbox, then click submit</p>
 			</div>
 			<div class="center-content" style="flex-direction: column;">
 				<div class="center-content" style="display: flex; width: 800px; flex-wrap: wrap">

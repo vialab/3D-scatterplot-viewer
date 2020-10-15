@@ -8,7 +8,7 @@ export class EducationAtLeastBachelors extends DemographicFormComponent
 		super(
 		`<div>
 			<p>
-				Does your education history include the completion of a bachelors' degree or higher?
+				Have you completed a bachelor's degree?
 			</p>
 			<p>
 				<input type="radio" name="bachelors" id="bachelors-1" value="1">

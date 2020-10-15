@@ -8,7 +8,7 @@ export class WorkplaceDrawingUsed extends DemographicFormComponent
 	{
 		super(
 		`<div>
-			<p>Do you make drawings or sketches for your work?</p>
+			<p>Do you make drawings or sketches for work?</p>
 			<input type="radio" name="drawing" id="drawing-1" value="1">
 			<label for="drawing-1">Yes</label>
 			<br />
@@ -20,6 +20,6 @@ export class WorkplaceDrawingUsed extends DemographicFormComponent
 
 	public Value() : any
 	{
-		return $("input[name=drawing]").val() == "1";
+		return $("input[name=drawing]:checked").val() == "1";
 	}
 }

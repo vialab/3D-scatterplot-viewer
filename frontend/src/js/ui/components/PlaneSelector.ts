@@ -24,7 +24,7 @@ export class PlaneSelector implements UiElement
 		this.selectedCell = null;
 
 		let gridContainerId = IdGenerator.Generate();
-		let template = `<div style="display: flex;"><div style="flex: 1"></div><div id="${gridContainerId}" class="center-content" style="flex: 1"></div></div>`;
+		let template = `<div style="display: flex;"><div id="${gridContainerId}" style="flex: 1"></div></div>`;
 		let element = $(template);
 		let gridContainer = element.find("#"+gridContainerId);
 

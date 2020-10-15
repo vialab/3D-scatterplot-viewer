@@ -21,7 +21,7 @@ export class DemographicTask extends Task
 		super(form, controller);
 		this.SetTitle("Screening");
 		this.SetCofidenceTracked(false);
-		this.SetExplicitSubmissionRequired(true);
+		this.SetExplicitSubmissionRequired(false);
 
 		this.savedValues = null;
 	}

@@ -18,8 +18,9 @@
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 	<body>
-		<div id="mobile-rejection" class="center-content" style="width: 100%; height: 100%; text-align: center; display: none;">
-			This is the mobile rejection screen;
+		<div id="mobile-rejection" class="center-content" style="width: 100%; height: 100%; text-align: center; display: none;flex-direction:column;">
+			<p>This study is meant to be conducted on a computer.</p>
+			<p>Please open this study on a desktop computer or laptop.</p>
 		</div>
 		<div id="transition" class="center-content transition" style="text-align: center; display: none;">
 			<div>
@@ -28,7 +29,7 @@
 						<span style="position: absolute; bottom: 0;">Low</span>
 					</div>
 					<div style="flex: 8">
-						<p style="text-align: center;">Please Rate your level of confidence in your performance of the previous test</p>
+						<p style="text-align: center;">Please rate your level of confidence in your performance of the previous test.</p>
 						<input type="range" class="custom-range" id="confidence" style="width: 100%;" />
 					</div>
 					<div style="flex: 1">
@@ -46,12 +47,12 @@
 				</div>
 
 				<div id="next-test-loading" class="center-content" style=" flex-direction: column;">
-					<div>Loading next test</div>
+					<div>The next test is loading, please wait.</div>
 					<div class="loader"></div> 
 				</div>
 
 				<div id="loading-failed" class="center-content" style="flex-direction: column;">
-					<div>Loading next test failed.</div>
+					<div>Failed to load the next test.</div>
 					<div id="retry-loading" class="submit">Retry &raquo;</div>
 				</div>
 			</div>

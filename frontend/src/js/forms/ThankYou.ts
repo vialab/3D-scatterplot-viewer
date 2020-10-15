@@ -26,9 +26,12 @@ class ThankYouDisplay extends TaskDisplay
 	public Display(screen: UserInterface): void
 	{
 		let template = $(
-			`<div id="postSubmit">
+			`<div style="width: 80%;">
 				<p>
-				Your study data has been received. Thank you for your participation.
+					Thank you for participating.
+				</p>
+				<p>
+					Research conducted under the supervision of Dr. Christohper Collins at Ontario Tech University (Christopher.Collins@ontariotechu.ca) as approved by the Research Ethics Board (researchethics@uoit.ca) 905-721-8668 x 3693, [File 15987]
 				</p>
 			</div>`
 		);

@@ -8,7 +8,7 @@ export class FieldOfStudy extends DemographicFormComponent
 	{
 		super(
 		`<div>
-			<p>Select your primary field of study:</p>
+			<p>Select your primary area of work/study:</p>
 			<select id="field">
 				<option value=""></option>
 				<option value="1">Computer Science</option>

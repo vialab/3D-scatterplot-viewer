@@ -59,9 +59,9 @@ export class DemographicForm extends TaskDisplay
 	public Display(screen: UserInterface): void
 	{
 		let template = $(
-		`<div class="center-content" style="max-height: 100%; width: 100%; overflow: scroll">
+		`<div class="center-content" style="max-height: 100%; width: 100%; overflow: scroll; padding-top: 25px;">
 			<div id="formContainer" style="width: 800px; max-height: 100%;">
-				<p>Before you begin the tests, please fill out this demographic survey.</p>
+				<p>Please fill out this demographic survey.</p>
 				<hr />
 			</div>
 		</div>`
@@ -153,7 +153,7 @@ export class DemographicForm extends TaskDisplay
 		data.WorkplaceDrawingImportance = this.workplaceDrawingsImportance.Value();
 		data.TimeSpentMakingArt = this.visualArt.Value();
 		data.TypesOfArtMade = this.visualArtTypes.Value();
-		data.TimeSpentPlayingGames = this.videoGames.Value();
+		data.VideoGamesTimeSpent = this.videoGames.Value();
 		data.VideoGamesPlayed = this.videoGamesDescription.Value();
 
 		//TODO catch non numeric input
@@ -176,7 +176,6 @@ export class DemographicFormData
 	public WorkplaceDrawingImportance : number | null = null;
 	public TimeSpentMakingArt : number | null = null;
 	public TypesOfArtMade : string = "";
-	public TimeSpentPlayingGames : number | null = null;
 	public VideoGamesTimeSpent : number | null = null;
 	public VideoGamesPlayed : string = "";
 	public Age : number = 0;

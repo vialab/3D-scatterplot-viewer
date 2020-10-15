@@ -37,7 +37,7 @@ export class PieChartDisplay extends TaskDisplay
 	protected displayPie(container : JQuery<HTMLElement>, drawData : PieChartData[]) : void
 	{
 		let containerId : string = IdGenerator.Generate();
-		container.append(`<div id="${containerId}" class="center-content" style="width: 100%; height: 100%;"></div>`);
+		container.append(`<div id="${containerId}" class="center-content" style="width: ${this.width}px; ${this.height}px;"></div>`);
 
 		var radius = Math.min(this.width, this.height) / 2 - this.margin
 

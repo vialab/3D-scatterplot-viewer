@@ -107,14 +107,14 @@ class TestingCompleteDisplay extends TaskDisplay
 		this.form = $(`
 		<div id="completion-window" class="flex-container center-content">
 			<div style="width: 80%; text-align: center;">
-				<h1>All tests complete</h1>
+				<h1>Results Submission</h1>
 				<hr />
 				<p>
-					Thank you for participating in this study. To submit your information to be a part of this study, press the submit button below.
+					Press the submit button below to submit your information.
 				</p>
 				<div>
 					<p>
-						To recieve a $20 CAD Amazon gift card for your participation, fill out the form below:
+						To receive a $20 CAD Amazon gift card for your participation, fill out the form below.
 					</p>
 					<div class="center-content">
 						<table class="w3-table" style="width: auto;">

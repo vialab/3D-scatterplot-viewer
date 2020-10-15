@@ -56,10 +56,16 @@ export class InteractablePlotView extends TaskDisplay
 	{
 		screen.ViewModeComparison();
 
+		let grid = this.inputGrid.Element();
+		grid.css("flex", "1");
+
+		let inputDiv = $(`<div style="display: flex; width: 100%; justify-content: flex-start;"><div style="flex: 1;"></div></div>`);
+		inputDiv.append(grid);
+
 		screen.OriginalViewContainer().append(this.planeView.Element());
 		screen.ComparisonViewContainer().append(this.fullView.Element());
 		
-		screen.PromptContainer().append(this.inputGrid.Element());
+		screen.PromptContainer().append(inputDiv);
 
 		this.planeView.RenderOnce();
 		this.fullView.RenderContinuously();
