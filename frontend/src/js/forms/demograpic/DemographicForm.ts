@@ -98,7 +98,7 @@ export class DemographicForm extends TaskDisplay
 		let submitButton = $(`<div id="submit-test" class="submit">Submit &raquo;</div>`);
 		submitButton.click(() =>
 		{
-			let erroronous = false;
+			let atLeastOneError = false;
 			let keys = Object.keys(this);
 
 			for (let i = 0; i < keys.length; i++)
@@ -108,7 +108,7 @@ export class DemographicForm extends TaskDisplay
 
 				if (formField instanceof DemographicFormComponent)
 				{
-					erroronous = formField.IsRequired() && !formField.Value()
+					let erroronous = formField.IsRequired() && !formField.Value()
 						|| Array.isArray(formField.Value()) && formField.Value().length == 0
 
 					if (erroronous)
@@ -119,10 +119,12 @@ export class DemographicForm extends TaskDisplay
 					{
 						formField.HideRequiredFieldError();
 					}
+
+					atLeastOneError = atLeastOneError || erroronous;
 				}
 			}
 
-			if (!erroronous)
+			if (!atLeastOneError)
 			{
 				this.missingRequiredFieldsNotification.hide();
 				this.submit();
