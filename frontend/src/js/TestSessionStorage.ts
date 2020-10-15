@@ -8,6 +8,7 @@ import { DemographicExclusion } from "./forms/exclusion";
 import { TestingComplete } from "./forms/TestingComplete";
 import { RotationTask } from "./tests/Rotation/RotationTask";
 import { ThankYou } from "./forms/ThankYou";
+import { StrategySurvey } from "./forms/strategySurvey";
 
 export abstract class TestSessionStorage
 {
