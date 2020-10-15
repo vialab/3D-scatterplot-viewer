@@ -23,11 +23,17 @@ export class ConfidenceWindow
 	public Show()
 	{
 		$("#transition").show();
+
+		$("body").css("height", "100vh");
+		$("body").css("overflow", "hidden");
 	}
 
 	public Hide()
 	{
 		$("#transition").hide();
+
+		$("body").css("height", "");
+		$("body").css("overflow", "");
 	}
 
 	public ShowConfidenceBar()
