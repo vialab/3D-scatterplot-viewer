@@ -15,6 +15,8 @@ export class IsocontourDatasetLoader extends TaskLoader
 	private dataset : string;
 	private axisLength : number;
 
+	public CreatePractice = false;
+
 	constructor(backend: Backend, datasetName : string, axisLength : number)
 	{
 		super();
@@ -28,6 +30,8 @@ export class IsocontourDatasetLoader extends TaskLoader
 		let points = WaveGraphPoints.GeneratePoints(40, 15);
 		let task = new IsocontourTask(points, this.axisLength);
 
+		task.IsPractice = this.CreatePractice;
+
 		return task;
 	}
 
@@ -36,6 +40,7 @@ export class IsocontourDatasetLoader extends TaskLoader
 		return {
 			Name : IsocontourDatasetLoader.name,
 			DatasetName: this.dataset,
+			IsPractice: this.CreatePractice,
 			Metadata: {}
 		};
 	}

@@ -18,6 +18,8 @@ export class ScatterPlotDatasetLoader extends TaskLoader
 	private datasetName : string;
 	private axisLength : number;
 
+	public CreatePractice = false;
+
 	constructor(backend : Backend, dataParser : DatasetParser, datasetName : string, axisLength : number)
 	{
 		super();
@@ -40,6 +42,8 @@ export class ScatterPlotDatasetLoader extends TaskLoader
 
 		let task = new ScatterPlotTask(points, this.axisLength-10);
 
+		task.IsPractice = this.CreatePractice;
+
 		return task;
 	}
 
@@ -48,6 +52,7 @@ export class ScatterPlotDatasetLoader extends TaskLoader
 		let serialization = {
 			Name : ScatterPlotDatasetLoader.name,
 			DatasetName: this.datasetName,
+			IsPractice : this.CreatePractice,
 			Metadata : {}
 		};
 

@@ -4,6 +4,7 @@ import { TaskDisplay, UserInterface } from "../../io";
 import { EmptyTaskcontroller } from "../../tasks/EmptyTaskController";
 import { RotationImageSrc } from "./RotationImageSrc";
 import { SerializedTask } from "../../tasks/SerializedTask";
+import { TimedTestNotification } from "../../ui/components/TimedTestNotification";
 
 export class RotationTutorial extends Task
 {
@@ -22,15 +23,6 @@ export class RotationTutorial extends Task
 
 	public LogResults(log: ResultLog): void
 	{
-	}
-
-	public Serialize() : SerializedTask
-	{
-		return {
-			Name : RotationTutorial.name,
-			DatasetName: "",
-			Metadata : {}
-		};
 	}
 }
 
@@ -51,7 +43,7 @@ class RotationTutorialDisplay extends TaskDisplay
 
 		screen.ContentContainer().append(this.imageTemplate(page1));
 		screen.ContentContainer().append(this.imageTemplate(page2));
-		
+
 		screen.SubmitButton().html("Begin");
 	}
 

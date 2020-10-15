@@ -61,14 +61,22 @@ async function DumpToFile(session, errors)
 {
 	session.errors = errors;
 
-	let demographics = session.Demographics;
-	delete session.Demographics;
+	let demographics = {
+		Compensation: session.Compensation,
+	};
+
+	let testSession = {
+		TaskOrderName: session.TaskOrderName,
+		Demographics: session.Demographics,
+		Screen: session.Screen,
+		Tests: session.Tests,
+	};
 
 	let demographicFile = Path.join(Config.ContactDumpDir, "contact_" + uuid.v4() + ".json");
 	let sessionFile = Path.join(Config.SessionDumpDir, uuid.v4() + ".json");
 
 	await Promise.all([
 		fsp.writeFile(demographicFile, JSON.stringify(demographics)),
-		fsp.writeFile(sessionFile, JSON.stringify(session))
+		fsp.writeFile(sessionFile, JSON.stringify(testSession))
 	]);
 }

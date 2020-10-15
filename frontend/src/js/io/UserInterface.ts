@@ -46,6 +46,16 @@ export class UserInterface
 		this.mobileRejectionScreen = $("#mobile-rejection");
 	}
 
+	SetErrorMessage(message : string) : void
+	{
+		$("#Errors").html(message);
+	}
+
+	ClearErrorMessage() : void
+	{
+		$("#Errors").html("");
+	}
+
 	SetTitle(title : string) : void
 	{
 		this.titleContainer.html(title);
@@ -59,7 +69,7 @@ export class UserInterface
 	SetTimerProgress(progress : number) : void
 	{
 		this.timerBar.attr("aria-valuenow", progress);
-		this.timerBar.css("width", Math.ceil(progress) + "%");
+		this.timerBar.css("width", progress + "%");
 	}
 
 	ShowOptions(task : Task) : void

@@ -4,6 +4,7 @@ import {TaskController} from "./TaskController";
 import {TaskList} from "./TaskList";
 import { TaskFactory } from "./TaskFactory";
 import { TaskLoader } from "./TaskLoader";
+import {RequireOneSelectedOptionController} from "./RequireOneSelectedOptionController";
 
 export {
 	Option,
@@ -12,4 +13,5 @@ export {
 	TaskList,
 	TaskFactory,
 	TaskLoader,
+	RequireOneSelectedOptionController,
 };

@@ -39,17 +39,16 @@ export class IshiharaTask extends Task
 
 	public Serialize() : SerializedTask
 	{
-		return {
-			Name: IshiharaTask.name,
-			DatasetName: "",
-			Metadata: {
-				isCorrect: this.IsCorrect()
-			}
-		}
+		let s = super.Serialize();
+		s.Metadata = {
+			isCorrect: this.IsCorrect()
+		};
+		return s;
 	}
 
 	public SetValues(serialization : SerializedTask) : void
 	{
+		super.SetValues(serialization);
 		this.SetCorrect(serialization.Metadata.isCorrect);
 	}
 }

@@ -4,6 +4,7 @@ import { WaveGraphContourComparison } from "./Displays/WaveGraphContourCompariso
 import { ResultLog } from "../../metrics/ResultLog";
 import { EmptyTaskcontroller } from "../../tasks/EmptyTaskController";
 import { SerializedTask } from "../../tasks/SerializedTask";
+import { TimedTestNotification } from "../../ui/components/TimedTestNotification";
 
 export class IsocontourTutorial extends Task
 {
@@ -22,15 +23,6 @@ export class IsocontourTutorial extends Task
 	public Submit()
 	{
 		this.Controller.Submit([]);
-	}
-
-	public Serialize() : SerializedTask
-	{
-		return {
-			Name: IsocontourTutorial.name,
-			DatasetName: "",
-			Metadata: {}
-		};	
 	}
 }
 
@@ -66,6 +58,8 @@ class IsoTutorialDisplay extends TaskDisplay
 
 		template.find(".planeContainer").append(graph.GetPlaneView().Element());
 		template.find(".graphContainer").append(graph.GetInteractableGraph().Element());
+
+		template.append(new TimedTestNotification().Element());
 
 		graph.GetPlaneView().RenderOnce();
 		graph.GetInteractableGraph().RenderContinuously();

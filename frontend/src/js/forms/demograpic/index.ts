@@ -74,17 +74,16 @@ export class DemographicTask extends Task
 
 	public Serialize() : SerializedTask
 	{
-		return {
-			Name : DemographicTask.name,
-			DatasetName: "",
-			Metadata: {
-				inputData: this.GetInputData()
-			}
+		let serialized = super.Serialize();
+		serialized.Metadata = {
+			inputData: this.GetInputData()
 		};
+		return serialized;
 	}
 
 	public SetValues(serialization : SerializedTask)
 	{
+		super.SetValues(serialization);
 		this.savedValues = serialization.Metadata.inputData;
 	}
 }

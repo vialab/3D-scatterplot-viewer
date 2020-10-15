@@ -2,6 +2,7 @@ import { PieChartDisplay } from "./PieChartDisplay";
 import { PieChartData } from "./PieChartData";
 import { UserInterface } from "../../io";
 import { Color } from "../../ui/Color";
+import { TimedTestNotification } from "../../ui/components/TimedTestNotification";
 
 export class PieChartTutorialDisplay extends PieChartDisplay
 {
@@ -36,10 +37,11 @@ export class PieChartTutorialDisplay extends PieChartDisplay
 		let firstPieContainer = $(`<div style="flex: 1"></div>`);
 		let secondPieContainer = $(`<div style="flex: 1"></div>`);
 
-		pieComparison.append(firstPieContainer);
-		pieComparison.append(secondPieContainer);
+		// pieComparison.append(firstPieContainer);
+		// pieComparison.append(secondPieContainer);
 
 		page.prepend(pieComparison);
+		page.append(new TimedTestNotification().Element());
 
 		ui.ContentContainer().append(page);
 		ui.SubmitButton().html("Begin");

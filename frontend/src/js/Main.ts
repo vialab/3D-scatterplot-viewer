@@ -69,7 +69,14 @@ function ApplyPageEventHandlers()
 {
 	$("#submit-test").click(() =>
 	{
-		CurrentTask.Submit();
+		try
+		{
+			CurrentTask.Submit();
+		}
+		catch (err)
+		{
+			UI.SetErrorMessage(err.message);
+		}
 	});	
 }
 
@@ -87,14 +94,6 @@ async function NextTask()
 	{
 		LoadingScreen.ResetConfidence();
 		LoadingScreen.ShowConfidenceBar();
-
-		LoadingScreen.OnSubmit = () =>
-		{
-			let confidence = LoadingScreen.ConfidenceValue();
-			CurrentTask.SetConfidence(confidence);
-			CurrentTask.GetTimer().Start();
-			LoadingScreen.Hide();
-		};
 	}
 	else
 	{
@@ -109,6 +108,15 @@ async function NextTask()
 	)
 	{
 		isUsingLoadingScreen = true;
+		
+		LoadingScreen.OnSubmit = () =>
+		{
+			let confidence = LoadingScreen.ConfidenceValue();
+			CurrentTask.SetConfidence(confidence);
+			LoadingScreen.Hide();
+			CurrentTask.GetTimer().Start();
+		};
+
 		LoadingScreen.Show();
 	}
 
@@ -127,14 +135,21 @@ async function NextTask()
 		UI.SetTimerProgress(CurrentTask.GetTimer().Progress())
 	};
 
+	if (CurrentTask.IsPractice)
+		CurrentTask.ApplyPracticeProperties();
+
 	await BeginTaskInitialize(CurrentTask);
 
 	if (!isUsingLoadingScreen)
 		CurrentTask.GetTimer().Start();
 
-	await PerformTask(CurrentTask);
-
+	await CurrentTask.Controller.WaitForCompletion()
 	CurrentTask.GetTimer().Stop();
+
+	if (CurrentTask.IsResultsTracked())
+		CurrentTask.LogResults(Results);
+		
+	await CurrentTask.Finish();
 
 	// SessionStorage.Save(testList);
 	// ResultsStorage.Save(Results);
@@ -204,12 +219,6 @@ async function TryTaskInitialize(task : Task)
 	}
 }
 
-async function PerformTask(task : Task)
-{
-	let result = await task.Controller.WaitForCompletion();
-	task.LogResults(Results);
-}
-
 function AllTestsCompleted()
 {
 }
@@ -217,6 +226,7 @@ function AllTestsCompleted()
 function DisplayTask(task : Task)
 {
 	UI.ClearView();
+	UI.ClearErrorMessage();
 	
 	UI.SetTimerProgress(0);
 
@@ -229,11 +239,6 @@ function DisplayTask(task : Task)
 	if (task.IsExplicitSubmissionRequired())
 	{
 		UI.ShowSubmitButton();
-
-		// if (task is Tutorial)
-		// {
-			// UI.ShowNextButton();
-		// }
 	}
 	else
 		UI.HideSubmitButton();

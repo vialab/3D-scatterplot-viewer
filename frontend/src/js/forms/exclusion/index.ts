@@ -62,17 +62,16 @@ export class DemographicExclusion extends Task
 
 	public Serialize() : SerializedTask
 	{
-		return {
-			Name : DemographicExclusion.name,
-			DatasetName : "",
-			Metadata : {
-				isExcluded: this.isExcluded
-			}
+		let s = super.Serialize();
+		s.Metadata = {
+			isExcluded: this.isExcluded
 		};
+		return s;
 	}
 
 	public SetValues(serialization : SerializedTask)
 	{
+		super.SetValues(serialization);
 		this.isExcluded = serialization.Metadata.isExcluded;
 	}
 }

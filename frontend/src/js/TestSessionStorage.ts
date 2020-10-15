@@ -7,6 +7,7 @@ import { IshiharaTask } from "./forms/ishihara";
 import { DemographicExclusion } from "./forms/exclusion";
 import { TestingComplete } from "./forms/TestingComplete";
 import { RotationTask } from "./tests/Rotation/RotationTask";
+import { ThankYou } from "./forms/ThankYou";
 
 export abstract class TestSessionStorage
 {
@@ -112,6 +113,7 @@ export class NewSession extends TestSessionStorage
 
 		this.resultLog.TaskOrderName = taskOrder.Name;
 		tasks.push(new TestingComplete(this.backend, this.resultLog));
+		tasks.push(new ThankYou());
 
 		console.log("Loaded tasks. Order schema: " + taskOrder.Name);
 

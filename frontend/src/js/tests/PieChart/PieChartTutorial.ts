@@ -24,12 +24,12 @@ export class PieChartTutorial extends Task
 	}
 
 
-	public Serialize() : SerializedTask
-	{
-		return {
-			Name : PieChartTutorial.name,
-			DatasetName: "",
-			Metadata : {}
-		};
-	}
+	// public Serialize() : SerializedTask
+	// {
+	// 	return {
+	// 		Name : PieChartTutorial.name,
+	// 		DatasetName: "",
+	// 		Metadata : {}
+	// 	};
+	// }
 }

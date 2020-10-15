@@ -19,6 +19,8 @@ export abstract class Task
 	private trackResults : boolean;
 	private explicitSubmissionRequired : boolean;
 
+	public IsPractice : boolean = false;
+
 	private confidence : number = 0;
 	
 	constructor(display : TaskDisplay, controller : TaskController)
@@ -37,6 +39,10 @@ export abstract class Task
 	
 	public abstract Submit() : void;
 	public abstract LogResults(log : ResultLog) : void;
+
+	public async Finish() : Promise<void>
+	{
+	}
 
 	public async Initialize() : Promise<void>
 	{
@@ -109,10 +115,25 @@ export abstract class Task
 
 	public Serialize() : SerializedTask
 	{
-		throw new Error(`Serialize is not implemented on type ${this.constructor.name}`);
+		return {
+			Name: this.constructor.name,
+			DatasetName: "",
+			IsPractice: this.IsPractice,
+			Metadata: {}
+		};
 	}
 
 	public SetValues(serialization : SerializedTask) : void
 	{
+		this.IsPractice = serialization.IsPractice;
+	}
+
+	public ApplyPracticeProperties()
+	{
+		this.SetCofidenceTracked(false);
+		this.SetResultsTracked(false);
+		this.SetTimer(new UnlimitedTimer());
+		this.SetTitle("Practice");
+		this.SetPrompt("&#9888; This is a practice test<br />" + this.GetPrompt());
 	}
 }

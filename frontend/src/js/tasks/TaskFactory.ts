@@ -17,6 +17,7 @@ import { RotationTask } from "../tests/Rotation/RotationTask";
 import { RotationTutorial } from "../tests/Rotation/RotationTutorial";
 import { IsocontourDatasetLoader } from "../tests/Isocontour/IsocontourDatasetLoader";
 import { ElementSizeSettings } from "../ui/ElementSizeSettings";
+import { ThankYou } from "../forms/ThankYou";
 
 export class TaskFactory
 {
@@ -38,17 +39,14 @@ export class TaskFactory
 		if (task.Name == DemographicTask.name)
 		{
 			result = new DemographicTask();
-			result.SetValues(task);
 		}
 		else if (task.Name == IshiharaTask.name)
 		{
 			result = new IshiharaTask();
-			result.SetValues(task);
 		}
 		else if (task.Name == DemographicExclusion.name)
 		{
 			result = new DemographicExclusion(this.backend, new DemographicTask(), new IshiharaTask());
-			result.SetValues(task);
 		}
 		else if (task.Name == RotationTutorial.name)
 		{
@@ -57,7 +55,6 @@ export class TaskFactory
 		else if (task.Name == RotationTask.name)
 		{
 			result = new RotationTask(0);
-			result.SetValues(task);
 		}
 		else if (task.Name == PieChartTutorial.name)
 		{
@@ -66,7 +63,6 @@ export class TaskFactory
 		else if (task.Name == PieChart.name)
 		{
 			result = new PieChart([], []);
-			result.SetValues(task);
 		}
 		else if (task.Name == ScatterPlotTutorial.name)
 		{
@@ -74,7 +70,7 @@ export class TaskFactory
 		}
 		else if (task.Name == ScatterPlotDatasetLoader.name)
 		{
-			result = new ScatterPlotDatasetLoader(
+			let loader = new ScatterPlotDatasetLoader(
 				this.backend,
 				new DatasetParser(
 					new IndependentAxisNormalizer()
@@ -82,6 +78,8 @@ export class TaskFactory
 				task.DatasetName,
 				this.elementSizing.CanvasSideLength()
 			);
+			loader.CreatePractice = task.IsPractice,
+			result = loader;
 		}
 		else if (task.Name == IsocontourTutorial.name)
 		{
@@ -89,16 +87,25 @@ export class TaskFactory
 		}
 		else if (task.Name == IsocontourDatasetLoader.name)
 		{
-			result = new IsocontourDatasetLoader(
+			let loader = new IsocontourDatasetLoader(
 				this.backend,
 				task.DatasetName,
 				this.elementSizing.CanvasSideLength()
 			);
+			loader.CreatePractice = task.IsPractice;
+			result = loader;
 		}
 		else if (task.Name == TestingComplete.name)
 		{
 			result = new TestingComplete(this.backend, this.resultLog);
 		}
+		else if (task.Name == ThankYou.name)
+		{
+			result = new ThankYou();
+		}
+
+		if (result instanceof Task)
+			result.SetValues(task);
 
 		if (result == null)
 			throw new Error(`No matching task name found: "${task.Name}"`);

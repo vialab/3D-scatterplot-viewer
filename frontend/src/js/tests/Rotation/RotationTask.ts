@@ -1,4 +1,4 @@
-import { Task, Option } from "../../tasks";
+import { Task, Option, RequireOneSelectedOptionController } from "../../tasks";
 import { ResultLog } from "../../metrics/ResultLog";
 import { RotationView } from "./RotationView";
 import { EmptyTaskcontroller } from "../../tasks/EmptyTaskController";
@@ -11,7 +11,7 @@ export class RotationTask extends Task
 
 	constructor(pageNumber : number)
 	{
-		super(new RotationView(pageNumber), new EmptyTaskcontroller());
+		super(new RotationView(pageNumber), new RequireOneSelectedOptionController());
 		this.pageNumber = pageNumber;
 		this.SetCofidenceTracked(true);
 		this.SetExplicitSubmissionRequired(true);
@@ -19,7 +19,7 @@ export class RotationTask extends Task
 
 	public Submit()
 	{
-		this.Controller.Submit([]);
+		this.Controller.Submit((<RotationView>this.Display).GetOptions());
 	}
 	
 	public LogResults(log: ResultLog): void
@@ -28,15 +28,15 @@ export class RotationTask extends Task
 
 	public Serialize() : SerializedTask
 	{
-		return {
-			Name : RotationTask.name,
-			DatasetName: "",
-			Metadata : {PageNumber: this.pageNumber}
-		};
+		let s = super.Serialize();
+		s.Metadata = {PageNumber: this.pageNumber};
+		return s;
 	}
 
 	public SetValues(task : SerializedTask)
 	{
+		super.SetValues(task);
+
 		this.pageNumber = task.Metadata.PageNumber;
 		this.Display = new RotationView(this.pageNumber);
 	}

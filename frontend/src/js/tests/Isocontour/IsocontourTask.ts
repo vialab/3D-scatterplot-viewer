@@ -6,6 +6,7 @@ import { EmptyTaskcontroller } from "../../tasks/EmptyTaskController";
 import { Point } from "../../plotData/Point";
 import { ContourPlotComparison } from "./Displays/ContourPlotComparison";
 import { OptionButton } from "../../ui/components/OptionButton";
+import { LimitedTimer } from "../../metrics";
 
 export class IsocontourTask extends Task
 {
@@ -32,6 +33,8 @@ export class IsocontourTask extends Task
 		this.SetPrompt("Does the contour plot represent the graph shown?");
 
 		this.options = options;
+
+		this.SetTimer(new LimitedTimer(this, 600000));
 	}
 
 	public Submit()
@@ -44,17 +47,17 @@ export class IsocontourTask extends Task
 		
 	}
 
-	public Serialize() : SerializedTask
-	{
-		return {
-			Name: IsocontourTask.name,
-			DatasetName: "",
-			Metadata: {}
-		};	
-	}
+	// public Serialize() : SerializedTask
+	// {
+	// 	return {
+	// 		Name: IsocontourTask.name,
+	// 		DatasetName: "",
+	// 		Metadata: {}
+	// 	};	
+	// }
 
 	public SetValues(serialization : SerializedTask)
 	{
-
+		super.SetValues(serialization);
 	}
 }

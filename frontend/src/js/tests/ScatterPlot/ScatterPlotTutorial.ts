@@ -10,6 +10,7 @@ import { Graph } from "../../ui/components/Graph";
 import { EmptyTaskcontroller } from "../../tasks/EmptyTaskController";
 import { PlaneSelector } from "../../ui/components/PlaneSelector";
 import { SerializedTask } from "../../tasks/SerializedTask";
+import { TimedTestNotification } from "../../ui/components/TimedTestNotification";
 
 export class ScatterPlotTutorial extends Task
 {
@@ -28,15 +29,6 @@ export class ScatterPlotTutorial extends Task
 
 	public LogResults(log: ResultLog): void
 	{
-	}
-
-	public Serialize() : SerializedTask
-	{
-		return {
-			Name: ScatterPlotTutorial.name,
-			DatasetName: "",
-			Metadata: {}
-		};
 	}
 }
 
@@ -88,6 +80,8 @@ class ScatterPlotTutorialDisplay extends TaskDisplay
 		
 		template.prepend(interactionGrid);
 		template.prepend(graphContainer);
+
+		template.append(new TimedTestNotification().Element());
 
 		orthographic.RenderOnce();
 		interactablePlot.RenderContinuously();

@@ -6,6 +6,7 @@ import { PieChartController } from "./PieChartController";
 import { SerializedTask } from "../../tasks/SerializedTask";
 import { Color } from "../../ui/Color";
 import { OptionButton } from "../../ui/components/OptionButton";
+import { LimitedTimer } from "../../metrics";
 
 export class PieChart extends Task
 {
@@ -37,6 +38,8 @@ export class PieChart extends Task
 		this.SetCofidenceTracked(true);
 
 		this.options = options;
+
+		this.SetTimer(new LimitedTimer(this, 600000));
 	}
 
 	public Submit()
@@ -50,14 +53,12 @@ export class PieChart extends Task
 
 	public Serialize() : SerializedTask
 	{
-		return {
-			Name: PieChart.name,
-			DatasetName: "",
-			Metadata: {
-				pie1: this.serializeData(this.pie1),
-				pie2: this.serializeData(this.pie2)
-			}
+		let serialized = super.Serialize();
+		serialized.Metadata = {
+			pie1: this.serializeData(this.pie1),
+			pie2: this.serializeData(this.pie2)
 		};
+		return serialized;
 	}
 
 	private serializeData(data : PieChartData[])
@@ -92,6 +93,8 @@ export class PieChart extends Task
 
 	public SetValues(serialization : SerializedTask)
 	{
+		super.SetValues(serialization);
+		
 		this.pie1 = this.deserializeData(serialization.Metadata.pie1);
 		this.pie2 = this.deserializeData(serialization.Metadata.pie2);
 
