@@ -4,9 +4,9 @@ Dependencies:
 - NodeJS
 - npm (comes with Node)
 
-To prepare to run the previewer, open the Dist folder and run ```npm install```
+To prepare to run the previewer, open the Dist folder in the terminal and run ```npm install```
 
-To run the previewer, run ```node .``` from the dist folder, this will start the web server on localhost:8080
+To run the previewer, run ```node .``` in a terminal from the dist folder. This will start the web server on localhost:8080
 
 When you open localhost:8080 in your web browser, the previewer will have the Iris dataset loaded in.
 It will display a fully interactable graph as well as the orthographic views for each side of the cube.
