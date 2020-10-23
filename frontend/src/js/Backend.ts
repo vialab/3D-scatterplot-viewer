@@ -6,6 +6,31 @@ import {TestOrder} from "./TestOrder";
 
 export class Backend
 {
+	public async GetDataset(filename : string) : Promise<number[]>
+	{
+		try
+		{
+			let response = await $.get(`/datasets/${filename}`);
+			response = (<string>response).replace('\n', ',');
+			
+			let parsed : number[] = [];
+			let unparsed = <string[]>response.split(',');
+
+			for (let i = 0; i < unparsed.length; i++)
+			{
+				parsed.push(Number.parseFloat(unparsed[i]));
+			}
+
+			return parsed;
+		}
+		catch (err)
+		{
+			console.error(err);
+			alert(`Dataset "${filename}" failed to load`);
+			throw err;
+		}
+	}
+
 	public async IsFieldOfStudyAllowed(fieldOfStudy : number) : Promise<boolean>
 	{
 		let response = await $.get(`/api/IsFieldFull/${fieldOfStudy}`);

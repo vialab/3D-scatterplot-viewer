@@ -1,9 +1,11 @@
 {
 	"MaximumPerFieldOfStudy": 33,
-	"DatasetDirectory": "./datasets",
-	"HtmlLocation": "../frontend/src",
+	
 	"SessionDumpDir": "./",
 	"ContactDumpDir": "./",
+
+	"HtmlRoot": "../frontend/src",
+	"DatasetDirectory": "../datasets",
 
 	"Mail": {
 		"Server": "localhost",

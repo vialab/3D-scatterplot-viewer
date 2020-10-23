@@ -10,6 +10,7 @@ import { BrowserDetails } from "./BrowserDetails";
 import { SavedSession, NewSession, TestSessionStorage, ResultStorage, SavedResult, NewResult } from "./TestSessionStorage";
 import { TaskFactory } from "./tasks";
 import { DefaultElementSizeSettings } from "./ui/ElementSizeSettings";
+import { PreviewSession } from "./PreviewSession";
 
 let UI : UserInterface;
 let LoadingScreen : ConfidenceWindow;
@@ -31,6 +32,12 @@ $(async function Main()
 	LoadingScreen = UI.GetIntermediateTestScreen();
 
 	let browser = new BrowserDetails();
+
+	LoadingScreen.OnSubmit = () =>
+	{
+		LoadingScreen.Hide();
+	};
+	LoadingScreen.Show();
 
 	if (browser.IsMobile())
 	{
@@ -57,10 +64,7 @@ async function LoadSession()
 		new DefaultElementSizeSettings()
 	);
 
-	SessionStorage = SavedSession.IsLocalSessionSaved()?
-		new SavedSession(factory)
-		:
-		new NewSession(factory, backend, Results);
+	SessionStorage = new PreviewSession(backend);
 	
 	testList = await SessionStorage.Load();
 }
@@ -102,24 +106,7 @@ async function NextTask()
 
 	let nextTask = testList.Next();
 
-	if (
-		CurrentTask
-		// && CurrentTask.IsConfidenceTracked()
-		// || nextTask && nextTask instanceof TaskLoader
-	)
-	{
-		isUsingLoadingScreen = true;
-		
-		LoadingScreen.OnSubmit = () =>
-		{
-			let confidence = LoadingScreen.ConfidenceValue();
-			CurrentTask.SetConfidence(confidence);
-			LoadingScreen.Hide();
-			CurrentTask.GetTimer().Start();
-		};
-
-		LoadingScreen.Show();
-	}
+	isUsingLoadingScreen = true;
 
 	//Possible load error 1: load from provider
 	if (nextTask instanceof TaskLoader)

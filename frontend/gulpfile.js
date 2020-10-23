@@ -92,12 +92,13 @@ gulp.task("watch", gulp.series(
 	),
 	function Watch(done)
 	{
-		var proxy = createProxyMiddleware('/api', {target: 'http://localhost:8080'})
+		var proxy = createProxyMiddleware('/api', {target: 'http://localhost:8080'});
+		var datasetProxy = createProxyMiddleware('/datasets', {target: "http://localhost:8080"});
 
 		browserSync.init({
 			server: "./src",
 			port: 3000,
-			middleware: [proxy],
+			middleware: [proxy, datasetProxy],
 		});
 
 		gulp.watch("src/css/*.css", gulp.series("sync-css"));
