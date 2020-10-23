@@ -46,7 +46,7 @@ export class DatasetLoader implements UiElement
 
 		template.append("<hr />");
 
-		template.append("Dataset name: ");
+		template.append("Dataset Name: ");
 		template.append(this.datasetNameInput);
 
 		template.append("<br /><br />");
