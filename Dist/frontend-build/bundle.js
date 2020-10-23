@@ -120546,7 +120546,7 @@ var DatasetLoader = (function () {
             _this.Load();
         });
         template.append("<hr />");
-        template.append("Dataset name: ");
+        template.append("Dataset Name: ");
         template.append(this.datasetNameInput);
         template.append("<br /><br />");
         template.append("Dataset Dimension: ");
