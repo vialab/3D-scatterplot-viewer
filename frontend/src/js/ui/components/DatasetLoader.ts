@@ -10,7 +10,6 @@ export class DatasetLoader implements UiElement
 	private backend : Backend;
 	private template : JQuery<HTMLElement>;
 	private datasetNameInput : JQuery<HTMLElement>;
-	private dimensionInput : JQuery<HTMLElement>;
 	private xOffInput : JQuery<HTMLElement>;
 	private yOffInput : JQuery<HTMLElement>;
 	private zOffInput : JQuery<HTMLElement>;
@@ -26,7 +25,6 @@ export class DatasetLoader implements UiElement
 		let template = $(`<div style="background-color: #e9ecef;padding: 15px;text-align: center;"></div>`);
 
 		this.datasetNameInput = $(`<input type="text" value="iris.csv"/>`);
-		this.dimensionInput = $(`<input type="text" value="4"/>`);
 		this.xOffInput = $(`<input type="text" value="0"/>`);
 		this.yOffInput = $(`<input type="text" value="1"/>`);
 		this.zOffInput = $(`<input type="text" value="2"/>`);
@@ -48,10 +46,6 @@ export class DatasetLoader implements UiElement
 
 		template.append("Dataset Name: ");
 		template.append(this.datasetNameInput);
-
-		template.append("<br /><br />");
-		template.append("Dataset Dimension: ");
-		template.append(this.dimensionInput);
 
 		template.append("<hr />");
 
@@ -87,11 +81,6 @@ export class DatasetLoader implements UiElement
 		return this.tryParseOffset(this.zOffInput);
 	}
 
-	private GetDimension() : number
-	{
-		return this.tryParseDimension(this.dimensionInput);
-	}
-
 	private GetNormalizer() : Normalizer
 	{
 		let normalizerValue = this.normalizerInput.val();
@@ -112,27 +101,11 @@ export class DatasetLoader implements UiElement
 		return value;
 	}
 
-	private tryParseDimension(elem : JQuery<HTMLElement>)
-	{
-		let value = Number.parseFloat(<string>elem.val());
-
-		if (Number.isNaN(value))
-		{
-			let msg = "Non numeric input in dimension field";
-			alert(msg);
-			throw new Error(msg);
-		}
-		
-		return value;
-	}
-
 	public async Load()
 	{
 		let xOff = this.GetXOffset();
 		let yOff = this.GetYOffset();
 		let zOff = this.GetZOffset();
-
-		let dimension = this.GetDimension();
 
 		let normalizer = this.GetNormalizer();
 
@@ -141,12 +114,7 @@ export class DatasetLoader implements UiElement
 		parser.OffsetY = yOff;
 		parser.OffsetZ = zOff;
 
-		let values = await this.backend.GetDataset(<string>this.datasetNameInput.val()?.toString().trim());
-
-		let dataset = {
-			Dimension: dimension,
-			Data: values
-		};
+		let dataset = await this.backend.GetDataset(<string>this.datasetNameInput.val()?.toString().trim());
 
 		let points = parser.Parse(dataset);
 

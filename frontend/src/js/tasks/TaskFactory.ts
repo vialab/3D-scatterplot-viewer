@@ -18,6 +18,7 @@ import { RotationTutorial } from "../tests/Rotation/RotationTutorial";
 import { IsocontourDatasetLoader } from "../tests/Isocontour/IsocontourDatasetLoader";
 import { ElementSizeSettings } from "../ui/ElementSizeSettings";
 import { ThankYou } from "../forms/ThankYou";
+import { FitToBoundsNormalizer } from "../plotData/normalization/FitToBoundsNormalizer";
 
 export class TaskFactory
 {
@@ -73,7 +74,7 @@ export class TaskFactory
 			let loader = new ScatterPlotDatasetLoader(
 				this.backend,
 				new DatasetParser(
-					new IndependentAxisNormalizer()
+					new FitToBoundsNormalizer()
 				),
 				task.DatasetName,
 				this.elementSizing.CanvasSideLength()

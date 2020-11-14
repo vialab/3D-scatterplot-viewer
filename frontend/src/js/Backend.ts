@@ -6,22 +6,31 @@ import {TestOrder} from "./TestOrder";
 
 export class Backend
 {
-	public async GetDataset(filename : string) : Promise<number[]>
+	public async GetDataset(filename : string) : Promise<Dataset>
 	{
 		try
 		{
 			let response = await $.get(`/datasets/${filename}`);
-			response = (<string>response).replace('\n', ',');
 			
-			let parsed : number[] = [];
-			let unparsed = <string[]>response.split(',');
-
-			for (let i = 0; i < unparsed.length; i++)
+			let dataset : Dataset = {
+				Dimension: 0,
+				Data: []
+			};
+			
+			let reader = new LineReader(response);
+		
+			for (let line = reader.NextLine(); line != null; line = reader.NextLine())
 			{
-				parsed.push(Number.parseFloat(unparsed[i]));
+				let values = line.split(",");
+				dataset.Dimension = values.length;
+
+				for (let i = 0; i < dataset.Dimension; i++)
+				{
+					dataset.Data.push(Number.parseFloat(values[i]));
+				}
 			}
 
-			return parsed;
+			return dataset;
 		}
 		catch (err)
 		{
@@ -76,5 +85,39 @@ export class Backend
 	public async GetTestOrder() : Promise<TestOrder>
 	{
 		return await $.get("/api/testorder");
+	}
+}
+
+class LineReader
+{
+	private text : string;
+	currentIndex : number;
+
+	constructor(text : string)
+	{
+		this.text = text;
+		this.currentIndex = 0;
+	}
+
+	NextLine()
+	{
+		let line  = "";
+
+		for (; this.currentIndex < this.text.length; this.currentIndex++)
+		{
+			let character = this.text.charAt(this.currentIndex);
+			
+			if (character == "\n")
+			{
+				this.currentIndex++;
+				break;
+			}
+
+			line += character;
+		}
+
+		line = line.trim();
+
+		return line.length? line : null;
 	}
 }
