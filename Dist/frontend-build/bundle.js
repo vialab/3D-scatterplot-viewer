@@ -115572,7 +115572,7 @@ var Backend = (function () {
     }
     Backend.prototype.GetDataset = function (filename) {
         return __awaiter(this, void 0, void 0, function () {
-            var response, parsed, unparsed, i, err_1;
+            var response, dataset, reader, line, values, i, err_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -115580,13 +115580,19 @@ var Backend = (function () {
                         return [4, $.get("/datasets/" + filename)];
                     case 1:
                         response = _a.sent();
-                        response = response.replace('\n', ',');
-                        parsed = [];
-                        unparsed = response.split(',');
-                        for (i = 0; i < unparsed.length; i++) {
-                            parsed.push(Number.parseFloat(unparsed[i]));
+                        dataset = {
+                            Dimension: 0,
+                            Data: []
+                        };
+                        reader = new LineReader(response);
+                        for (line = reader.NextLine(); line != null; line = reader.NextLine()) {
+                            values = line.split(",");
+                            dataset.Dimension = values.length;
+                            for (i = 0; i < dataset.Dimension; i++) {
+                                dataset.Data.push(Number.parseFloat(values[i]));
+                            }
                         }
-                        return [2, parsed];
+                        return [2, dataset];
                     case 2:
                         err_1 = _a.sent();
                         console.error(err_1);
@@ -115680,6 +115686,27 @@ var Backend = (function () {
     return Backend;
 }());
 exports.Backend = Backend;
+var LineReader = (function () {
+    function LineReader(text) {
+        this.text = text;
+        this.currentIndex = 0;
+    }
+    LineReader.prototype.NextLine = function () {
+        var line = "";
+        for (; this.currentIndex < this.text.length; this.currentIndex++) {
+            var character = this.text.charAt(this.currentIndex);
+            if (character == "\n") {
+                this.currentIndex++;
+                break;
+            }
+            line += character;
+        }
+        line = line.trim();
+        return line.length ? line : null;
+    };
+    return LineReader;
+}());
+
 },{"./tests/PieChart/PieChartData":99,"./ui/Color":115}],39:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -115695,6 +115722,7 @@ var BrowserDetails = (function () {
     return BrowserDetails;
 }());
 exports.BrowserDetails = BrowserDetails;
+
 },{"bowser":1}],40:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -115726,6 +115754,7 @@ var ClickAndDrag = (function () {
     return ClickAndDrag;
 }());
 exports.ClickAndDrag = ClickAndDrag;
+
 },{}],41:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -116002,6 +116031,7 @@ function DisplayTask(task) {
         UI.HideSubmitButton();
     task.Display.Display(UI);
 }
+
 },{"./Backend":38,"./BrowserDetails":39,"./PreviewSession":42,"./TestSessionStorage":43,"./io/UserInterface":71,"./metrics/ResultLog":75,"./tasks":91,"./tasks/TaskLoader":90,"./ui/ElementSizeSettings":116}],42:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -116081,7 +116111,8 @@ var PreviewSession = (function (_super) {
     return PreviewSession;
 }(TestSessionStorage_1.TestSessionStorage));
 exports.PreviewSession = PreviewSession;
-},{"./TestSessionStorage":43,"./tasks":91,"./tests/ScatterPlotDatasetPreview/ScatterPlotDatasetPreview":108}],43:[function(require,module,exports){
+
+},{"./TestSessionStorage":43,"./tasks":91,"./tests/ScatterPlotDatasetPreview/ScatterPlotDatasetPreview":114}],43:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -116302,6 +116333,7 @@ function clearTasks() {
 function clearResult() {
     window.localStorage.removeItem(RESULT_KEY);
 }
+
 },{"./forms/TestingComplete":44,"./forms/ThankYou":45,"./forms/demograpic":62,"./forms/exclusion":65,"./forms/ishihara":67,"./metrics/ResultLog":75,"./tasks":91}],44:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -116517,6 +116549,7 @@ var TestingCompleteDisplay = (function (_super) {
     };
     return TestingCompleteDisplay;
 }(io_1.TaskDisplay));
+
 },{"../io":72,"../tasks":91,"../tasks/TaskController":87}],45:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -116563,6 +116596,7 @@ var ThankYouDisplay = (function (_super) {
     };
     return ThankYouDisplay;
 }(io_1.TaskDisplay));
+
 },{"../io":72,"../tasks":91,"../tasks/EmptyTaskController":84}],46:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -116596,6 +116630,7 @@ var DemographicController = (function (_super) {
     return DemographicController;
 }(tasks_1.TaskController));
 exports.DemographicController = DemographicController;
+
 },{"../../tasks":91}],47:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -116761,6 +116796,7 @@ var DemographicFormData = (function () {
     return DemographicFormData;
 }());
 exports.DemographicFormData = DemographicFormData;
+
 },{"../../io":72,"./components/Age":48,"./components/DemographicFormComponent":49,"./components/EducationAtLeastBachelors":50,"./components/EducationHistory":51,"./components/FieldOfStudy":52,"./components/Gender":53,"./components/VideoGameTime":54,"./components/VideoGameTypes":55,"./components/VisualArtDescription":56,"./components/VisualArtTimeSpent":57,"./components/WorkplaceDrawingImportance":58,"./components/WorkplaceDrawingUsed":59,"./components/WorkplaceGraphicsDescription":60,"./components/WorkplaceGraphicsLikert":61}],48:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -116791,6 +116827,7 @@ var Age = (function (_super) {
     return Age;
 }(DemographicFormComponent_1.DemographicFormComponent));
 exports.Age = Age;
+
 },{"./DemographicFormComponent":49}],49:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -116826,6 +116863,7 @@ var DemographicFormComponent = (function () {
     return DemographicFormComponent;
 }());
 exports.DemographicFormComponent = DemographicFormComponent;
+
 },{}],50:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -116855,6 +116893,7 @@ var EducationAtLeastBachelors = (function (_super) {
     return EducationAtLeastBachelors;
 }(DemographicFormComponent_1.DemographicFormComponent));
 exports.EducationAtLeastBachelors = EducationAtLeastBachelors;
+
 },{"./DemographicFormComponent":49}],51:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -116955,6 +116994,7 @@ var EducationEntry = (function () {
     }
     return EducationEntry;
 }());
+
 },{"./DemographicFormComponent":49}],52:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -116984,6 +117024,7 @@ var FieldOfStudy = (function (_super) {
     return FieldOfStudy;
 }(DemographicFormComponent_1.DemographicFormComponent));
 exports.FieldOfStudy = FieldOfStudy;
+
 },{"./DemographicFormComponent":49}],53:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -117015,6 +117056,7 @@ var Gender = (function (_super) {
     return Gender;
 }(DemographicFormComponent_1.DemographicFormComponent));
 exports.Gender = Gender;
+
 },{"./DemographicFormComponent":49}],54:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -117044,6 +117086,7 @@ var VideoGameTime = (function (_super) {
     return VideoGameTime;
 }(DemographicFormComponent_1.DemographicFormComponent));
 exports.VideoGameTime = VideoGameTime;
+
 },{"./DemographicFormComponent":49}],55:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -117073,6 +117116,7 @@ var VideoGameTypes = (function (_super) {
     return VideoGameTypes;
 }(DemographicFormComponent_1.DemographicFormComponent));
 exports.VideoGameTypes = VideoGameTypes;
+
 },{"./DemographicFormComponent":49}],56:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -117102,6 +117146,7 @@ var VisualArtDescription = (function (_super) {
     return VisualArtDescription;
 }(DemographicFormComponent_1.DemographicFormComponent));
 exports.VisualArtDescription = VisualArtDescription;
+
 },{"./DemographicFormComponent":49}],57:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -117131,6 +117176,7 @@ var VisualArtTimeSpent = (function (_super) {
     return VisualArtTimeSpent;
 }(DemographicFormComponent_1.DemographicFormComponent));
 exports.VisualArtTimeSpent = VisualArtTimeSpent;
+
 },{"./DemographicFormComponent":49}],58:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -117160,6 +117206,7 @@ var WorkplaceDrawingImportance = (function (_super) {
     return WorkplaceDrawingImportance;
 }(DemographicFormComponent_1.DemographicFormComponent));
 exports.WorkplaceDrawingImportance = WorkplaceDrawingImportance;
+
 },{"./DemographicFormComponent":49}],59:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -117189,6 +117236,7 @@ var WorkplaceDrawingUsed = (function (_super) {
     return WorkplaceDrawingUsed;
 }(DemographicFormComponent_1.DemographicFormComponent));
 exports.WorkplaceDrawingUsed = WorkplaceDrawingUsed;
+
 },{"./DemographicFormComponent":49}],60:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -117218,6 +117266,7 @@ var WorkplaceGraphicsDescription = (function (_super) {
     return WorkplaceGraphicsDescription;
 }(DemographicFormComponent_1.DemographicFormComponent));
 exports.WorkplaceGraphicsDescription = WorkplaceGraphicsDescription;
+
 },{"./DemographicFormComponent":49}],61:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -117247,6 +117296,7 @@ var WorkplaceGraphicsLikert = (function (_super) {
     return WorkplaceGraphicsLikert;
 }(DemographicFormComponent_1.DemographicFormComponent));
 exports.WorkplaceGraphicsLikert = WorkplaceGraphicsLikert;
+
 },{"./DemographicFormComponent":49}],62:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -117368,6 +117418,7 @@ var DemographicTask = (function (_super) {
     return DemographicTask;
 }(tasks_1.Task));
 exports.DemographicTask = DemographicTask;
+
 },{"../../tasks":91,"./DemographicController":46,"./DemographicForm":47}],63:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -117396,6 +117447,7 @@ var ExclusionController = (function (_super) {
     return ExclusionController;
 }(tasks_1.TaskController));
 exports.ExclusionController = ExclusionController;
+
 },{"../../tasks":91}],64:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -117429,6 +117481,7 @@ var ExclusionForm = (function (_super) {
     return ExclusionForm;
 }(io_1.TaskDisplay));
 exports.ExclusionForm = ExclusionForm;
+
 },{"../../io":72}],65:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -117543,6 +117596,7 @@ var DemographicExclusion = (function (_super) {
     return DemographicExclusion;
 }(tasks_1.Task));
 exports.DemographicExclusion = DemographicExclusion;
+
 },{"../../tasks":91,"./ExclusionController":63,"./ExclusionForm":64}],66:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -117587,6 +117641,7 @@ var IshiharaForm = (function (_super) {
     return IshiharaForm;
 }(io_1.TaskDisplay));
 exports.IshiharaForm = IshiharaForm;
+
 },{"../../io":72}],67:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -117644,6 +117699,7 @@ var IshiharaTask = (function (_super) {
     return IshiharaTask;
 }(tasks_1.Task));
 exports.IshiharaTask = IshiharaTask;
+
 },{"../../tasks":91,"./IshiharaForm":66,"./ishiharaController":68}],68:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -117689,6 +117745,7 @@ var IshiharaController = (function (_super) {
     return IshiharaController;
 }(tasks_1.TaskController));
 exports.IshiharaController = IshiharaController;
+
 },{"../../tasks":91}],69:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -117746,6 +117803,7 @@ var ConfidenceWindow = (function () {
     return ConfidenceWindow;
 }());
 exports.ConfidenceWindow = ConfidenceWindow;
+
 },{}],70:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -117756,6 +117814,7 @@ var TaskDisplay = (function () {
     return TaskDisplay;
 }());
 exports.TaskDisplay = TaskDisplay;
+
 },{}],71:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -117857,6 +117916,7 @@ var UserInterface = (function () {
     return UserInterface;
 }());
 exports.UserInterface = UserInterface;
+
 },{"./ConfidenceWindow":69}],72:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -117865,6 +117925,7 @@ var UserInterface_1 = require("./UserInterface");
 exports.UserInterface = UserInterface_1.UserInterface;
 var TaskDisplay_1 = require("./TaskDisplay");
 exports.TaskDisplay = TaskDisplay_1.TaskDisplay;
+
 },{"./TaskDisplay":70,"./UserInterface":71}],73:[function(require,module,exports){
 "use strict";
 var EPSILON = 1e-10;
@@ -118195,6 +118256,7 @@ var Conrec = (function () {
     return Conrec;
 }());
 exports.Conrec = Conrec;
+
 },{}],74:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -118258,6 +118320,7 @@ var RotationInstance = (function () {
     return RotationInstance;
 }());
 exports.RotationInstance = RotationInstance;
+
 },{"../ClickAndDrag":40}],75:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -118370,6 +118433,7 @@ var CompensationLog = (function () {
     return CompensationLog;
 }());
 exports.CompensationLog = CompensationLog;
+
 },{}],76:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -118382,6 +118446,7 @@ var UnlimitedTimer_1 = require("./time/UnlimitedTimer");
 exports.UnlimitedTimer = UnlimitedTimer_1.UnlimitedTimer;
 var GraphRotationTracker_1 = require("./GraphRotationTracker");
 exports.GraphRotationTracker = GraphRotationTracker_1.GraphRotationTracker;
+
 },{"./GraphRotationTracker":74,"./time/LimitedTimer":77,"./time/Timer":78,"./time/UnlimitedTimer":79}],77:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -118450,6 +118515,7 @@ var LimitedTimer = (function (_super) {
     return LimitedTimer;
 }(Timer_1.Timer));
 exports.LimitedTimer = LimitedTimer;
+
 },{"./Timer":78}],78:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -118470,6 +118536,7 @@ var Timer = (function () {
     return Timer;
 }());
 exports.Timer = Timer;
+
 },{}],79:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -118507,6 +118574,7 @@ var UnlimitedTimer = (function (_super) {
     return UnlimitedTimer;
 }(Timer_1.Timer));
 exports.UnlimitedTimer = UnlimitedTimer;
+
 },{"./Timer":78}],80:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -118535,6 +118603,7 @@ var DatasetParser = (function () {
     return DatasetParser;
 }());
 exports.DatasetParser = DatasetParser;
+
 },{"./Point":81}],81:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -118558,6 +118627,7 @@ var Point = (function () {
     return Point;
 }());
 exports.Point = Point;
+
 },{}],82:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -118604,6 +118674,7 @@ var FitToBoundsNormalizer = (function () {
     return FitToBoundsNormalizer;
 }());
 exports.FitToBoundsNormalizer = FitToBoundsNormalizer;
+
 },{"../Point":81}],83:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -118641,6 +118712,7 @@ var IndependentAxisNormalizer = (function () {
     return IndependentAxisNormalizer;
 }());
 exports.IndependentAxisNormalizer = IndependentAxisNormalizer;
+
 },{"../Point":81}],84:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -118670,6 +118742,7 @@ var EmptyTaskcontroller = (function (_super) {
     return EmptyTaskcontroller;
 }(_1.TaskController));
 exports.EmptyTaskcontroller = EmptyTaskcontroller;
+
 },{".":91}],85:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -118721,6 +118794,7 @@ var RequireOneSelectedOptionController = (function (_super) {
     return RequireOneSelectedOptionController;
 }(_1.TaskController));
 exports.RequireOneSelectedOptionController = RequireOneSelectedOptionController;
+
 },{".":91}],86:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -118853,6 +118927,7 @@ var Task = (function () {
     return Task;
 }());
 exports.Task = Task;
+
 },{"../metrics":76}],87:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -118942,6 +119017,7 @@ var NoDisplay = (function (_super) {
     };
     return NoDisplay;
 }(io_1.TaskDisplay));
+
 },{"../io":72}],88:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -118949,7 +119025,6 @@ exports.TaskFactory = void 0;
 var _1 = require(".");
 var ScatterPlotDatasetLoader_1 = require("../tests/ScatterPlot/ScatterPlotDatasetLoader");
 var DatasetParser_1 = require("../plotData/DatasetParser");
-var IndependentAxisNormalizer_1 = require("../plotData/normalization/IndependentAxisNormalizer");
 var demograpic_1 = require("../forms/demograpic");
 var ishihara_1 = require("../forms/ishihara");
 var TestingComplete_1 = require("../forms/TestingComplete");
@@ -118962,6 +119037,7 @@ var RotationTask_1 = require("../tests/Rotation/RotationTask");
 var RotationTutorial_1 = require("../tests/Rotation/RotationTutorial");
 var IsocontourDatasetLoader_1 = require("../tests/Isocontour/IsocontourDatasetLoader");
 var ThankYou_1 = require("../forms/ThankYou");
+var FitToBoundsNormalizer_1 = require("../plotData/normalization/FitToBoundsNormalizer");
 var TaskFactory = (function () {
     function TaskFactory(backend, resultLog, elementSizing) {
         this.backend = backend;
@@ -118995,7 +119071,7 @@ var TaskFactory = (function () {
             result = new ScatterPlotTutorial_1.ScatterPlotTutorial();
         }
         else if (task.Name == ScatterPlotDatasetLoader_1.ScatterPlotDatasetLoader.name) {
-            var loader = new ScatterPlotDatasetLoader_1.ScatterPlotDatasetLoader(this.backend, new DatasetParser_1.DatasetParser(new IndependentAxisNormalizer_1.IndependentAxisNormalizer()), task.DatasetName, this.elementSizing.CanvasSideLength());
+            var loader = new ScatterPlotDatasetLoader_1.ScatterPlotDatasetLoader(this.backend, new DatasetParser_1.DatasetParser(new FitToBoundsNormalizer_1.FitToBoundsNormalizer()), task.DatasetName, this.elementSizing.CanvasSideLength());
             loader.CreatePractice = task.IsPractice,
                 result = loader;
         }
@@ -119023,7 +119099,8 @@ var TaskFactory = (function () {
     return TaskFactory;
 }());
 exports.TaskFactory = TaskFactory;
-},{".":91,"../forms/TestingComplete":44,"../forms/ThankYou":45,"../forms/demograpic":62,"../forms/exclusion":65,"../forms/ishihara":67,"../plotData/DatasetParser":80,"../plotData/normalization/IndependentAxisNormalizer":83,"../tests/Isocontour/IsocontourDatasetLoader":94,"../tests/Isocontour/IsocontourTutorial":96,"../tests/PieChart/PieChart":97,"../tests/PieChart/PieChartTutorial":101,"../tests/Rotation/RotationTask":104,"../tests/Rotation/RotationTutorial":105,"../tests/ScatterPlot/ScatterPlotDatasetLoader":112,"../tests/ScatterPlot/ScatterPlotTutorial":114}],89:[function(require,module,exports){
+
+},{".":91,"../forms/TestingComplete":44,"../forms/ThankYou":45,"../forms/demograpic":62,"../forms/exclusion":65,"../forms/ishihara":67,"../plotData/DatasetParser":80,"../plotData/normalization/FitToBoundsNormalizer":82,"../tests/Isocontour/IsocontourDatasetLoader":94,"../tests/Isocontour/IsocontourTutorial":96,"../tests/PieChart/PieChart":97,"../tests/PieChart/PieChartTutorial":101,"../tests/Rotation/RotationTask":104,"../tests/Rotation/RotationTutorial":105,"../tests/ScatterPlot/ScatterPlotDatasetLoader":110,"../tests/ScatterPlot/ScatterPlotTutorial":112}],89:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
 exports.TaskList = void 0;
@@ -119066,6 +119143,7 @@ var TaskList = (function () {
     return TaskList;
 }());
 exports.TaskList = TaskList;
+
 },{}],90:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -119077,6 +119155,7 @@ var TaskLoader = (function () {
     return TaskLoader;
 }());
 exports.TaskLoader = TaskLoader;
+
 },{}],91:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -119095,6 +119174,7 @@ var TaskLoader_1 = require("./TaskLoader");
 exports.TaskLoader = TaskLoader_1.TaskLoader;
 var RequireOneSelectedOptionController_1 = require("./RequireOneSelectedOptionController");
 exports.RequireOneSelectedOptionController = RequireOneSelectedOptionController_1.RequireOneSelectedOptionController;
+
 },{"../ui/Option":117,"./RequireOneSelectedOptionController":85,"./Task":86,"./TaskController":87,"./TaskFactory":88,"./TaskList":89,"./TaskLoader":90}],92:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -119159,6 +119239,7 @@ var ContourPlotComparison = (function (_super) {
     return ContourPlotComparison;
 }(io_1.TaskDisplay));
 exports.ContourPlotComparison = ContourPlotComparison;
+
 },{"../../../io":72,"../../../metrics":76,"../../../ui/components/Graph":119,"../../../ui/components/InteractableGraph":120,"../../../ui/threejs/AxisLabel":125,"../../../ui/threejs/GraphPlane":126,"../../../ui/threejs/Isolines":127,"three":37}],93:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -119189,6 +119270,7 @@ var WaveGraphContourComparison = (function (_super) {
     return WaveGraphContourComparison;
 }(ContourPlotComparison_1.ContourPlotComparison));
 exports.WaveGraphContourComparison = WaveGraphContourComparison;
+
 },{"../../../util/WaveGraphPoints":133,"./ContourPlotComparison":92}],94:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -119278,6 +119360,7 @@ var IsocontourDatasetLoader = (function (_super) {
     return IsocontourDatasetLoader;
 }(TaskLoader_1.TaskLoader));
 exports.IsocontourDatasetLoader = IsocontourDatasetLoader;
+
 },{"../../tasks/TaskLoader":90,"../../util/WaveGraphPoints":133,"./IsocontourTask":95}],95:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -119329,6 +119412,7 @@ var IsocontourTask = (function (_super) {
     return IsocontourTask;
 }(tasks_1.Task));
 exports.IsocontourTask = IsocontourTask;
+
 },{"../../metrics":76,"../../tasks":91,"../../tasks/EmptyTaskController":84,"../../ui/components/OptionButton":121,"./Displays/ContourPlotComparison":92}],96:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -119387,6 +119471,7 @@ var IsoTutorialDisplay = (function (_super) {
     };
     return IsoTutorialDisplay;
 }(io_1.TaskDisplay));
+
 },{"../../io":72,"../../tasks":91,"../../tasks/EmptyTaskController":84,"../../ui/components/TimedTestNotification":124,"./Displays/WaveGraphContourComparison":93}],97:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -119466,6 +119551,7 @@ var PieChart = (function (_super) {
     return PieChart;
 }(tasks_1.Task));
 exports.PieChart = PieChart;
+
 },{"../../metrics":76,"../../tasks":91,"../../ui/Color":115,"../../ui/components/OptionButton":121,"./PieChartController":98,"./PieChartData":99,"./PieChartDisplay":100}],98:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -119498,6 +119584,7 @@ var PieChartController = (function (_super) {
     return PieChartController;
 }(TaskController_1.TaskController));
 exports.PieChartController = PieChartController;
+
 },{"../../tasks/TaskController":87}],99:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -119511,6 +119598,7 @@ var PieChartData = (function () {
     return PieChartData;
 }());
 exports.PieChartData = PieChartData;
+
 },{}],100:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -119580,6 +119668,7 @@ var PieChartDisplay = (function (_super) {
     return PieChartDisplay;
 }(io_1.TaskDisplay));
 exports.PieChartDisplay = PieChartDisplay;
+
 },{"../../io":72,"../../util/IdGenerator":131,"d3":33}],101:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -119617,6 +119706,7 @@ var PieChartTutorial = (function (_super) {
     return PieChartTutorial;
 }(tasks_1.Task));
 exports.PieChartTutorial = PieChartTutorial;
+
 },{"../../tasks":91,"../../tasks/EmptyTaskController":84,"./PieChartTutorialDisplay":102}],102:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -119672,6 +119762,7 @@ var PieChartTutorialDisplay = (function (_super) {
     return PieChartTutorialDisplay;
 }(PieChartDisplay_1.PieChartDisplay));
 exports.PieChartTutorialDisplay = PieChartTutorialDisplay;
+
 },{"../../ui/Color":115,"../../ui/components/TimedTestNotification":124,"./PieChartData":99,"./PieChartDisplay":100}],103:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -119689,6 +119780,7 @@ var RotationImageSrc = (function () {
     return RotationImageSrc;
 }());
 exports.RotationImageSrc = RotationImageSrc;
+
 },{}],104:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -119736,6 +119828,7 @@ var RotationTask = (function (_super) {
     return RotationTask;
 }(tasks_1.Task));
 exports.RotationTask = RotationTask;
+
 },{"../../tasks":91,"./RotationView":106}],105:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -119792,6 +119885,7 @@ var RotationTutorialDisplay = (function (_super) {
     };
     return RotationTutorialDisplay;
 }(io_1.TaskDisplay));
+
 },{"../../io":72,"../../tasks":91,"../../tasks/EmptyTaskController":84,"./RotationImageSrc":103}],106:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -119841,7 +119935,344 @@ var RotationView = (function (_super) {
     return RotationView;
 }(io_1.TaskDisplay));
 exports.RotationView = RotationView;
+
 },{"../../io":72,"../../ui/Option":117,"./RotationImageSrc":103}],107:[function(require,module,exports){
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+exports.__esModule = true;
+exports.InteractablePlotView = void 0;
+var Three = require("three");
+var io_1 = require("../../io");
+var RandomPlane_1 = require("./RandomPlane");
+var Graph_1 = require("../../ui/components/Graph");
+var PlaneSelector_1 = require("../../ui/components/PlaneSelector");
+var InteractableGraph_1 = require("../../ui/components/InteractableGraph");
+var ScatterPlotPoints_1 = require("../../ui/threejs/ScatterPlotPoints");
+var WireFrameCube_1 = require("../../ui/threejs/WireFrameCube");
+var InteractablePlotView = (function (_super) {
+    __extends(InteractablePlotView, _super);
+    function InteractablePlotView(points, axisLength) {
+        var _this = _super.call(this) || this;
+        var planeViewBorder = new WireFrameCube_1.WireframeCube(axisLength);
+        var fullViewBorder = new WireFrameCube_1.WireframeCube(axisLength);
+        var planeViewPoints = ScatterPlotPoints_1.ScatterPlotPoints.FromPoints(points, axisLength, 5, 20);
+        var fullViewPoints = ScatterPlotPoints_1.ScatterPlotPoints.Clone(planeViewPoints);
+        var planeSelection = RandomPlane_1.RandomPlane.Select();
+        _this.CorrectPlane = planeSelection.Normal;
+        var planeViewRotation = planeSelection.Rotation;
+        _this.planeView = new Graph_1.Graph(planeViewBorder, planeViewPoints, axisLength);
+        _this.planeView.SetRotation(planeViewRotation);
+        _this.planeView.UseOrthographicCamera();
+        var maxRotation = 45;
+        var initialRotation = new Three.Vector2(Math.random() * (360 - maxRotation), Math.random() * (180 - maxRotation));
+        var rotationRange = new Three.Vector2(maxRotation, maxRotation);
+        _this.fullView = new InteractableGraph_1.InteractableGraph(fullViewBorder, fullViewPoints, axisLength, initialRotation, rotationRange);
+        _this.fullView.UsePerspectiveCamera();
+        _this.inputGrid = new PlaneSelector_1.PlaneSelector();
+        _this.inputGrid.Bind(_this.fullView);
+        return _this;
+    }
+    InteractablePlotView.prototype.GetOptions = function () {
+        return this.inputGrid.GetOptions();
+    };
+    InteractablePlotView.prototype.Display = function (screen) {
+        screen.ViewModeComparison();
+        var grid = this.inputGrid.Element();
+        grid.css("flex", "1");
+        var inputDiv = $("<div style=\"display: flex; width: 100%; justify-content: flex-start;\"><div style=\"flex: 1;\"></div></div>");
+        inputDiv.append(grid);
+        screen.OriginalViewContainer().append(this.planeView.Element());
+        screen.ComparisonViewContainer().append(this.fullView.Element());
+        screen.PromptContainer().append(inputDiv);
+        this.planeView.RenderOnce();
+        this.fullView.RenderContinuously();
+    };
+    return InteractablePlotView;
+}(io_1.TaskDisplay));
+exports.InteractablePlotView = InteractablePlotView;
+
+},{"../../io":72,"../../ui/components/Graph":119,"../../ui/components/InteractableGraph":120,"../../ui/components/PlaneSelector":123,"../../ui/threejs/ScatterPlotPoints":129,"../../ui/threejs/WireFrameCube":130,"./RandomPlane":109,"three":37}],108:[function(require,module,exports){
+"use strict";
+exports.__esModule = true;
+exports.PlaneRotation = void 0;
+var three_1 = require("three");
+var PlaneNormals_1 = require("../../ui/components/PlaneNormals");
+var PlaneRotation = (function () {
+    function PlaneRotation() {
+    }
+    PlaneRotation.RotationFor = function (normal) {
+        if (normal == PlaneNormals_1["default"].UP)
+            return new three_1.Vector2(90, 0);
+        else if (normal == PlaneNormals_1["default"].DOWN)
+            return new three_1.Vector2(-90, 0);
+        else if (normal == PlaneNormals_1["default"].LEFT)
+            return new three_1.Vector2(0, 90);
+        else if (normal == PlaneNormals_1["default"].RIGHT)
+            return new three_1.Vector2(0, -90);
+        else if (normal == PlaneNormals_1["default"].AWAY)
+            return new three_1.Vector2(0, 180);
+        else if (normal == PlaneNormals_1["default"].TOWARDS)
+            return new three_1.Vector2(0, 0);
+        throw new Error("normal must be a constant contained in PlotNormals.ALL");
+    };
+    return PlaneRotation;
+}());
+exports.PlaneRotation = PlaneRotation;
+
+},{"../../ui/components/PlaneNormals":122,"three":37}],109:[function(require,module,exports){
+"use strict";
+exports.__esModule = true;
+exports.RandomPlane = void 0;
+var PlaneNormals_1 = require("../../ui/components/PlaneNormals");
+var PlaneRotation_1 = require("./PlaneRotation");
+var RandomPlane = (function () {
+    function RandomPlane() {
+    }
+    RandomPlane.Select = function () {
+        var planeIndex = Math.round((PlaneNormals_1["default"].ALL.length - 1) * Math.random());
+        var plane = PlaneNormals_1["default"].ALL[planeIndex];
+        var rotation = PlaneRotation_1.PlaneRotation.RotationFor(plane);
+        return {
+            Normal: plane,
+            Rotation: rotation
+        };
+    };
+    return RandomPlane;
+}());
+exports.RandomPlane = RandomPlane;
+
+},{"../../ui/components/PlaneNormals":122,"./PlaneRotation":108}],110:[function(require,module,exports){
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+exports.__esModule = true;
+exports.ScatterPlotDatasetLoader = void 0;
+var TaskLoader_1 = require("../../tasks/TaskLoader");
+var IsocontourTutorial_1 = require("../Isocontour/IsocontourTutorial");
+var ScatterPlotTask_1 = require("./ScatterPlotTask");
+var ScatterPlotDatasetLoader = (function (_super) {
+    __extends(ScatterPlotDatasetLoader, _super);
+    function ScatterPlotDatasetLoader(backend, dataParser, datasetName, axisLength) {
+        var _this = _super.call(this) || this;
+        _this.CreatePractice = false;
+        _this.backend = backend;
+        _this.dataParser = dataParser;
+        _this.datasetName = datasetName;
+        _this.axisLength = axisLength;
+        return _this;
+    }
+    ScatterPlotDatasetLoader.prototype.Tutorial = function () {
+        return new IsocontourTutorial_1.IsocontourTutorial();
+    };
+    ScatterPlotDatasetLoader.prototype.Create = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var dataset, points, task;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4, this.backend.GetScatterPlotDataset(this.datasetName)];
+                    case 1:
+                        dataset = _a.sent();
+                        points = this.dataParser.Parse(dataset);
+                        task = new ScatterPlotTask_1.ScatterPlotTask(points, this.axisLength - 10);
+                        task.IsPractice = this.CreatePractice;
+                        return [2, task];
+                }
+            });
+        });
+    };
+    ScatterPlotDatasetLoader.prototype.Serialize = function () {
+        var serialization = {
+            Name: ScatterPlotDatasetLoader.name,
+            DatasetName: this.datasetName,
+            IsPractice: this.CreatePractice,
+            Metadata: {}
+        };
+        return serialization;
+    };
+    return ScatterPlotDatasetLoader;
+}(TaskLoader_1.TaskLoader));
+exports.ScatterPlotDatasetLoader = ScatterPlotDatasetLoader;
+
+},{"../../tasks/TaskLoader":90,"../Isocontour/IsocontourTutorial":96,"./ScatterPlotTask":111}],111:[function(require,module,exports){
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+exports.__esModule = true;
+exports.ScatterPlotTask = void 0;
+var tasks_1 = require("../../tasks");
+var InteractablePlotView_1 = require("./InteractablePlotView");
+var metrics_1 = require("../../metrics");
+var ScatterPlotTask = (function (_super) {
+    __extends(ScatterPlotTask, _super);
+    function ScatterPlotTask(points, axisLength) {
+        var _this = this;
+        var display = new InteractablePlotView_1.InteractablePlotView(points, axisLength - 10);
+        _this = _super.call(this, display, new tasks_1.RequireOneSelectedOptionController()) || this;
+        _this.SetExplicitSubmissionRequired(true);
+        _this.SetCofidenceTracked(true);
+        _this.SetTimer(new metrics_1.LimitedTimer(_this, 600000));
+        return _this;
+    }
+    ScatterPlotTask.prototype.LogResults = function (log) {
+    };
+    ScatterPlotTask.prototype.Submit = function () {
+        this.Controller.Submit(this.Display.GetOptions());
+    };
+    return ScatterPlotTask;
+}(tasks_1.Task));
+exports.ScatterPlotTask = ScatterPlotTask;
+
+},{"../../metrics":76,"../../tasks":91,"./InteractablePlotView":107}],112:[function(require,module,exports){
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+exports.__esModule = true;
+exports.ScatterPlotTutorial = void 0;
+var tasks_1 = require("../../tasks");
+var io_1 = require("../../io");
+var RandomPoints_1 = require("../../util/RandomPoints");
+var InteractableGraph_1 = require("../../ui/components/InteractableGraph");
+var WireFrameCube_1 = require("../../ui/threejs/WireFrameCube");
+var ScatterPlotPoints_1 = require("../../ui/threejs/ScatterPlotPoints");
+var three_1 = require("three");
+var Graph_1 = require("../../ui/components/Graph");
+var EmptyTaskController_1 = require("../../tasks/EmptyTaskController");
+var PlaneSelector_1 = require("../../ui/components/PlaneSelector");
+var TimedTestNotification_1 = require("../../ui/components/TimedTestNotification");
+var ScatterPlotTutorial = (function (_super) {
+    __extends(ScatterPlotTutorial, _super);
+    function ScatterPlotTutorial() {
+        var _this = _super.call(this, new ScatterPlotTutorialDisplay(), new EmptyTaskController_1.EmptyTaskcontroller()) || this;
+        _this.SetTitle("Scatter Plot Instructions");
+        _this.SetCofidenceTracked(false);
+        _this.SetExplicitSubmissionRequired(true);
+        return _this;
+    }
+    ScatterPlotTutorial.prototype.Submit = function () {
+        this.Controller.Submit([]);
+    };
+    ScatterPlotTutorial.prototype.LogResults = function (log) {
+    };
+    return ScatterPlotTutorial;
+}(tasks_1.Task));
+exports.ScatterPlotTutorial = ScatterPlotTutorial;
+var ScatterPlotTutorialDisplay = (function (_super) {
+    __extends(ScatterPlotTutorialDisplay, _super);
+    function ScatterPlotTutorialDisplay() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    ScatterPlotTutorialDisplay.prototype.Display = function (screen) {
+        var graphAxisSize = 350;
+        var points = RandomPoints_1.RandomPoints.Generate(100, -1, 1);
+        var interactablePlot = new InteractableGraph_1.InteractableGraph(new WireFrameCube_1.WireframeCube(graphAxisSize), ScatterPlotPoints_1.ScatterPlotPoints.FromPoints(points, graphAxisSize, 5, 5), graphAxisSize, new three_1.Vector2(0, 0), new three_1.Vector2(360, 360));
+        var orthographic = new Graph_1.Graph(new WireFrameCube_1.WireframeCube(graphAxisSize), ScatterPlotPoints_1.ScatterPlotPoints.FromPoints(points, graphAxisSize, 5, 5), graphAxisSize);
+        orthographic.UseOrthographicCamera();
+        var planeSelector = new PlaneSelector_1.PlaneSelector();
+        planeSelector.Bind(interactablePlot);
+        var graphContainer = $("<div style=\"display: flex;\" class=\"center-content\"></div>");
+        var ortho = $("<div></div>");
+        var interactable = $("<div></div>");
+        var interactionGrid = $("<div style=\"width: 50%; margin-left: 50%\"></div>");
+        var template = $("<div style=\"text-align: center; width: 80%;\">\n\t\t\t<hr />\n\t\t\t<p>\n\t\t\t\tYou will be shown a 2D view of a 3D scatter plot, and the corresponding 3D scatter plot.\n\t\t\t\tChoose the side of the 3D scatter plot corresponding to the 2D view.\n\t\t\t\tYou can rotate the 3D view by clicking on it and dragging your mouse.\n\t\t\t</p>\n\t\t\t<p>\n\t\t\t\tHovering your mouse on a square of the unfolded cube will highlight the corresponding side in the 3D view.\n\t\t\t\tClick that the unfolded square to select it.\n\t\t\t</p>\n\t\t\t<hr />\n\t\t</div>");
+        ortho.append(orthographic.Element());
+        interactable.append(interactablePlot.Element());
+        interactionGrid.append(planeSelector.Element());
+        graphContainer.append(ortho);
+        graphContainer.append(interactable);
+        template.prepend(interactionGrid);
+        template.prepend(graphContainer);
+        template.append(new TimedTestNotification_1.TimedTestNotification().Element());
+        orthographic.RenderOnce();
+        interactablePlot.RenderContinuously();
+        screen.SubmitButton().html("Begin");
+        screen.ViewModeContent();
+        screen.ContentContainer().append(template);
+    };
+    return ScatterPlotTutorialDisplay;
+}(io_1.TaskDisplay));
+
+},{"../../io":72,"../../tasks":91,"../../tasks/EmptyTaskController":84,"../../ui/components/Graph":119,"../../ui/components/InteractableGraph":120,"../../ui/components/PlaneSelector":123,"../../ui/components/TimedTestNotification":124,"../../ui/threejs/ScatterPlotPoints":129,"../../ui/threejs/WireFrameCube":130,"../../util/RandomPoints":132,"three":37}],113:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -119961,7 +120392,8 @@ var DatasetPreviewDisplay = (function (_super) {
     return DatasetPreviewDisplay;
 }(io_1.TaskDisplay));
 exports.DatasetPreviewDisplay = DatasetPreviewDisplay;
-},{"../../io":72,"../../ui/components/Graph":119,"../../ui/components/InteractableGraph":120,"../../ui/components/PlaneNormals":122,"../../ui/threejs/ScatterPlotPoints":129,"../../ui/threejs/WireFrameCube":130,"../ScatterPlot/PlaneRotation":110,"three":37}],108:[function(require,module,exports){
+
+},{"../../io":72,"../../ui/components/Graph":119,"../../ui/components/InteractableGraph":120,"../../ui/components/PlaneNormals":122,"../../ui/threejs/ScatterPlotPoints":129,"../../ui/threejs/WireFrameCube":130,"../ScatterPlot/PlaneRotation":108,"three":37}],114:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -120052,337 +120484,8 @@ var ScatterPlotDatasetPreview = (function (_super) {
     return ScatterPlotDatasetPreview;
 }(tasks_1.Task));
 exports.ScatterPlotDatasetPreview = ScatterPlotDatasetPreview;
-},{"../../tasks":91,"../../tasks/EmptyTaskController":84,"../../ui/components/DatasetLoader":118,"./DatasetPreviewDisplay":107}],109:[function(require,module,exports){
-"use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-exports.__esModule = true;
-exports.InteractablePlotView = void 0;
-var Three = require("three");
-var io_1 = require("../../io");
-var RandomPlane_1 = require("./RandomPlane");
-var Graph_1 = require("../../ui/components/Graph");
-var PlaneSelector_1 = require("../../ui/components/PlaneSelector");
-var InteractableGraph_1 = require("../../ui/components/InteractableGraph");
-var ScatterPlotPoints_1 = require("../../ui/threejs/ScatterPlotPoints");
-var WireFrameCube_1 = require("../../ui/threejs/WireFrameCube");
-var InteractablePlotView = (function (_super) {
-    __extends(InteractablePlotView, _super);
-    function InteractablePlotView(points, axisLength) {
-        var _this = _super.call(this) || this;
-        var planeViewBorder = new WireFrameCube_1.WireframeCube(axisLength);
-        var fullViewBorder = new WireFrameCube_1.WireframeCube(axisLength);
-        var planeViewPoints = ScatterPlotPoints_1.ScatterPlotPoints.FromPoints(points, axisLength, 5, 20);
-        var fullViewPoints = ScatterPlotPoints_1.ScatterPlotPoints.Clone(planeViewPoints);
-        var planeSelection = RandomPlane_1.RandomPlane.Select();
-        _this.CorrectPlane = planeSelection.Normal;
-        var planeViewRotation = planeSelection.Rotation;
-        _this.planeView = new Graph_1.Graph(planeViewBorder, planeViewPoints, axisLength);
-        _this.planeView.SetRotation(planeViewRotation);
-        _this.planeView.UseOrthographicCamera();
-        var maxRotation = 45;
-        var initialRotation = new Three.Vector2(Math.random() * (360 - maxRotation), Math.random() * (180 - maxRotation));
-        var rotationRange = new Three.Vector2(maxRotation, maxRotation);
-        _this.fullView = new InteractableGraph_1.InteractableGraph(fullViewBorder, fullViewPoints, axisLength, initialRotation, rotationRange);
-        _this.fullView.UsePerspectiveCamera();
-        _this.inputGrid = new PlaneSelector_1.PlaneSelector();
-        _this.inputGrid.Bind(_this.fullView);
-        return _this;
-    }
-    InteractablePlotView.prototype.GetOptions = function () {
-        return this.inputGrid.GetOptions();
-    };
-    InteractablePlotView.prototype.Display = function (screen) {
-        screen.ViewModeComparison();
-        var grid = this.inputGrid.Element();
-        grid.css("flex", "1");
-        var inputDiv = $("<div style=\"display: flex; width: 100%; justify-content: flex-start;\"><div style=\"flex: 1;\"></div></div>");
-        inputDiv.append(grid);
-        screen.OriginalViewContainer().append(this.planeView.Element());
-        screen.ComparisonViewContainer().append(this.fullView.Element());
-        screen.PromptContainer().append(inputDiv);
-        this.planeView.RenderOnce();
-        this.fullView.RenderContinuously();
-    };
-    return InteractablePlotView;
-}(io_1.TaskDisplay));
-exports.InteractablePlotView = InteractablePlotView;
-},{"../../io":72,"../../ui/components/Graph":119,"../../ui/components/InteractableGraph":120,"../../ui/components/PlaneSelector":123,"../../ui/threejs/ScatterPlotPoints":129,"../../ui/threejs/WireFrameCube":130,"./RandomPlane":111,"three":37}],110:[function(require,module,exports){
-"use strict";
-exports.__esModule = true;
-exports.PlaneRotation = void 0;
-var three_1 = require("three");
-var PlaneNormals_1 = require("../../ui/components/PlaneNormals");
-var PlaneRotation = (function () {
-    function PlaneRotation() {
-    }
-    PlaneRotation.RotationFor = function (normal) {
-        if (normal == PlaneNormals_1["default"].UP)
-            return new three_1.Vector2(90, 0);
-        else if (normal == PlaneNormals_1["default"].DOWN)
-            return new three_1.Vector2(-90, 0);
-        else if (normal == PlaneNormals_1["default"].LEFT)
-            return new three_1.Vector2(0, 90);
-        else if (normal == PlaneNormals_1["default"].RIGHT)
-            return new three_1.Vector2(0, -90);
-        else if (normal == PlaneNormals_1["default"].AWAY)
-            return new three_1.Vector2(0, 180);
-        else if (normal == PlaneNormals_1["default"].TOWARDS)
-            return new three_1.Vector2(0, 0);
-        throw new Error("normal must be a constant contained in PlotNormals.ALL");
-    };
-    return PlaneRotation;
-}());
-exports.PlaneRotation = PlaneRotation;
-},{"../../ui/components/PlaneNormals":122,"three":37}],111:[function(require,module,exports){
-"use strict";
-exports.__esModule = true;
-exports.RandomPlane = void 0;
-var PlaneNormals_1 = require("../../ui/components/PlaneNormals");
-var PlaneRotation_1 = require("./PlaneRotation");
-var RandomPlane = (function () {
-    function RandomPlane() {
-    }
-    RandomPlane.Select = function () {
-        var planeIndex = Math.round((PlaneNormals_1["default"].ALL.length - 1) * Math.random());
-        var plane = PlaneNormals_1["default"].ALL[planeIndex];
-        var rotation = PlaneRotation_1.PlaneRotation.RotationFor(plane);
-        return {
-            Normal: plane,
-            Rotation: rotation
-        };
-    };
-    return RandomPlane;
-}());
-exports.RandomPlane = RandomPlane;
-},{"../../ui/components/PlaneNormals":122,"./PlaneRotation":110}],112:[function(require,module,exports){
-"use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-exports.__esModule = true;
-exports.ScatterPlotDatasetLoader = void 0;
-var TaskLoader_1 = require("../../tasks/TaskLoader");
-var IsocontourTutorial_1 = require("../Isocontour/IsocontourTutorial");
-var ScatterPlotTask_1 = require("./ScatterPlotTask");
-var ScatterPlotDatasetLoader = (function (_super) {
-    __extends(ScatterPlotDatasetLoader, _super);
-    function ScatterPlotDatasetLoader(backend, dataParser, datasetName, axisLength) {
-        var _this = _super.call(this) || this;
-        _this.CreatePractice = false;
-        _this.backend = backend;
-        _this.dataParser = dataParser;
-        _this.datasetName = datasetName;
-        _this.axisLength = axisLength;
-        return _this;
-    }
-    ScatterPlotDatasetLoader.prototype.Tutorial = function () {
-        return new IsocontourTutorial_1.IsocontourTutorial();
-    };
-    ScatterPlotDatasetLoader.prototype.Create = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var dataset, points, task;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4, this.backend.GetScatterPlotDataset(this.datasetName)];
-                    case 1:
-                        dataset = _a.sent();
-                        points = this.dataParser.Parse(dataset);
-                        task = new ScatterPlotTask_1.ScatterPlotTask(points, this.axisLength - 10);
-                        task.IsPractice = this.CreatePractice;
-                        return [2, task];
-                }
-            });
-        });
-    };
-    ScatterPlotDatasetLoader.prototype.Serialize = function () {
-        var serialization = {
-            Name: ScatterPlotDatasetLoader.name,
-            DatasetName: this.datasetName,
-            IsPractice: this.CreatePractice,
-            Metadata: {}
-        };
-        return serialization;
-    };
-    return ScatterPlotDatasetLoader;
-}(TaskLoader_1.TaskLoader));
-exports.ScatterPlotDatasetLoader = ScatterPlotDatasetLoader;
-},{"../../tasks/TaskLoader":90,"../Isocontour/IsocontourTutorial":96,"./ScatterPlotTask":113}],113:[function(require,module,exports){
-"use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-exports.__esModule = true;
-exports.ScatterPlotTask = void 0;
-var tasks_1 = require("../../tasks");
-var InteractablePlotView_1 = require("./InteractablePlotView");
-var metrics_1 = require("../../metrics");
-var ScatterPlotTask = (function (_super) {
-    __extends(ScatterPlotTask, _super);
-    function ScatterPlotTask(points, axisLength) {
-        var _this = this;
-        var display = new InteractablePlotView_1.InteractablePlotView(points, axisLength - 10);
-        _this = _super.call(this, display, new tasks_1.RequireOneSelectedOptionController()) || this;
-        _this.SetExplicitSubmissionRequired(true);
-        _this.SetCofidenceTracked(true);
-        _this.SetTimer(new metrics_1.LimitedTimer(_this, 600000));
-        return _this;
-    }
-    ScatterPlotTask.prototype.LogResults = function (log) {
-    };
-    ScatterPlotTask.prototype.Submit = function () {
-        this.Controller.Submit(this.Display.GetOptions());
-    };
-    return ScatterPlotTask;
-}(tasks_1.Task));
-exports.ScatterPlotTask = ScatterPlotTask;
-},{"../../metrics":76,"../../tasks":91,"./InteractablePlotView":109}],114:[function(require,module,exports){
-"use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-exports.__esModule = true;
-exports.ScatterPlotTutorial = void 0;
-var tasks_1 = require("../../tasks");
-var io_1 = require("../../io");
-var RandomPoints_1 = require("../../util/RandomPoints");
-var InteractableGraph_1 = require("../../ui/components/InteractableGraph");
-var WireFrameCube_1 = require("../../ui/threejs/WireFrameCube");
-var ScatterPlotPoints_1 = require("../../ui/threejs/ScatterPlotPoints");
-var three_1 = require("three");
-var Graph_1 = require("../../ui/components/Graph");
-var EmptyTaskController_1 = require("../../tasks/EmptyTaskController");
-var PlaneSelector_1 = require("../../ui/components/PlaneSelector");
-var TimedTestNotification_1 = require("../../ui/components/TimedTestNotification");
-var ScatterPlotTutorial = (function (_super) {
-    __extends(ScatterPlotTutorial, _super);
-    function ScatterPlotTutorial() {
-        var _this = _super.call(this, new ScatterPlotTutorialDisplay(), new EmptyTaskController_1.EmptyTaskcontroller()) || this;
-        _this.SetTitle("Scatter Plot Instructions");
-        _this.SetCofidenceTracked(false);
-        _this.SetExplicitSubmissionRequired(true);
-        return _this;
-    }
-    ScatterPlotTutorial.prototype.Submit = function () {
-        this.Controller.Submit([]);
-    };
-    ScatterPlotTutorial.prototype.LogResults = function (log) {
-    };
-    return ScatterPlotTutorial;
-}(tasks_1.Task));
-exports.ScatterPlotTutorial = ScatterPlotTutorial;
-var ScatterPlotTutorialDisplay = (function (_super) {
-    __extends(ScatterPlotTutorialDisplay, _super);
-    function ScatterPlotTutorialDisplay() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    ScatterPlotTutorialDisplay.prototype.Display = function (screen) {
-        var graphAxisSize = 350;
-        var points = RandomPoints_1.RandomPoints.Generate(100, -1, 1);
-        var interactablePlot = new InteractableGraph_1.InteractableGraph(new WireFrameCube_1.WireframeCube(graphAxisSize), ScatterPlotPoints_1.ScatterPlotPoints.FromPoints(points, graphAxisSize, 5, 5), graphAxisSize, new three_1.Vector2(0, 0), new three_1.Vector2(360, 360));
-        var orthographic = new Graph_1.Graph(new WireFrameCube_1.WireframeCube(graphAxisSize), ScatterPlotPoints_1.ScatterPlotPoints.FromPoints(points, graphAxisSize, 5, 5), graphAxisSize);
-        orthographic.UseOrthographicCamera();
-        var planeSelector = new PlaneSelector_1.PlaneSelector();
-        planeSelector.Bind(interactablePlot);
-        var graphContainer = $("<div style=\"display: flex;\" class=\"center-content\"></div>");
-        var ortho = $("<div></div>");
-        var interactable = $("<div></div>");
-        var interactionGrid = $("<div style=\"width: 50%; margin-left: 50%\"></div>");
-        var template = $("<div style=\"text-align: center; width: 80%;\">\n\t\t\t<hr />\n\t\t\t<p>\n\t\t\t\tYou will be shown a 2D view of a 3D scatter plot, and the corresponding 3D scatter plot.\n\t\t\t\tChoose the side of the 3D scatter plot corresponding to the 2D view.\n\t\t\t\tYou can rotate the 3D view by clicking on it and dragging your mouse.\n\t\t\t</p>\n\t\t\t<p>\n\t\t\t\tHovering your mouse on a square of the unfolded cube will highlight the corresponding side in the 3D view.\n\t\t\t\tClick that the unfolded square to select it.\n\t\t\t</p>\n\t\t\t<hr />\n\t\t</div>");
-        ortho.append(orthographic.Element());
-        interactable.append(interactablePlot.Element());
-        interactionGrid.append(planeSelector.Element());
-        graphContainer.append(ortho);
-        graphContainer.append(interactable);
-        template.prepend(interactionGrid);
-        template.prepend(graphContainer);
-        template.append(new TimedTestNotification_1.TimedTestNotification().Element());
-        orthographic.RenderOnce();
-        interactablePlot.RenderContinuously();
-        screen.SubmitButton().html("Begin");
-        screen.ViewModeContent();
-        screen.ContentContainer().append(template);
-    };
-    return ScatterPlotTutorialDisplay;
-}(io_1.TaskDisplay));
-},{"../../io":72,"../../tasks":91,"../../tasks/EmptyTaskController":84,"../../ui/components/Graph":119,"../../ui/components/InteractableGraph":120,"../../ui/components/PlaneSelector":123,"../../ui/components/TimedTestNotification":124,"../../ui/threejs/ScatterPlotPoints":129,"../../ui/threejs/WireFrameCube":130,"../../util/RandomPoints":132,"three":37}],115:[function(require,module,exports){
+
+},{"../../tasks":91,"../../tasks/EmptyTaskController":84,"../../ui/components/DatasetLoader":118,"./DatasetPreviewDisplay":113}],115:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
 exports.Color = void 0;
@@ -120399,6 +120502,7 @@ var Color = (function () {
     return Color;
 }());
 exports.Color = Color;
+
 },{}],116:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -120433,6 +120537,7 @@ var DefaultElementSizeSettings = (function (_super) {
     return DefaultElementSizeSettings;
 }(ElementSizeSettings));
 exports.DefaultElementSizeSettings = DefaultElementSizeSettings;
+
 },{}],117:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -120487,6 +120592,7 @@ var NonDisplayOption = (function (_super) {
     return NonDisplayOption;
 }(Option));
 exports.NonDisplayOption = NonDisplayOption;
+
 },{}],118:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -120536,7 +120642,6 @@ var DatasetLoader = (function () {
         this.backend = backend;
         var template = $("<div style=\"background-color: #e9ecef;padding: 15px;text-align: center;\"></div>");
         this.datasetNameInput = $("<input type=\"text\" value=\"iris.csv\"/>");
-        this.dimensionInput = $("<input type=\"text\" value=\"4\"/>");
         this.xOffInput = $("<input type=\"text\" value=\"0\"/>");
         this.yOffInput = $("<input type=\"text\" value=\"1\"/>");
         this.zOffInput = $("<input type=\"text\" value=\"2\"/>");
@@ -120548,9 +120653,6 @@ var DatasetLoader = (function () {
         template.append("<hr />");
         template.append("Dataset Name: ");
         template.append(this.datasetNameInput);
-        template.append("<br /><br />");
-        template.append("Dataset Dimension: ");
-        template.append(this.dimensionInput);
         template.append("<hr />");
         template.append("Data Point Offsets<br />");
         template.append("x: ");
@@ -120572,9 +120674,6 @@ var DatasetLoader = (function () {
     DatasetLoader.prototype.GetZOffset = function () {
         return this.tryParseOffset(this.zOffInput);
     };
-    DatasetLoader.prototype.GetDimension = function () {
-        return this.tryParseDimension(this.dimensionInput);
-    };
     DatasetLoader.prototype.GetNormalizer = function () {
         var normalizerValue = this.normalizerInput.val();
         return new FitToBoundsNormalizer_1.FitToBoundsNormalizer();
@@ -120588,26 +120687,16 @@ var DatasetLoader = (function () {
         }
         return value;
     };
-    DatasetLoader.prototype.tryParseDimension = function (elem) {
-        var value = Number.parseFloat(elem.val());
-        if (Number.isNaN(value)) {
-            var msg = "Non numeric input in dimension field";
-            alert(msg);
-            throw new Error(msg);
-        }
-        return value;
-    };
     DatasetLoader.prototype.Load = function () {
         var _a;
         return __awaiter(this, void 0, void 0, function () {
-            var xOff, yOff, zOff, dimension, normalizer, parser, values, dataset, points;
+            var xOff, yOff, zOff, normalizer, parser, dataset, points;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         xOff = this.GetXOffset();
                         yOff = this.GetYOffset();
                         zOff = this.GetZOffset();
-                        dimension = this.GetDimension();
                         normalizer = this.GetNormalizer();
                         parser = new DatasetParser_1.DatasetParser(normalizer);
                         parser.OffsetX = xOff;
@@ -120615,11 +120704,7 @@ var DatasetLoader = (function () {
                         parser.OffsetZ = zOff;
                         return [4, this.backend.GetDataset((_a = this.datasetNameInput.val()) === null || _a === void 0 ? void 0 : _a.toString().trim())];
                     case 1:
-                        values = _b.sent();
-                        dataset = {
-                            Dimension: dimension,
-                            Data: values
-                        };
+                        dataset = _b.sent();
                         points = parser.Parse(dataset);
                         this.OnLoad(points);
                         return [2];
@@ -120633,6 +120718,7 @@ var DatasetLoader = (function () {
     return DatasetLoader;
 }());
 exports.DatasetLoader = DatasetLoader;
+
 },{"../../plotData/DatasetParser":80,"../../plotData/normalization/FitToBoundsNormalizer":82}],119:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -120719,6 +120805,7 @@ var Graph = (function () {
     return Graph;
 }());
 exports.Graph = Graph;
+
 },{"../threejs/PlaneHighlights":128,"three":37}],120:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -120803,6 +120890,7 @@ var InteractableGraph = (function (_super) {
     return InteractableGraph;
 }(Graph_1.Graph));
 exports.InteractableGraph = InteractableGraph;
+
 },{"./Graph":119,"three":37,"three-orbitcontrols-ts":35}],121:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -120845,6 +120933,7 @@ var OptionButton = (function (_super) {
     return OptionButton;
 }(Option_1.Option));
 exports.OptionButton = OptionButton;
+
 },{"../Option":117}],122:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -120870,6 +120959,7 @@ var GraphPlaneNormals = (function () {
 }());
 exports["default"] = GraphPlaneNormals;
 ;
+
 },{"three":37}],123:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -120997,6 +121087,7 @@ var PlaneSelector = (function () {
     return PlaneSelector;
 }());
 exports.PlaneSelector = PlaneSelector;
+
 },{"../../util/IdGenerator":131,"../Option":117,"./PlaneNormals":122}],124:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -121010,6 +121101,7 @@ var TimedTestNotification = (function () {
     return TimedTestNotification;
 }());
 exports.TimedTestNotification = TimedTestNotification;
+
 },{}],125:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -121046,6 +121138,7 @@ var AxisLabel = (function () {
     return AxisLabel;
 }());
 exports.AxisLabel = AxisLabel;
+
 },{"three":37}],126:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -121126,6 +121219,7 @@ var ColorRamp = (function () {
     };
     return ColorRamp;
 }());
+
 },{"delaunator":34,"three":37}],127:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -121249,6 +121343,7 @@ var Isolines = (function () {
     return Isolines;
 }());
 exports.Isolines = Isolines;
+
 },{"../../lib/conrec/conrec":73,"./GraphPlane":126,"three":37}],128:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -121339,6 +121434,7 @@ var PlaneHighlights = (function () {
     return PlaneHighlights;
 }());
 exports.PlaneHighlights = PlaneHighlights;
+
 },{"../components/PlaneNormals":122,"three":37}],129:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -121381,6 +121477,7 @@ var ScatterPlotPoints = (function () {
     return ScatterPlotPoints;
 }());
 exports.ScatterPlotPoints = ScatterPlotPoints;
+
 },{"three":37}],130:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -121401,6 +121498,7 @@ var WireframeCube = (function () {
     return WireframeCube;
 }());
 exports.WireframeCube = WireframeCube;
+
 },{"three":37}],131:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -121415,6 +121513,7 @@ var IdGenerator = (function () {
     return IdGenerator;
 }());
 exports.IdGenerator = IdGenerator;
+
 },{}],132:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -121436,6 +121535,7 @@ var RandomPoints = (function () {
     return RandomPoints;
 }());
 exports.RandomPoints = RandomPoints;
+
 },{"../plotData/Point":81}],133:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
@@ -121462,6 +121562,7 @@ var WaveGraphPoints = (function () {
     return WaveGraphPoints;
 }());
 exports.WaveGraphPoints = WaveGraphPoints;
+
 },{"../plotData/Point":81,"../plotData/normalization/IndependentAxisNormalizer":83}]},{},[41])
 
 //# sourceMappingURL=bundle.js.map
