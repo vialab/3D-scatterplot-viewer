@@ -1,4 +1,4 @@
-# spatial-abilities-scatterplot-view
+# 3D-scatterplot-view
 
 Dependencies:
 - NodeJS
