@@ -28,4 +28,4 @@ To load the dataset into the viewer, fill out the form at the top of the page. T
 
 The default view should look like this:
 
-![ScreenShot](3d-scatterplot-view.PNG)
+![ScreenShot](3d-scatterplot-viewer.PNG)
